@@ -1,0 +1,5 @@
+.tamañologo {
+  height: 35px;       /* Ajusta la altura al tamaño de tu texto */
+  width: auto;        /* Mantiene la proporción de la imagen */
+  vertical-align: middle; /* Alinea verticalmente con el texto */
+}
