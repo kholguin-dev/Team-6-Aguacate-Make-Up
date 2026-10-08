@@ -433,6 +433,11 @@ body {
     box-shadow: 0 10px 24px rgba(49, 0, 85, 0.12);
 }
 
+.tamañologo {
+  height: 35px;   
+  width: auto;      
+  vertical-align: middle; 
+}
 /* RESPONSIVE */
 
 @media (max-width: 991px) {
