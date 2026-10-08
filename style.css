@@ -470,3 +470,9 @@ Estilos de Navbar Complementarios a Bootstrap
 .team-card:hover .team-card-back {
     box-shadow: 0 10px 24px rgba(49, 0, 85, 0.12);
 }
+
+.tamañologo {
+  height: 35px;   
+  width: auto;      
+  vertical-align: middle; 
+}
