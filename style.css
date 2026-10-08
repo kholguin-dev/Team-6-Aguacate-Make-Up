@@ -430,6 +430,48 @@ Estilos de Navbar Complementarios a Bootstrap
     transition: transform 0.4s ease;
 }
 
+.tamañologo {
+  height: 35px;   
+  width: auto;      
+  vertical-align: middle; 
+}
+
+
+/*efecto flip*/
+
+.team-card {
+    height: 14rem;
+    perspective: 1000px;
+    cursor: pointer;
+}
+
+.team-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform .6s;
+    transform-style: preserve-3d;
+}
+
+.team-card.flipped .team-card-inner {
+    transform: rotateY(180deg);
+}
+
+.team-card-front,
+.team-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+    border-radius: 1.25rem;
+    background: var(--white);
+    box-shadow: 0 8px 20px var(--shadow);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+.team-card-back {
+    transform: rotateY(180deg);
 /* Glow sutil */
 .team-card::before {
     content: "";
