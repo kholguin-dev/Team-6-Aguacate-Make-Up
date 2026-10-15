@@ -1,1 +1,120 @@
 
+body {
+  background-color: var(--lienzo);
+  color: var(--carbon);
+}
+
+.card {
+  background-color: var(--superficie);
+  border: 1px solid #ddddde !important;
+  border-radius: var(--radio);
+  box-shadow: 0 2px 8px rgba(189, 188, 190, 0.08);
+}
+
+h2,
+h3,
+h5 {
+  color: var(--carbon);
+}
+
+h6 {
+  color: #5e1797;
+}
+
+.text-muted {
+  color: var(--carbon-suave) !important;
+}
+
+.form-control,
+.form-select {
+  background-color: var(--superficie);
+  border: 2px solid #ced4da !important;
+  border-radius: 8px;
+  color: var(--carbon);
+}
+
+.form-control:focus,
+.form-select:focus {
+  border: 1px solid #5e1797 !important;
+  box-shadow: 0 0 0 0.2rem rgba(94, 23, 151, 0.15) !important;
+  outline: none;
+}
+
+#contactForm button[type="submit"],
+#contactForm button[type="submit"]:focus {
+  background-color: #5e1797 !important;
+  border-color: #5e1797 !important;
+  color: #ffffff !important;
+  border-radius: var(--radio);
+}
+
+#contactForm button[type="submit"]:hover {
+  background-color: #481174 !important;
+  border-color: #481174 !important;
+}
+
+#contactForm button[type="submit"]:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.accordion-item {
+  background-color: var(--superficie);
+  border: 1px solid var(--borde-tarjeta);
+  border-radius: var(--radio);
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.accordion-button {
+  background-color: var(--superficie);
+  color: var(--carbon);
+  font-weight: 600;
+  box-shadow: none;
+}
+
+.accordion-button:not(.collapsed) {
+  background-color: rgba(94, 23, 151, 0.1);
+  color: #5e1797;
+}
+
+.accordion-button::after {
+  filter: none;
+}
+
+.accordion-body {
+  background-color: var(--superficie);
+  color: var(--carbon-suave);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+#formStatus:empty {
+  display: none;
+}
+
+
+.btn-reiniciar {
+    background-color: #1ba564;       
+    color: #ffffff;                  
+    border: none;                    
+    padding: 12px 24px;              
+    font-size: 1rem;                 
+    font-weight: 600;              
+    border-radius: 30px;           
+    cursor: pointer;                 
+    transition: all 0.3s ease;      
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-reiniciar:hover {
+    background-color: #14834e;       /* Un verde un poco más oscuro */
+    color: #ffffff;
+    transform: translateY(-2px);     
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); 
+}
+
+.btn-reiniciar:active {
+    transform: translateY(0);      
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
