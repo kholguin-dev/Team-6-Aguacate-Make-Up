@@ -9,7 +9,7 @@ function ajustarRutasFooter(contenedor) {
 }
 
 function cargarFooter() {
-    const contenedor = document.getElementById("pie del sitio") || document.querySelector("footer");
+    const contenedor = document.getElementById("footer") || document.querySelector("footer");
     if (!contenedor) {
         return;
     }

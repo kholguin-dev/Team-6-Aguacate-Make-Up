@@ -61,7 +61,7 @@ function ajustarRutasHeader(contenedor) {
 }
 
 function cargarHeader() {
-    const contenedor = document.getElementById("encabezado del sitio") || document.querySelector("header");
+    const contenedor = document.getElementById("header") || document.querySelector("header");
     if (!contenedor) {
         return;
     }
