@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto - Aguacate Make Up</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../estilos/style.css">
+    <link rel="stylesheet" href="../estilos/contacto.css">
+    <link rel="icon" href="../recursos/imagenes/faviconbien.png">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark navbar-custom sticky-top py-2 py-lg-3">
+    <div class="container-fluid px-3 px-lg-5">
+        <a class="navbar-brand d-flex align-items-center gap-2" href="../index.html">
+            <img src="../recursos/logotipos/logo.png" alt="Logo Aguacate Make Up" height="40">
+            <span class="fs-4 fw-bold text-white lh-1">Aguacate Make Up</span>
+        </a>
+        <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContenido" aria-controls="navbarContenido" aria-expanded="false" aria-label="Alternar navegación">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarContenido">
+            <ul class="navbar-nav mx-auto mb-3 mb-lg-0 gap-lg-3 align-items-center mt-3 mt-lg-0">
+                <li class="nav-item"><a class="nav-link px-2" href="../index.html">Inicio</a></li>
+                <li class="nav-item"><a class="nav-link px-2" href="catalogo.html">Catálogo</a></li>
+                <li class="nav-item"><a class="nav-link px-2" href="nosotros.html">Nosotros</a></li>
+                <li class="nav-item"><a class="nav-link active px-2" aria-current="page" href="contacto.html">Contáctenos</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<main class="container px-3 py-4">
+    <section class="tarjeta-contacto">
+        <div class="text-center mb-4">
+            <h1 class="titulo-contacto fs-3">Contáctanos</h1>
+            <p class="subtitulo-contacto">Estamos listos para atenderte desde Medellín, Cali, Bogotá y cualquier rincón de Colombia</p>
+        </div>
+
+        <div id="contenedorAlerta"></div>
+
+        <form id="formularioContacto" novalidate>
+            <div class="mb-3">
+                <label for="campoNombre" class="form-label etiqueta-campo">Nombre completo</label>
+                <input type="text" class="form-control entrada-campo" id="campoNombre" placeholder="Escribe tu nombre y apellido" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="campoCorreo" class="form-label etiqueta-campo">Correo electrónico</label>
+                <input type="email" class="form-control entrada-campo" id="campoCorreo" placeholder="ejemplo@correo.com" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="campoCelular" class="form-label etiqueta-campo">Teléfono celular</label>
+                <input type="tel" class="form-control entrada-campo" id="campoCelular" placeholder="3001234567" maxlength="10" required>
+            </div>
+
+            <div class="mb-4">
+                <label for="campoMensaje" class="form-label etiqueta-campo">Mensaje</label>
+                <textarea class="form-control entrada-campo" id="campoMensaje" rows="4" placeholder="¿En qué te podemos asesorar sobre tu pedido o productos?" required></textarea>
+            </div>
+
+            <div class="text-center">
+                <button type="submit" class="boton-enviar">Enviar mensaje</button>
+            </div>
+        </form>
+    </section>
+</main>
+
+<footer class="py-4">
+    <div class="container text-center small text-secondary">
+        <p class="mb-1">2026 Aguacate Make Up. Belleza que fluye contigo.</p>
+        <p class="mb-0">contacto@aguacatemakeup.com</p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../logica/datos inicial.js"></script>
+<script src="../logica/almacenamiento.js"></script>
+<script src="../logica/validaciones.js"></script>
+<script src="../logica/interfaz.js"></script>
+<script src="../logica/script.js"></script>
+</body>
+</html>
