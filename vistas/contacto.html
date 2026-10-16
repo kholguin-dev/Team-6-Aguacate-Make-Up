@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contáctanos</title>
     <title>Contáctenos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -45,7 +46,7 @@
                             
                             <div class="mb-3">
                                 <label for="correoElectronico" class="form-label">Correo electrónico *</label>
-                                <input type="email" class="form-control" id="correoElectronico" name="email">
+                                <input type="email" class="form-control" id="correoElectronico" name="email" pattern="^[^@]+@[^@]+\.[^@]+$" required>
                                 <div class="invalid-feedback">
                                     Ingresa un correo válido (ej: nombre@dominio.com).
                                 </div>
@@ -53,8 +54,12 @@
 
                             <div class="mb-3">
                                 <label for="telefonoCelular" class="form-label">Celular (Opcional)</label>
-                                <input type="tel" class="form-control" id="telefonoCelular" name="telefono" >
+                                <input type="tel" class="form-control" id="telefonoCelular" name="telefono" pattern="^[0-9]{10}$" >
+                                <div class="invalid-feedback">
+                                    Ingresa un número válido.
+                                </div>
                             </div>
+
 
                             <div class="mb-3">
                                 <label for="mensajeTexto" class="form-label">Mensaje *</label>

@@ -7,7 +7,7 @@ body {
 .card {
   background-color: var(--superficie);
   border: 1px solid #ddddde !important;
-  border-radius: var(--radio);
+  border-radius: 15px;
   box-shadow: 0 2px 8px rgba(189, 188, 190, 0.08);
 }
 
@@ -45,7 +45,7 @@ h6 {
   background-color: #5e1797 !important;
   border-color: #5e1797 !important;
   color: #ffffff !important;
-  border-radius: var(--radio);
+  border-radius: 15px;
 }
 
 #contactForm button[type="submit"]:hover {
@@ -101,7 +101,7 @@ h6 {
     padding: 12px 24px;              
     font-size: 1rem;                 
     font-weight: 600;              
-    border-radius: 30px;           
+    border-radius: 15px;           
     cursor: pointer;                 
     transition: all 0.3s ease;      
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
