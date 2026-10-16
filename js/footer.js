@@ -4,7 +4,7 @@ function ajustarRutasFooter(contenedor) {
     const rutaBase = window.location.pathname.includes("/vistas/") ? "../" : "";
     const imagenLogo = contenedor.querySelector("#imagenLogoFooter");
     if (imagenLogo) {
-        imagenLogo.src = rutaBase + "src/image/logo.png";
+        imagenLogo.src = rutaBase + "/img/logo.png";
     }
 }
 
