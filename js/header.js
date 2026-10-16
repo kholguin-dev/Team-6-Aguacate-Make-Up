@@ -28,7 +28,7 @@ function ajustarRutasHeader(contenedor) {
 
     const imagenLogo = contenedor.querySelector("#imagenLogoHeader");
     if (imagenLogo) {
-        imagenLogo.src = rutaBase + "src/image/logo.png";
+        imagenLogo.src = rutaBase + "/img/logo.png";
     }
 
     const enlaceLogo = contenedor.querySelector("#enlaceLogoHeader");
