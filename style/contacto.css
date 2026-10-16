@@ -95,7 +95,7 @@ h6 {
 
 
 .btn-reiniciar {
-    background-color: #1ba564;       
+    background-color: #5e1797;       
     color: #ffffff;                  
     border: none;                    
     padding: 12px 24px;              
@@ -108,7 +108,7 @@ h6 {
 }
 
 .btn-reiniciar:hover {
-    background-color: #14834e;       /* Un verde un poco más oscuro */
+    background-color: #481174; 
     color: #ffffff;
     transform: translateY(-2px);     
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); 

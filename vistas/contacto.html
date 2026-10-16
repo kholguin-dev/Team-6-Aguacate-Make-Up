@@ -8,133 +8,128 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="../style/contacto.css">
+    <link rel="stylesheet" href="../style.css">
     <link rel="icon" href="../img/faviconbien.png">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
 </head>
 <body>
+    <header id="header"></header>
+    <main>
+        <div class="container my-4">
+            <div class="row">
+                <div class="col-12">
+                    <h2 id="text-title" class="fw-bold">Contactanos</h2>
+                    <p class="text-muted">
+                        Envíanos tu consulta sobre productos o la tienda. Te responderemos por correo electrónico.
 
-<!-- Header dinamico -->
-<header id="header"></header>
-
-<main>
-    <div class="container my-4">
-        <div class="row">
-            <div class="col-12">
-                <h2 id="text-title" class="fw-bold">Contactanos</h2>
-                <p class="text-muted">
-                    Envíanos tu consulta sobre productos o la tienda. Te responderemos por correo electrónico.
-
-                </p>
+                    </p>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="container mb-5">
-        <div class="row g-4">
-            <div class="col-lg-7">
-                <div class="card border-0 shadow-sm p-4">
-                    <h3 class="mb-4">Fórmulario de contacto</h3>
-                    
-                    <form action="https://formspree.io/f/xbgdqoqo" id="contactForm" class="needs-validation" novalidate>
+        <div class="container mb-5">
+            <div class="row g-4">
+                <div class="col-lg-7">
+                    <div class="card border-0 shadow-sm p-4">
+                        <h3 class="mb-4">Formulario de contacto</h3>
                         
-                        <div class="mb-3">
-                            <label for="nombreCompleto" class="form-label">Nombre completo *</label>
-                            <input type="text" class="form-control" id="nombreCompleto" name="name" required>
-                            <div class="invalid-feedback">
-                                Por favor ingresa tu nombre completo.
+                        <form action="https://formspree.io/f/xbgdqoqo" method="POST" id="contactForm" class="needs-validation" novalidate>
+                            
+                            <div class="mb-3">
+                                <label for="nombreCompleto" class="form-label">Nombre completo *</label>
+                                <input type="text" class="form-control" id="nombreCompleto" name="name" required>
+                                <div class="invalid-feedback">
+                                    Por favor ingresa tu nombre completo.
+                                </div>
                             </div>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label for="correoElectronico" class="form-label">Correo electrónico *</label>
-                            <input type="email" class="form-control" id="correoElectronico" name="email">
-                            <div class="invalid-feedback">
-                                Ingresa un correo válido (ej: nombre@dominio.com).
+                            
+                            <div class="mb-3">
+                                <label for="correoElectronico" class="form-label">Correo electrónico *</label>
+                                <input type="email" class="form-control" id="correoElectronico" name="email">
+                                <div class="invalid-feedback">
+                                    Ingresa un correo válido (ej: nombre@dominio.com).
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="mb-3">
-                            <label for="telefonoCelular" class="form-label">Celular (Opcional)</label>
-                            <input type="tel" class="form-control" id="telefonoCelular" name="telefono" >
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="mensajeTexto" class="form-label">Mensaje *</label>
-                            <textarea class="form-control" id="mensajeTexto" name="me" rows="4" placeholder="Cuéntanos con detalle tu consulta." maxlength="500"  required></textarea>
-                            <div class="invalid-feedback">
-                                Por favor escribe tu mensaje (máx. 500 caracteres).
+                            <div class="mb-3">
+                                <label for="telefonoCelular" class="form-label">Celular (Opcional)</label>
+                                <input type="tel" class="form-control" id="telefonoCelular" name="telefono" >
                             </div>
-                        </div>
 
-                        <div class="mb-3 form-check">
-                            <input type="checkbox" class="form-check-input" id="habeasDataCheck" name="habeas_data" required>
-                            <label class="form-check-label small" for="habeasDataCheck">
-                                Acepto la Política de Tratamiento de Datos Personales de Aguacate Make Up.
-                            </label>
-                            <div class="invalid-feedback">
-                                Debes aceptar la política de tratamiento de datos para continuar.
+                            <div class="mb-3">
+                                <label for="mensajeTexto" class="form-label">Mensaje *</label>
+                                <textarea class="form-control" id="mensajeTexto" name="me" rows="4" placeholder="Cuéntanos con detalle tu consulta." maxlength="500"  required></textarea>
+                                <div class="invalid-feedback">
+                                    Por favor escribe tu mensaje (máx. 500 caracteres).
+                                </div>
                             </div>
-                        </div>
 
-                        <button class="btn btn-danger w-100 btn-solid theme-primary py-2" type="submit">Enviar consulta</button>
-                    </form>
-                </div>
-            </div>
-            <div class="col-lg-5">
-                <div class="card border-0 shadow-sm p-3 mb-4">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h5 class="card-title mb-0">Datos de contacto</h5>
-                        </div>
-                        <div class="mb-2">
-                            <h6 class="text-muted small mb-1">Correo Electrónico</h6>
-                            <p class="mb-1 ">kevin.holguin@genstudents.org</p>
-                        </div>
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="habeasDataCheck" name="habeas_data" required>
+                                <label class="form-check-label small" for="habeasDataCheck">
+                                    Acepto la Política de Tratamiento de Datos Personales de Aguacate Make Up.
+                                </label>
+                                <div class="invalid-feedback">
+                                    Debes aceptar la política de tratamiento de datos para continuar.
+                                </div>
+                            </div>
 
-                        <div class="mb-2">
-                            <h6 class="text-muted small mb-1">Línea Telefónica</h6>
-                            <p class="mb-1">(601) 745 2890</p>
-                        </div>
-
-                        <div class="mb-2">
-                            <h6 class="text-muted small mb-1">Horarios de atención:</h6>
-                            <p class="mb-1 small text-muted">Lunes a Sábado: 8:00 am - 8:00 pm</p>
-                            <p class="mb-0 small text-muted">Domingos y Festivos: 10:00 am - 5:00 pm</p>
-                        </div>
+                            <button class="btn btn-danger w-100 btn-solid theme-primary py-2" type="submit">Enviar consulta</button>
+                        </form>
                     </div>
                 </div>
-                <div class="card border-0 shadow-sm p-3">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h5 class="card-title mb-0">Redes sociales</h5>
-                        </div>
-                        <div class="row g-2">
-                            <div class="border rounded p-2 d-flex justify-content-center gap-3">
-                                <a href="https://www.instagram.com/aguacate_makeup/" target="_blank"
-                                style="color: #5E1797;">
-                                    <i class="bi bi-instagram fs-4"></i>
-                                </a>
+                <div class="col-lg-5">
+                    <div class="card border-0 shadow-sm p-3 mb-4">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="card-title mb-0">Datos de contacto</h5>
+                            </div>
+                            <div class="mb-2">
+                                <h6 class="text-muted small mb-1">Correo Electrónico</h6>
+                                <p class="mb-1 ">kevin.holguin@genstudents.org</p>
+                            </div>
 
-                                <a href="https://www.tiktok.com/@aguacatemakeup" target="_blank"
-                                style="color: #5E1797;">
-                                    <i class="bi bi-tiktok fs-4"></i>
-                                </a>
+                            <div class="mb-2">
+                                <h6 class="text-muted small mb-1">Línea Telefónica</h6>
+                                <p class="mb-1">(601) 745 2890</p>
+                            </div>
+
+                            <div class="mb-2">
+                                <h6 class="text-muted small mb-1">Horarios de atención:</h6>
+                                <p class="mb-1 small text-muted">Lunes a Sábado: 8:00 am - 8:00 pm</p>
+                                <p class="mb-0 small text-muted">Domingos y Festivos: 10:00 am - 5:00 pm</p>
                             </div>
                         </div>
-                       
+                    </div>
+                    <div class="card border-0 shadow-sm p-3">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="card-title mb-0">Redes sociales</h5>
+                            </div>
+                            <div class="row g-2">
+                                <div class="border rounded p-2 d-flex justify-content-center gap-3">
+                                    <a href="https://www.instagram.com/aguacate_makeup/" target="_blank"
+                                    style="color: #5E1797;">
+                                        <i class="bi bi-instagram fs-4"></i>
+                                    </a>
+
+                                    <a href="https://www.tiktok.com/@aguacatemakeup" target="_blank"
+                                    style="color: #5E1797;">
+                                        <i class="bi bi-tiktok fs-4"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</main>
-
-<!-- footer dinamico -->
-<footer class="py-4" id="footer"></footer>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../js/header.js"></script>
-<script src="../js/footer.js"></script>
-<script src="../js/contacto.js"></script>
+    </main>
+    <footer class="py-4" id="footer"></footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/header.js"></script>
+    <script src="../js/footer.js"></script>
+    <script src="../js/contacto.js"></script>
 </body>
 </html>
