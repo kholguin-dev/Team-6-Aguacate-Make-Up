@@ -1,34 +1,91 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio</title>
+    <title>Inicio | Aguacate Make Up</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="./style.css">
     <link rel="icon" href="../img/faviconbien.png">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
 </head>
 <body>
+
     <header id="header"></header>
 
-<!--hei primer seccion-->
+    <main>
+        <section class="seccion-principal" id="inicio">
+            <div class="container-fluid px-4">
+                <div class="row align-items-center g-4">
 
+                    <div class="col-12 col-lg-6">
+                        <div class="contenido-principal">
+                        <h1 class="titulo-principal mt-4">
+                         Tu esencia,<br>
+                          en cada detalle
+                        </h1>
+                    
+                            <p class="descripcion-principal mt-3">
+                                Maquillaje que inspira, skincare que cuida y accesorios
+                                que hacen fácil tu rutina. Descubre tus próximos favoritos.
+                            </p>
 
+                            <div class="acciones-principales d-flex flex-wrap gap-2 mt-4">
+                                <a href="#catalogo" class="btn btn-primary boton-principal">
+                                    <i class="bi bi-arrow-right me-2" aria-hidden="true"></i>
+                                    Explorar catálogo
+                                </a>
 
-<!--stef  segunda  seccion-->
+                                <a href="#novedades" class="btn btn-outline-primary boton-principal">
+                                    Ver novedades
+                                </a>
+                            </div>
+                        </div>
+                    </div>
 
+                    <div class="col-12 col-lg-6">
+                        <div class="contenedor-carrusel" id="carrusel-productos">
 
+                            <div class="carrusel-imagenes">
+                                <img src="./img/makeup.jpg" alt="Productos de maquillaje" class="imagen-carrusel activa">
+                                <img src="./PENDIENTE RECURSO.jpeg" alt="Productos de belleza y cuidado de la piel" class="imagen-carrusel">
+                                <img src="./PENDIENTE RECURSO.jpg" alt="Colección de maquillaje" class="imagen-carrusel">
+                            </div>
 
+                            <button type="button" class="flecha-carrusel anterior" id="imagen-anterior" aria-label="Ver imagen anterior">
+                                <i class="bi bi-chevron-left" aria-hidden="true"></i>
+                            </button>
 
+                            <button type="button" class="flecha-carrusel siguiente" id="imagen-siguiente" aria-label="Ver imagen siguiente">
+                                <i class="bi bi-chevron-right" aria-hidden="true"></i>
+                            </button>
 
+                            <div class="indicadores-carrusel" aria-label="Seleccionar imagen">
+                                <button type="button" class="indicador activa" aria-label="Mostrar imagen 1" aria-current="true"></button>
+                                <button type="button" class="indicador" aria-label="Mostrar imagen 2"></button>
+                                <button type="button" class="indicador" aria-label="Mostrar imagen 3"></button>
+                            </div>
 
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Segunda sección de Stef -->
+
+    </main>
 
     <footer class="py-4" id="footer"></footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../js/header.js"></script>
     <script src="../js/footer.js"></script>
     <script src="../js/contacto.js"></script>
+    <script src="./script.js"></script>
+
 </body>
 </html>
