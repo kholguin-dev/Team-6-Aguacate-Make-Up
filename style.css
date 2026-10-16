@@ -149,7 +149,7 @@ body {
     width: 100%;
     min-height: 34rem;
     padding: 3rem 0;
-    background-color: var(--background);
+    background: linear-gradient(135deg, var(--white) 0%, var(--pink-light) 100%);
     overflow: hidden;
 }
 
@@ -411,6 +411,63 @@ body {
   font-weight: 700;
 }
 
+.fondofooter{
+    background-color: #C084FC;
+}
+
+@media (max-width: 767px) {
+
+  #seccion-universo {
+
+    padding: 20px 18px !important;
+
+  }
+
+ 
+
+  #seccion-universo .universo-tarjeta {
+
+    flex-basis: calc((100% - 16px) / 2);
+
+  }
+
+ 
+
+  #seccion-universo .universo-imagen {
+
+    height: 180px;
+
+  }
+
+}
+
+ 
+
+@media (max-width: 480px) {
+
+  #seccion-universo {
+
+    padding: 18px 14px !important;
+
+  }
+
+ 
+
+  #seccion-universo .universo-tarjeta {
+
+    flex-basis: 85%;
+
+  }
+
+ 
+
+  #seccion-universo .universo-imagen {
+
+    height: 190px;
+
+  }
+
+}
 
 
 @media (max-width: 991.98px) {

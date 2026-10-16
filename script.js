@@ -109,4 +109,4 @@ const seccion = document.getElementById('seccion-universo');
   mover();
   iniciar();
 })();
-=======
+
