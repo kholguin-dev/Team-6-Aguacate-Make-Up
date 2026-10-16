@@ -6,45 +6,14 @@
     <title>Aguacate Make Up</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../style/about-us.css">
     <link rel="icon" href="../img/faviconbien.png">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark navbar-custom sticky-top py-2 py-lg-3">
-    <div class="container-fluid px-3 px-lg-5">
-        <a class="navbar-brand d-flex align-items-center gap-2" href="../index.html">
-            <img src="../src/image/logo.png" alt="Aguacate Make Up Logo" height="40">
-            <span class="fs-4 fw-bold text-white lh-1">Aguacate Make Up</span>
-        </a>
-        <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContenido" aria-controls="navbarContenido" aria-expanded="false" aria-label="Alternar navegación">
-            <span class="material-symbols-outlined text-white">menu</span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarContenido">
-            <ul class="navbar-nav mx-auto mb-3 mb-lg-0 gap-lg-3 align-items-center mt-3 mt-lg-0">
-                <li class="nav-item"><a class="nav-link active px-2" aria-current="page" href="../index.html">Inicio</a></li>
-                <li class="nav-item"><a class="nav-link px-2" href="catalogo.html">Catálogo</a></li>
-                <li class="nav-item"><a class="nav-link px-2" href="about-us.html">Nosotros</a></li>
-                <li class="nav-item"><a class="nav-link px-2" href="contacto.html">Contáctenos</a></li>
-            </ul>
-            <div class="d-flex flex-column flex-lg-row align-items-center gap-3">
-                <div class="search-custom position-relative w-100" style="max-width: 400px;">
-                    <input class="form-control rounded-pill py-2" type="search" placeholder="Buscar labiales, skincare..." aria-label="Buscar">
-                    <span class="material-symbols-outlined search-icon fs-5">search</span>
-                </div>
-                <div class="d-flex align-items-center gap-3 mt-2 mt-lg-0 pb-2 pb-lg-0">
-                    <a href="#cuenta" class="btn-action btn-account d-flex align-items-center gap-2 px-3 py-2 rounded-pill">
-                        <span class="material-symbols-outlined fs-5">person</span>
-                        <span class="d-none d-xl-inline fw-medium fs-6">Mi Cuenta</span>
-                    </a>
-                    <a href="#carrito" class="btn-action btn-cart d-flex align-items-center justify-content-center rounded-circle p-2" aria-label="Carrito de compras">
-                        <span class="material-symbols-outlined fs-5">shopping_bag</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</nav>
+<!-- Header dinamico -->
+<header id="header"></header>
 
 <main>
     <section class="container-fluid px-4 my-3">
@@ -197,38 +166,12 @@
     </section>
 </main>
 
-<footer class="py-4">
-      <div class="container">
-        <div class="row g-4">
-          <div class="col-12 col-md-6 text-center text-md-start">            
-            <h3 class="logo-aguacate-makeup">
-                <img
-              src="../src/image/logo.png"
-              alt="logo-aguacate-makeup"
-              class="tamañologo"
-            />
-                Aguacate Make-up</h3>
-            <p class="small">Belleza que fluye contigo</p>
-          </div>
-
-          <div class="col-6 col-md-6 text-center text-md-end">
-            <h5>Síguenos</h5>
-            <p class="small mb-1">contacto@aguacatemakeup.com</p>
-            <p class="small">
-              <a href="https://www.instagram.com/aguacate_makeup/">Instagram</a>
-              <a href="https://www.tiktok.com/@aguacatemakeup">TikTok</a>
-            </p>
-          </div>
-        </div>
-
-        <hr class="my-4" />
-        <div class="text-center small">
-          <p class="mb-0">2026 Aguacate Make Up, Belleza que fluye contigo</p>
-        </div>
-      </div>
-</footer>
+<!-- footer dinamico -->
+<footer class="py-4" id="footer"></footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../js/header.js"></script>
+<script src="../js/footer.js"></script>
 <script src="../script.js"></script>
 </body>
 </html>
