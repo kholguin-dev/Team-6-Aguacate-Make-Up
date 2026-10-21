@@ -37,7 +37,7 @@
                             
                             <div class="mb-3">
                                 <label for="nombreCompleto" class="form-label">Nombre completo *</label>
-                                <input type="text" class="form-control" id="nombreCompleto" name="name" required>
+                                <input type="text" class="form-control" id="nombreCompleto" name="name" placeholder="Ingresa tu nombre completo" minlength="3" maxlength="50" required>
                                 <div class="invalid-feedback">
                                     Por favor ingresa tu nombre completo.
                                 </div>
@@ -45,26 +45,26 @@
                             
                             <div class="mb-3">
                                 <label for="correoElectronico" class="form-label">Correo electrónico *</label>
-                                <input type="email" class="form-control" id="correoElectronico" name="email" pattern="^[^@]+@[^@]+\.[^@]+$" required>
+                                <input type="email" class="form-control" id="correoElectronico" name="email" placeholder="nombre@dominio.com" pattern="^[^@]+@[^@]+\.[^@]+$" maxlength="70" required>
                                 <div class="invalid-feedback">
                                     Ingresa un correo válido (ej: nombre@dominio.com).
                                 </div>
                             </div>
 
                             <div class="mb-3">
-                                <label for="telefonoCelular" class="form-label">Celular (Opcional)</label>
-                                <input type="tel" class="form-control" id="telefonoCelular" name="telefono" pattern="^[0-9]{10}$" >
+                                <label for="telefonoCelular" class="form-label">Celular *</label>
+                                <input type="tel" class="form-control" id="telefonoCelular" name="telefono" placeholder="Ingresa un número que inicie con 3 y tenga 10 dígitos" pattern="^3[0-9]{9}$" maxlength="10" required >
                                 <div class="invalid-feedback">
-                                    Ingresa un número válido.
+                                El número ingresado debe tener 10 dígitos y comenzar con 3.
                                 </div>
                             </div>
 
 
                             <div class="mb-3">
                                 <label for="mensajeTexto" class="form-label">Mensaje *</label>
-                                <textarea class="form-control" id="mensajeTexto" name="me" rows="4" placeholder="Cuéntanos con detalle tu consulta." maxlength="500"  required></textarea>
+                                <textarea class="form-control" id="mensajeTexto" name="message" rows="4" placeholder="Cuéntanos con detalle tu consulta." minlength="10" maxlength="500"  required></textarea>
                                 <div class="invalid-feedback">
-                                    Por favor escribe tu mensaje (máx. 500 caracteres).
+                                    Por favor escribe tu mensaje (min. 10 caracteres - máx. 500 caracteres).
                                 </div>
                             </div>
 

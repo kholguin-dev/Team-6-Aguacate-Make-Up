@@ -1,7 +1,42 @@
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('contactForm');
 
-    if (form) {
+if (form) {
+        const inputsDelFormulario = form.querySelectorAll('input, textarea');
+
+        inputsDelFormulario.forEach(input => {
+            input.addEventListener('input', validarEnTiempoReal);
+            input.addEventListener('change', validarEnTiempoReal);
+            
+
+            input.addEventListener('blur', function() {
+                const valor = input.value.trim();
+                if (valor !== "" && !input.checkValidity()) {
+                    input.classList.remove('is-valid');
+                    input.classList.add('is-invalid');
+                }
+            });
+        });
+
+        function validarEnTiempoReal(event) {
+            const input = event.target;
+            const valor = input.value.trim();
+            
+            if (valor === "") {
+                input.classList.remove('is-invalid', 'is-valid');
+                return;
+            }
+
+            if (input.checkValidity()) {
+                input.classList.remove('is-invalid');
+                input.classList.add('is-valid');
+            } else {
+
+                input.classList.remove('is-invalid', 'is-valid');
+            }
+        }
+    }
+
         form.addEventListener('submit', async function (event) {
             event.preventDefault();
             event.stopPropagation();
@@ -13,6 +48,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
             form.classList.add('was-validated');
             const submitButton = form.querySelector('button[type="submit"]');
+
+            if (submitButton) {
+                submitButton.disabled = true;
+                submitButton.textContent = 'Enviando...';
+            }
 
             try {
                 const formData = new FormData(form);
@@ -35,6 +75,11 @@ document.addEventListener('DOMContentLoaded', function () {
                         mensajeError = data.errors.map(err => err.message).join(", ");
                     }
                     alert(mensajeError);
+
+                    if (submitButton) {
+                        submitButton.disabled = false;
+                        submitButton.textContent = 'Enviar';
+                    }
                 }
             } catch (error) {
                 console.error("Error de red:", error);
@@ -47,7 +92,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
         }, false);
-    }
 
     function mostrarMensajeExito() {
         const cardBody = form.closest('.card');
