@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return Number(precio).toLocaleString("es-ES", {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2
-        }) + " €";
+        }) + " $";
     }
 
     // Actualizamos los contadores del panel
@@ -272,22 +272,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!producto) return;
 
-        // Mostramos la información del producto
-        if (boton.dataset.accion === "ver") {
-            alert(
-                `Producto: ${producto.nombre}\n` +
-                `Referencia: ${producto.referencia}\n` +
-                `Descripción: ${producto.descripcion || "Sin descripción"}\n` +
-                `Categoría: ${producto.categoria}\n` +
-                `Precio: ${formatoPrecio(producto.precio)}\n` +
-                `Stock: ${producto.stock}\n` +
-                `Estado: ${producto.estado}`
-            );
-        }
+// Abrimos la página de creación de productos
+if (boton.dataset.accion === "ver") {
+    window.location.href = "Admincrearproductos.html";
+}
 
-        // Dejamos la conexión de edición pendiente
+        // Abrimos la página del formulario para editar
         if (boton.dataset.accion === "editar") {
-            alert("Aquí conectaremos el formulario de edición.");
+           window.location.href = "Admincrearproductos.html";
         }
 
         // Confirmamos antes de eliminar
