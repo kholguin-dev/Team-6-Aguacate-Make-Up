@@ -17,23 +17,23 @@
   <main class="container-fluid bg-white p-4 rounded-4 shadow-sm dashboard-container">
     
     <!-- 1. Header -->
-    <header class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+     <header class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb m-0 small text-muted">
-          <li class="breadcrumb-item">Administración</li>
+          <li class="breadcrumb-item" style="color: #5B009E">Administración</li>
           <li class="breadcrumb-item active text-brand fw-semibold">Productos</li>
         </ol>
       </nav>
-      <div class="d-flex align-items-center gap-3">
-        <i class="bi bi-bell fs-5 text-secondary" style="cursor: pointer;"></i>
-        <div class="d-flex align-items-center gap-2">
+      <div class="d-flex align-items-center gap-3 me-3">
+        <i class="bi bi-bell fs-5 me-2" style="color: var(--primary-light); cursor: pointer;"></i>
+        <div class="d-flex align-items-center gap-3">
 
-         <div class="rounded-circle text-white d-flex align-items-center justify-content-center fw-bold" style="width: 38px; height: 38px; background-color: var(--primary-light, #5E1797); font-size: 0.85rem;">
-            KH
-          </div>
+         <div class="rounded-circle text-white d-flex align-items-center justify-content-center fw-bold me-1" style="width: 38px; height: 38px; background-color: var(--primary-light, #5E1797); font-size: 0.85rem;">
+        KH
+      </div>
           <div>
             <span class="fw-semibold d-block lh-1 small text-dark">Kevin Holguin</span>
-            <span class="badge text-white mt-1" style="background-color: var(--primary-light, #5E1797); font-size: 0.65rem;">Administrador</span>
+            <span class="badge text-white mt-1" style="background-color: var(--primary-light, #5E1797); font-size: 0.75rem;">Administrador</span>
           </div>
         </div>
       </div>
@@ -42,45 +42,51 @@
     <!-- 2. Encabezado de Sección -->
     <section class="d-flex justify-content-between align-items-center mb-3">
       <div>
-        <h2 class="fw-bold mb-1 text-dark">Gestión de productos</h2>
-        <p class="text-muted small m-0">Consulta, crea, actualiza o elimina productos del catálogo.</p>
+        <h2 class="fw-bold mb-1" style="color: #310055;">Gestión de productos</h2>
+        <p class="subtitulo-seccion m-0";>Consulta, crea, actualiza o elimina productos del catálogo.</p>
       </div>
-      <button class="btn btn-brand rounded-3 px-3 py-2 btn-sm fw-semibold">
-        <i class="bi bi-plus-lg me-1"></i> Crear producto
-      </button>
+      <button class="btn btn-brand rounded-3 px-3 py-2 btn-sm fw-semibold text-white" style="background-color: var(--primary-light); border-color: var(--primary-light);">
+  <i class="bi bi-plus-lg me-1"></i> Crear producto
+</button>
     </section>
 
     <!-- 3. Tarjetas -->
     <section class="d-flex flex-wrap gap-2 mb-4">
-      <span class="badge text-white px-3 py-2 rounded-pill fw-normal" style="background-color: var(--primary-light, #5E1797);">48 productos</span>
-      <span class="badge text-white px-3 py-2 rounded-pill fw-normal" style="background-color: var(--primary-light, #5E1797);">44 publicados</span>
-      <span class="badge text-white px-3 py-2 rounded-pill fw-normal" style="background-color: var(--primary-light, #5E1797);">4 borradores</span>
-      <span class="badge badge-stock-low px-3 py-2 rounded-pill fw-normal">3 con stock bajo</span>
+      <span class="badge text-white px-3 py-2 rounded-pill fw-bold" style="background-color: #CA82ED; color: #310055;">48 productos</span>
+      <span class="badge text-white px-3 py-2 rounded-pill fw-bold" style="background-color: #CA82ED;">44 publicados</span>
+      <span class="badge text-white px-3 py-2 rounded-pill fw-bold" style="background-color: #FFCCE8;">4 borradores</span>
+      <span class="badge badge-stock-low px-3 py-2 rounded-pill fw-bold" style="background-color: #FFFBCD;">3 con stock bajo</span>
     </section>
 
     <!-- 4. Filtros y Búsqueda -->
-    <section class="row g-2 mb-3">
+    <section class="row g-2 mb-3 align-items-end">
       <div class="col-md-7">
-        <input type="text" class="form-control form-control-sm" placeholder="Nombre, referencia o descripción...">
-      </div>
-      <div class="col-md-3">
-        <select class="form-select form-select-sm">
-          <option selected>Todos los estados</option>
-          <option value="1">Publicado</option>
-          <option value="2">Borrador</option>
-        </select>
-      </div>
-      <div class="col-md-2">
-        <button class="btn btn-outline-secondary btn-sm w-100"><i class="bi bi-funnel me-1"></i> Filtrar</button>
-      </div>
-    </section>
+    <label class="form-label text-dark small fw-bold mb-1">Buscar</label>
+    <input type="text" class="form-control form-control-sm" placeholder="Nombre, referencia o descripción...">
+  </div>
+  <div class="col-md-3">
+    <label class="form-label text-dark small fw-bold mb-1">Estado</label>
+    <select class="form-select form-select-sm">
+      <option selected>Todos los estados</option>
+      <option value="1">Publicado</option>
+      <option value="2">Borrador</option>
+    </select>
+  </div>
+  <div class="col-md-2">
+    <label class="form-label d-block mb-1">&nbsp;</label>
+    <button class="btn btn-outline-secondary btn-filtrar-custom w-100 fw-bold" style="color: #5B009E">
+      <i class="bi bi-funnel me-1"></i> Filtrar
+    </button>
+  </div>
+</section>
 
     <!-- Pestañas de Categoría -->
-    <nav class="d-flex gap-2 mb-4">
-        <button class="btn btn-sm rounded-pill px-3 nav-category-btn active">Todos</button>
-        <button class="btn btn-sm rounded-pill px-3 nav-category-btn">Maquillaje</button>
-        <button class="btn btn-sm rounded-pill px-3 nav-category-btn">Skincare</button>
-        <button class="btn btn-sm rounded-pill px-3 nav-category-btn">Accesorios</button>
+    <nav class="d-flex align-items-center gap-2 mb-4">
+    <span class="text-dark small fw-bold me-1">Categoría:</span>
+        <button class="btn btn-sm rounded-3 px-3 nav-category-btn active">Todas</button>
+        <button class="btn btn-sm rounded-3 px-3 nav-category-btn">Maquillaje</button>
+        <button class="btn btn-sm rounded-3 px-3 nav-category-btn">Skincare</button>
+        <button class="btn btn-sm rounded-3 px-3 nav-category-btn">Accesorios</button>
     </nav>
 
     <!-- 5. Tabla de Productos -->
@@ -93,7 +99,7 @@
             <th>Precio</th>
             <th>Stock</th>
             <th>Estado</th>
-            <th class="text-end">Acciones</th>
+            <th>Acciones</th>
           </tr>
         </thead>
         <tbody class="small">
@@ -170,7 +176,7 @@
             <li class="page-item disabled"><a class="page-link rounded" href="#"><i class="bi bi-chevron-left"></i></a></li>
             <li class="page-item active"><a class="page-link rounded border-0" style="background-color: var(--primary-light, #5E1797);" href="#">1</a></li>
             <li class="page-item"><a class="page-link rounded text-dark" href="#">2</a></li>
-            <li class="page-item"><a class="page-link rounded" href="#"><i class="bi bi-chevron-right"></i></a></li>
+            <li class="page-item"><a class="page-link rounded" href="#"><i class="bi bi-chevron-right" style="color: var(--primary-light, #5E1797);"></i></a></li>
           </ul>
         </nav>
         <span class="text-muted small ms-1">1 de 8</span>
