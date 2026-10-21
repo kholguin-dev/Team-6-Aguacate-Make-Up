@@ -136,3 +136,59 @@ section.d-flex.flex-wrap.gap-2.mb-4 .badge {
     margin-bottom: 0 !important;
     border-color: #ca82ed !important;
 }
+
+
+/* hacerlo responsive*/
+@media (max-width: 768px) {
+  body {
+    padding: 0.5rem !important;
+  }
+  
+  .dashboard-container {
+    padding: 1rem !important;
+  }
+
+  header.d-flex {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 1rem !important;
+  }
+  
+  header .d-flex.align-items-center.gap-3 {
+    width: 100%;
+    justify-content: space-between;
+    margin-right: 0 !important;
+  }
+
+  section.d-flex.justify-content-between.align-items-center.mb-3 {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 1rem !important;
+  }
+
+  section.d-flex.justify-content-between.align-items-center.mb-3 button {
+    width: 100% !important;
+  }
+
+  section.row.g-2 > div {
+    width: 100% !important;
+  }
+
+  nav.d-flex.align-items-center.gap-2.mb-4 {
+    overflow-x: auto !important;
+    white-space: nowrap !important;
+    padding-bottom: 0.5rem;
+  }
+
+  footer.d-flex {
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    gap: 1rem !important;
+  }
+  
+  footer .d-flex.align-items-center.gap-2 {
+    justify-content: center;
+    width: 100%;
+  }
+}
