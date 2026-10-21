@@ -1,1 +1,58 @@
+.badge-published {
+  background-color: rgba(94, 23, 151, 0.12);
+  color: var(--primary-light);
+  font-weight: 500;
+}
 
+.badge-stock-low {
+  background-color: var(--yellow);
+  color: #594f00;
+  font-weight: 500;
+}
+
+.dashboard-container {
+  box-shadow: 0 4px 24px var(--shadow);
+}
+
+.table thead th {
+  background-color: #ff97d0;
+  color: black;
+  border-color: #ff62bb;
+}
+
+.form-control,
+.form-select,
+.btn-outline-secondary {
+  border-radius: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  border: 1px solid #ca82ed;
+}
+
+.nav-category-btn {
+    background-color: transparent !important;
+    color: var(--primary-light) !important;
+    border: 1px solid var(--primary-light) !important;
+    transition: all 0.2s ease-in-out;
+}
+
+
+.nav-category-btn:hover,
+.nav-category-btn:focus,
+.nav-category-btn:active,
+.nav-category-btn.active {
+    background-color: var(--primary-light) !important;
+    color: var(--white) !important;
+    border-color: var(--primary-light) !important;
+    box-shadow: none !important;
+}
+
+.table-responsive {
+  border-radius: 0.75rem;
+  overflow: hidden;
+  border: 1px solid #ca82ed;
+}
+
+.table {
+    margin-bottom: 0 !important;
+}
