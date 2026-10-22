@@ -259,22 +259,87 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Solicita confirmacion antes de limpiar el formulario al pulsar cancelar
+    // Guarda el progreso actual como borrador y regresa a la lista de productos
+    function Guardarborradorysalir(evento) {
+        if (evento) evento.preventDefault();
+
+        const nombre = Entradanombre.value.trim();
+        const sku = Entradasku.value.trim().toUpperCase() || ('BORR-' + Date.now().toString().slice(-6));
+        const precio = parseFloat(Entradapreciohabitual.value) || 0;
+        const stock = parseInt(Entradastock.value, 10) || 0;
+        const descripcion = Entradadescripcion.value.trim();
+
+        // Si el usuario ingresó algún avance en el formulario, se guarda automáticamente como Borrador
+        if (nombre || Entradasku.value.trim() || precio || descripcion) {
+            const Borrador = {
+                id: Date.now(),
+                nombre: nombre || 'Borrador sin título',
+                sku: sku,
+                referencia: sku,
+                marca: Entradamarca ? Entradamarca.value.trim() : 'Aguacate Make Up',
+                categoria: Entradacategoria && Entradacategoria.value ? Entradacategoria.value : 'Sin categoría',
+                subcategoria: Entradasubcategoria ? Entradasubcategoria.value : '',
+                descripcion: descripcion || 'Borrador guardado automáticamente',
+                precio: precio,
+                preciopromocional: Entradapreciopromocional && Entradapreciopromocional.value ? parseFloat(Entradapreciopromocional.value) : null,
+                stock: stock,
+                tamano: Entradatamano ? Entradatamano.value.trim() : '',
+                disponibilidad: Entradadisponibilidad ? Entradadisponibilidad.value : '',
+                beneficios: Entradabeneficios ? Entradabeneficios.value.trim() : '',
+                modouso: Entradamodouso ? Entradamodouso.value.trim() : '',
+                ingredientes: Entradaingredientes ? Entradaingredientes.value.trim() : '',
+                precauciones: Entradaprecauciones ? Entradaprecauciones.value.trim() : '',
+                imagen: Imagenenbase,
+                textoalternativo: Entradatextoalternativo ? Entradatextoalternativo.value.trim() : '',
+                estado: 'Borrador',
+                destacado: Casilladestacado ? Casilladestacado.checked : false,
+                novedades: Casillanovedades ? Casillanovedades.checked : false,
+                fechacreacion: new Date().toISOString()
+            };
+
+            const listado = Obtenerlistadoproductos();
+            listado.push(Borrador);
+            Guardarlistadoproductos(listado);
+        }
+
+        window.location.href = 'admin-productos.html';
+    }
+
+    // Solicita confirmación antes de cancelar y redirige a Gestión de productos
     if (Botoncancelar) {
         Botoncancelar.addEventListener('click', function () {
-            if (confirm('Quieres cancelar y limpiar los campos del formulario?')) {
-                Formularioproducto.reset();
-                Imagenenbase = '../img/logo.png';
-                if (Imagenprevia) Imagenprevia.src = Imagenenbase;
-                if (Textonombrearchivo) Textonombrearchivo.textContent = 'Selecciona una imagen';
-                if (Entradamarca) Entradamarca.value = 'Aguacate Make Up';
+            if (confirm('¿Deseas cancelar la creación del producto? Los datos no guardados se perderán.')) {
+                window.location.href = 'admin-productos.html';
             }
         });
     }
 
-    // Regresa a la tienda principal al pulsar volver
+    // Regresa a Gestión de productos guardando borrador
     if (Botonvolver) {
-        Botonvolver.addEventListener('click', function () {
+        Botonvolver.addEventListener('click', Guardarborradorysalir);
+    }
+
+    // Atendemos el clic en Productos de la barra lateral con delegación de eventos por si el componente carga asíncrono
+    document.addEventListener('click', function (evento) {
+        const enlaceProductos = evento.target.closest('#enlaceSidebarProductos, [data-seccion="productos"]');
+        if (enlaceProductos) {
+            Guardarborradorysalir(evento);
+        }
+    });
+
+    // Enlace Ver tienda no realiza ninguna acción
+    const Enlacevertienda = document.getElementById('enlaceVerTienda') || document.querySelector('.enlace-tienda');
+    if (Enlacevertienda) {
+        Enlacevertienda.addEventListener('click', function (e) {
+            e.preventDefault();
+        });
+    }
+
+    // Enlace Cerrar sesión redirige a la página principal de inicio
+    const Enlacecerrarsesion = document.getElementById('enlaceCerrarSesion') || document.querySelector('.enlace-salida');
+    if (Enlacecerrarsesion) {
+        Enlacecerrarsesion.addEventListener('click', function (e) {
+            e.preventDefault();
             window.location.href = '../index.html';
         });
     }

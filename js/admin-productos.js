@@ -31,18 +31,117 @@ document.addEventListener("DOMContentLoaded", () => {
     const CLAVE_PRODUCTOS = "admincrearproductos";
     const PRODUCTOS_POR_PAGINA = 8;
 
-    let categoriaActual = "Todos";
+    let categoriaActual = "Todas";
     let estadoActual = "";
     let paginaActual = 1;
 
-    // Cargamos los productos guardados,  
+    // Datos iniciales de demostración si el almacenamiento está vacío
+    const PRODUCTOS_POR_DEFECTO = [
+        {
+            id: 1,
+            nombre: "Sérum Calmante de Aguacate",
+            sku: "SK-001",
+            categoria: "Skincare",
+            subcategoria: "Cara",
+            descripcion: "Sérum calmante e hidratante con extracto de aguacate.",
+            precio: 24.90,
+            stock: 86,
+            estado: "Publicado"
+        },
+        {
+            id: 2,
+            nombre: "Labial Velvet Matte - Berry",
+            sku: "MQ-002",
+            categoria: "Maquillaje",
+            subcategoria: "Labios",
+            descripcion: "Labial mate con fórmula aterciopelada y larga duración.",
+            precio: 16.90,
+            stock: 54,
+            estado: "Publicado"
+        },
+        {
+            id: 3,
+            nombre: "Gloss Hidratante Aguacate",
+            sku: "MQ-003",
+            categoria: "Maquillaje",
+            subcategoria: "Labios",
+            descripcion: "Brillo nutritivo enriquecido con aceites naturales.",
+            precio: 14.50,
+            stock: 42,
+            estado: "Publicado"
+        },
+        {
+            id: 4,
+            nombre: "Base Líquida Acabado Natural",
+            sku: "MQ-004",
+            categoria: "Maquillaje",
+            subcategoria: "Cara",
+            descripcion: "Base ultraligera con cobertura modulable y FPS 20.",
+            precio: 21.90,
+            stock: 8,
+            estado: "Publicado"
+        },
+        {
+            id: 5,
+            nombre: "Crema Contorno de Ojos",
+            sku: "SK-005",
+            categoria: "Skincare",
+            subcategoria: "Ojos",
+            descripcion: "Crema iluminadora y anti-fatiga para el contorno ocular.",
+            precio: 28.00,
+            stock: 35,
+            estado: "Publicado"
+        },
+        {
+            id: 6,
+            nombre: "Set de Brochas Profesionales x8",
+            sku: "AC-006",
+            categoria: "Accesorios",
+            subcategoria: "Sin subcategoría",
+            descripcion: "Set de brochas profesionales con cerdas ultrasuaves.",
+            precio: 35.00,
+            stock: 6,
+            estado: "Publicado"
+        },
+        {
+            id: 7,
+            nombre: "Mascarilla Purificante Arcilla Verde",
+            sku: "SK-007",
+            categoria: "Skincare",
+            subcategoria: "Cara",
+            descripcion: "Limpieza profunda y reducción de poros visible.",
+            precio: 18.50,
+            stock: 24,
+            estado: "Borrador"
+        },
+        {
+            id: 8,
+            nombre: "Esponja Beauty Blender Ergonómica",
+            sku: "AC-008",
+            categoria: "Accesorios",
+            subcategoria: "Sin subcategoría",
+            descripcion: "Esponja libre de látex para difuminado impecable.",
+            precio: 9.90,
+            stock: 3,
+            estado: "Borrador"
+        }
+    ];
+
+    // Cargamos los productos guardados o sembramos los iniciales
     function cargarProductos() {
         try {
             const datos = localStorage.getItem(CLAVE_PRODUCTOS);
-            return datos ? JSON.parse(datos) : [];
+            if (datos) {
+                const lista = JSON.parse(datos);
+                if (Array.isArray(lista) && lista.length > 0) {
+                    return lista;
+                }
+            }
+            localStorage.setItem(CLAVE_PRODUCTOS, JSON.stringify(PRODUCTOS_POR_DEFECTO));
+            return PRODUCTOS_POR_DEFECTO;
         } catch (error) {
             console.error("No se pudieron cargar los productos:", error);
-            return [];
+            return PRODUCTOS_POR_DEFECTO;
         }
     }
 
@@ -99,18 +198,32 @@ document.addEventListener("DOMContentLoaded", () => {
         const filtrados = productos.filter(producto => {
             const coincideTexto = [
                 producto.nombre,
+                producto.sku,
                 producto.referencia,
+                producto.categoria,
+                producto.subcategoria,
                 producto.descripcion
             ].some(valor =>
                 String(valor ?? "").toLowerCase().includes(texto)
             );
 
+            // Comparamos la categoría seleccionada sin enredos de mayúsculas o si trae subcategoría
+            const filtroCat = (categoriaActual || "").trim().toLowerCase();
+            const prodCat = (producto.categoria || "").trim().toLowerCase();
+            const prodSubcat = (producto.subcategoria || "").trim().toLowerCase();
+
             const coincideCategoria =
-                categoriaActual === "Todos" ||
-                producto.categoria === categoriaActual;
+                filtroCat === "todas" ||
+                filtroCat === "todos" ||
+                filtroCat === "" ||
+                prodCat === filtroCat ||
+                prodCat.startsWith(filtroCat) ||
+                prodCat.includes(filtroCat) ||
+                prodSubcat.includes(filtroCat);
 
             const coincideEstado =
-                !estadoActual || producto.estado === estadoActual;
+                !estadoActual ||
+                producto.estado === estadoActual;
 
             return coincideTexto && coincideCategoria && coincideEstado;
         });
@@ -134,10 +247,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 <td>
                     <div class="fw-bold">${escapar(producto.nombre)}</div>
                     <div class="text-muted" style="font-size: 0.75rem;">
-                        ${escapar(producto.referencia)}
+                        ${escapar(producto.sku || producto.referencia || "SKU-" + producto.id)}
                     </div>
                 </td>
-                <td>${escapar(producto.categoria)}</td>
+                <td>
+                    ${escapar(producto.categoria || "")}${
+                        producto.subcategoria && producto.subcategoria !== "Sin subcategoría"
+                            ? " · " + escapar(producto.subcategoria)
+                            : ""
+                    }
+                </td>
                 <td>${formatoPrecio(producto.precio)}</td>
                 <td>${Number(producto.stock)}</td>
                 <td>
@@ -233,20 +352,24 @@ document.addEventListener("DOMContentLoaded", () => {
         renderizarProductos();
     });
 
-    // Filtramos por estado
+    // Filtramos por estado (al cambiar selección o al hacer clic en Filtrar)
+    function aplicarFiltroEstado() {
+        const valor = selectorEstado.value;
+
+        estadoActual = valor === "1"
+            ? "Publicado"
+            : valor === "2"
+                ? "Borrador"
+                : "";
+
+        paginaActual = 1;
+        renderizarProductos();
+    }
+
+    selectorEstado.addEventListener("change", aplicarFiltroEstado);
+
     if (botonFiltrar) {
-        botonFiltrar.addEventListener("click", () => {
-            const valor = selectorEstado.value;
-
-            estadoActual = valor === "1"
-                ? "Publicado"
-                : valor === "2"
-                    ? "Borrador"
-                    : "";
-
-            paginaActual = 1;
-            renderizarProductos();
-        });
+        botonFiltrar.addEventListener("click", aplicarFiltroEstado);
     }
 
     // Filtramos por categoría
@@ -272,10 +395,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!producto) return;
 
-// Abrimos la página de creación de productos
-if (boton.dataset.accion === "ver") {
-    window.location.href = "Admincrearproductos.html";
-}
+        // La acción "ver" no realiza ninguna acción
+        if (boton.dataset.accion === "ver") {
+            evento.preventDefault();
+            return;
+        }
 
         // Abrimos la página del formulario para editar
         if (boton.dataset.accion === "editar") {
@@ -284,7 +408,7 @@ if (boton.dataset.accion === "ver") {
 
         // Confirmamos antes de eliminar
         if (boton.dataset.accion === "eliminar") {
-            if (!confirm(`¿Deseas eliminar "${producto.nombre}"?`)) {
+            if (!confirm(`¿Estás seguro de que deseas eliminar "${producto.nombre}"? Esta acción no se puede deshacer.`)) {
                 return;
             }
 

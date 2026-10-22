@@ -34,124 +34,7 @@ body.cuerpo-administracion {
     align-items: stretch;
 }
 
-/* Barra lateral */
-.barra-lateral {
-    width: 240px;
-    background-color: var(--fondo-barra);
-    padding: 32px 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 32px;
-    flex-shrink: 0;
-}
-
-.bloque-marca {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.nombre-marca {
-    color: var(--rosa-claro);
-    font-size: 24px;
-    font-weight: 700;
-    line-height: 1.2;
-}
-
-.subtitulo-marca {
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 11px;
-    letter-spacing: 0.5px;
-    font-weight: 500;
-}
-
-.navegacion-lateral {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.enlace-lateral {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 14px;
-    border-radius: var(--radio-tarjeta);
-    color: #FFFFFF;
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 500;
-    transition: background-color 0.2s ease;
-}
-
-.enlace-lateral:hover {
-    background-color: rgba(91, 0, 158, 0.4);
-    color: #FFFFFF;
-}
-
-.enlace-lateral.activo {
-    background-color: var(--color-primario);
-    font-weight: 700;
-}
-
-.enlace-lateral .icono-nav {
-    font-size: 20px;
-    color: var(--acento-lila);
-}
-
-.enlace-lateral.activo .icono-nav {
-    color: var(--rosa-claro);
-}
-
-.tarjeta-rol {
-    background-color: var(--color-primario);
-    border: 1px solid var(--borde-rosa);
-    border-radius: var(--radio-tarjeta);
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.rol-titulo {
-    color: #FFFFFF;
-    font-size: 13px;
-    font-weight: 700;
-}
-
-.rol-descripcion {
-    color: var(--borde-rosa);
-    font-size: 12px;
-    line-height: 1.4;
-}
-
-.acciones-sesion {
-    margin-top: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    padding-top: 20px;
-}
-
-.enlace-tienda {
-    color: #FFFFFF;
-    text-decoration: none;
-    font-size: 14px;
-}
-
-.enlace-tienda:hover {
-    color: var(--rosa-claro);
-}
-
-.enlace-salida {
-    color: var(--rosa-claro);
-    text-decoration: none;
-    font-size: 14px;
-}
-
-.enlace-salida:hover {
-    text-decoration: underline;
-}
+/* La barra lateral administrativa se controla de forma modular en Adminbarralateral.css */
 
 /* Area de contenido principal */
 .area-contenido {
@@ -538,11 +421,6 @@ body.cuerpo-administracion {
 @media (max-width: 768px) {
     .contenedor-panel {
         flex-direction: column;
-    }
-    .barra-lateral {
-        width: 100%;
-        padding: 20px;
-        gap: 16px;
     }
     .area-contenido {
         padding: 20px 16px;

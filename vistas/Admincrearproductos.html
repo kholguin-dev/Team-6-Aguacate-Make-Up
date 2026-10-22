@@ -13,55 +13,22 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
     <!-- Hojas de estilo: global y modular -->
     <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../style/Adminbarralateral.css">
     <link rel="stylesheet" href="../style/Admincrearproductos.css">
     <link rel="icon" href="../img/faviconbien.png">
 </head>
 <body class="cuerpo-administracion">
     <div class="contenedor-panel">
         
-        <!-- Barra lateral de navegación administrativa -->
-        <aside class="barra-lateral" id="barraLateral">
-            <div class="bloque-marca">
-                <span class="nombre-marca">Aguacate Make Up</span>
-                <span class="subtitulo-marca">PANEL DE ADMINISTRACIÓN</span>
-            </div>
-
-            <nav class="navegacion-lateral" aria-label="Navegación del panel">
-                <a href="#" class="enlace-lateral">
-                    <span class="material-symbols-outlined icono-nav">dashboard</span>
-                    <span>Dashboard</span>
-                </a>
-                <a href="#" class="enlace-lateral activo">
-                    <span class="material-symbols-outlined icono-nav">inventory_2</span>
-                    <span>Productos</span>
-                </a>
-                <a href="#" class="enlace-lateral">
-                    <span class="material-symbols-outlined icono-nav">category</span>
-                    <span>Categorías</span>
-                </a>
-                <a href="#" class="enlace-lateral">
-                    <span class="material-symbols-outlined icono-nav">group</span>
-                    <span>Usuarios</span>
-                </a>
-            </nav>
-
-            <div class="tarjeta-rol">
-                <span class="rol-titulo">Administrador</span>
-                <span class="rol-descripcion">Crear, consultar, editar y eliminar registros.</span>
-            </div>
-
-            <div class="acciones-sesion">
-                <a href="../index.html" class="enlace-tienda">↗ Ver tienda</a>
-                <a href="#" class="enlace-salida">Cerrar sesión</a>
-            </div>
-        </aside>
+        <!-- Barra lateral administrativa modular -->
+        <div id="adminBarraLateral"></div>
 
         <!-- Área de contenido principal -->
         <main class="area-contenido" id="areaContenido">
             
             <!-- Barra superior con usuario y migas de pan -->
             <header class="barra-superior">
-                <div class="ruta-migas">Administración / Productos</div>
+                <div class="ruta-migas">Administración / Gestión productos / Crear productos</div>
                 <div class="perfil-usuario">
                     <span class="material-symbols-outlined icono-notificacion">notifications</span>
                     <div class="avatar-usuario">EV</div>
@@ -295,7 +262,7 @@
 
     <!-- CDN de Bootstrap del curso -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Script de lógica y persistencia con localStorage -->
+    <script src="../js/Adminbarralateral.js"></script>
     <script src="../js/Admincrearproductos.js"></script>
 </body>
 </html>
