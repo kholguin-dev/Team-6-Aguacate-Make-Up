@@ -77,7 +77,7 @@
 
 .form-control,
 .form-select,
-.btn-outline-secondary 
+.btn-outline-secondary,
 .btn-primary {
   border-radius: 0.5rem;
   padding: 0.55rem 1rem !important;
@@ -85,9 +85,21 @@
 }
 
 .btn-filtrar-custom {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 38px;
     padding: 0.55rem 1rem !important;
     font-size: 0.90rem;
     border: 1px solid #ca82ed;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
+
+.btn-filtrar-custom:hover {
+    background-color: var(--primary-light, #5E1797) !important;
+    color: #ffffff !important;
+    border-color: var(--primary-light, #5E1797) !important;
 }
 
 .nav-category-btn {
@@ -95,7 +107,9 @@
     color: var(--primary-light) !important;
     border: 1px solid var(--primary-light) !important;
     transition: all 0.2s ease-in-out;
-    padding: 0.55rem 1.25rem !important;
+    padding: 0.45rem 1.15rem !important;
+    font-size: 0.875rem;
+    white-space: nowrap;
 }
 
 
@@ -174,10 +188,13 @@ section.d-flex.flex-wrap.gap-2.mb-4 .badge {
     width: 100% !important;
   }
 
+  .filtro-espaciador {
+    display: none !important;
+  }
+
   nav.d-flex.align-items-center.gap-2.mb-4 {
-    overflow-x: auto !important;
-    white-space: nowrap !important;
-    padding-bottom: 0.5rem;
+    flex-wrap: wrap !important;
+    row-gap: 0.5rem !important;
   }
 
   footer.d-flex {

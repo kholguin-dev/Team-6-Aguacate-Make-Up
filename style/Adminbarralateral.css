@@ -1,0 +1,204 @@
+/* Estilos modulares para la barra lateral del panel administrativo */
+
+:root {
+    --fondo-barra: #310055;
+    --color-primario: #5B009E;
+    --acento-lila: #CA82ED;
+    --borde-rosa: #FFCCE8;
+    --rosa-claro: #FFA8D9;
+    --texto-oscuro: #170027;
+    --texto-morado: #9328C5;
+    --radio-tarjeta: 11px;
+}
+
+/* Estructura para ubicar la barra al lado del contenido */
+.contenedor-panel {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+    align-items: stretch;
+}
+
+/* Contenedor base de la barra lateral modular */
+#adminBarraLateral {
+    width: 240px;
+    min-width: 240px;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    align-self: flex-start;
+    flex-shrink: 0;
+    z-index: 1000;
+    background-color: var(--fondo-barra);
+    box-sizing: border-box;
+}
+
+/* Barra lateral interna fija con scroll propio */
+.barra-lateral {
+    width: 100%;
+    height: 100%;
+    background-color: var(--fondo-barra);
+    padding: 32px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(202, 130, 237, 0.4) transparent;
+}
+
+.barra-lateral::-webkit-scrollbar {
+    width: 6px;
+}
+
+.barra-lateral::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.barra-lateral::-webkit-scrollbar-thumb {
+    background-color: rgba(202, 130, 237, 0.4);
+    border-radius: 4px;
+}
+
+/* Marca del panel */
+.bloque-marca {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.nombre-marca {
+    color: var(--rosa-claro);
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.2;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.subtitulo-marca {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    font-weight: 500;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* Lista de navegación */
+.navegacion-lateral {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.enlace-lateral {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: var(--radio-tarjeta);
+    color: #FFFFFF;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    transition: background-color 0.2s ease;
+}
+
+.enlace-lateral:hover {
+    background-color: rgba(91, 0, 158, 0.4);
+    color: #FFFFFF;
+}
+
+.enlace-lateral.activo {
+    background-color: var(--color-primario);
+    font-weight: 700;
+}
+
+.enlace-lateral .icono-nav {
+    font-size: 20px;
+    color: var(--acento-lila);
+}
+
+.enlace-lateral.activo .icono-nav {
+    color: var(--rosa-claro);
+}
+
+/* Tarjeta informativa */
+.tarjeta-rol {
+    background-color: var(--color-primario);
+    border: 1px solid var(--borde-rosa);
+    border-radius: var(--radio-tarjeta);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.rol-titulo {
+    color: #FFFFFF;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.rol-descripcion {
+    color: var(--borde-rosa);
+    font-size: 12px;
+    line-height: 1.4;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* Enlaces inferiores */
+.acciones-sesion {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding-top: 20px;
+}
+
+.enlace-tienda {
+    color: #FFFFFF;
+    text-decoration: none;
+    font-size: 14px;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    cursor: default;
+}
+
+.enlace-tienda:hover {
+    color: var(--rosa-claro);
+}
+
+.enlace-salida {
+    color: var(--rosa-claro);
+    text-decoration: none;
+    font-size: 14px;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.enlace-salida:hover {
+    text-decoration: underline;
+}
+
+/* Adaptación para pantallas móviles */
+@media (max-width: 768px) {
+    .contenedor-panel {
+        flex-direction: column;
+    }
+    #adminBarraLateral {
+        width: 100%;
+        min-width: 100%;
+        height: auto;
+        position: relative;
+        top: auto;
+    }
+    .barra-lateral {
+        width: 100%;
+        height: auto;
+        min-height: auto;
+        padding: 20px;
+        gap: 20px;
+        overflow-y: visible;
+    }
+}

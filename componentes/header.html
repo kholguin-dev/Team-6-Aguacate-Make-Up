@@ -1,35 +1,39 @@
-<!-- Estructura reutilizable para Header -->
-<nav class="navbar navbar-expand-lg navbar-dark navbar-custom sticky-top py-2 py-lg-3">
-    <div class="container-fluid px-3 px-lg-5">
-        <a class="navbar-brand d-flex align-items-center gap-2" href="#" id="enlaceLogoHeader">
-            <img src="/img/logo.png" alt="Aguacate Make Up Logo" height="40" id="imagenLogoHeader">
-            <span class="fs-4 fw-bold text-white lh-1">Aguacate Make Up</span>
-        </a>
-        <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContenido" aria-controls="navbarContenido" aria-expanded="false" aria-label="Alternar navegación">
-            <span class="material-symbols-outlined text-white">menu</span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarContenido">
-            <ul class="navbar-nav mx-auto mb-3 mb-lg-0 gap-lg-3 align-items-center mt-3 mt-lg-0">
-                <li class="nav-item"><a class="nav-link px-2 enlace-navegacion" href="#" data-pagina="inicio">Inicio</a></li>
-                <li class="nav-item"><a class="nav-link px-2 enlace-navegacion" href="#" data-pagina="catalogo">Catálogo</a></li>
-                <li class="nav-item"><a class="nav-link px-2 enlace-navegacion" href="#" data-pagina="nosotros">Nosotros</a></li>
-                <li class="nav-item"><a class="nav-link px-2 enlace-navegacion" href="#" data-pagina="contacto">Contáctenos</a></li>
-            </ul>
-            <div class="d-flex flex-column flex-lg-row align-items-center gap-3">
-                <div class="search-custom position-relative w-100" style="max-width: 400px;">
-                    <input class="form-control rounded-pill py-2" type="search" placeholder="Buscar labiales, skincare..." aria-label="Buscar">
-                    <span class="material-symbols-outlined search-icon fs-5">search</span>
-                </div>
-                <div class="d-flex align-items-center gap-3 mt-2 mt-lg-0 pb-2 pb-lg-0">
-                    <a href="#cuenta" class="btn-action btn-account d-flex align-items-center gap-2 px-3 py-2 rounded-pill">
-                        <span class="material-symbols-outlined fs-5">person</span>
-                        <span class="d-none d-xl-inline fw-medium fs-6"></span>
-                    </a>
-                    <a href="#carrito" class="btn-action btn-cart d-flex align-items-center justify-content-center rounded-circle p-2" aria-label="Carrito de compras">
-                        <span class="material-symbols-outlined fs-5">shopping_bag</span>
-                    </a>
-                </div>
-            </div>
+<!-- Estructura modular del encabezado principal -->
+<header class="header-custom-figma">
+    <nav class="nav-custom-figma">
+        
+        <!-- Enlaces de navegación a las secciones de la tienda -->
+        <div class="links-custom-figma">
+            <a href="#" data-ruta="inicio" class="enlace-navegacion">Inicio</a>
+            <a href="#" data-ruta="catalogo" class="enlace-navegacion">Catálogo</a>
+            <a href="#" data-ruta="nosotros" class="enlace-navegacion">Nosotros</a>
+            <a href="#" data-ruta="contacto" class="enlace-navegacion">Contáctenos</a>
         </div>
-    </div>
-</nav>
+
+        <!-- Logotipo central en bloque flotante (estático, sin enlace a inicio) -->
+        <div class="logo-custom-figma" id="imagenLogoHeaderContenedor" aria-label="Aguacate Make Up Logo">
+            <img src="img/Logo transparente · Header · %238339B6.png" alt="Aguacate Make Up Logo" id="imagenLogoHeader">
+        </div>
+
+        <!-- Zona de interacción: buscador, acceso de usuario y carrito -->
+        <div class="actions-custom-figma">
+            <!-- Campo de búsqueda rápida de productos -->
+            <div class="search-box-figma" id="formBusquedaHeader">
+                <i class="bi bi-search search-icon-figma"></i>
+                <input type="text" placeholder="Buscar..." id="inputBusquedaHeader">
+            </div>
+
+            <!-- Acceso al perfil de usuario (solo icono) -->
+            <a href="#" class="action-btn-figma" id="enlaceCuenta" aria-label="Mi cuenta">
+                <i class="bi bi-person icon-figma"></i>
+            </a>
+
+            <!-- Acceso al carrito de compras con contador numérico flotante -->
+            <a href="#" class="action-btn-figma cart-btn-figma" id="enlaceCarrito" aria-label="Carrito de compras">
+                <i class="bi bi-bag icon-figma"></i>
+                <span class="cart-count-figma" id="contadorCarrito">0</span>
+            </a>
+        </div>
+
+    </nav>
+</header>

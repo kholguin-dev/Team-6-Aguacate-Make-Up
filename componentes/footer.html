@@ -1,24 +1,75 @@
-<!-- Estructura reutilizable para footer -->
-<footer class="fondofooter">
-<div class="container" class="colorfooter">
-    <hr class="my-4">
-    <div class="row g-4">
-        <div class="col-12 col-md-4 text-center text-md-start">            
-            <h3 class="logo-aguacate-makeup">
-                <img src="img/logo.png" alt="logo-aguacate-makeup" class="tamañologo" id="imagenLogoFooter">
-                Aguacate Make-up
-            </h3>
+<!-- Estructura modular del pie de página principal -->
+<div class="pie-de-pagina-bloque">
+    <div class="footer-contenedor">
+        <!-- Distribución principal: Identidad y columnas temáticas de enlaces -->
+        <div class="footer-fila-principal">
+            
+            <!-- Conjunto de logo y texto (Medidas: 360 × 91 px) -->
+            <div class="footer-conjunto-marca">
+                <div class="footer-logo-enlace" id="imagenLogoFooterContenedor" aria-label="Aguacate Make Up Logo">
+                    <img src="img/Logo transparente · Footer · %23310055.png" alt="Aguacate Make Up Logo" class="footer-logo-img" id="imagenLogoFooter">
+                </div>
+                <div class="footer-bloque-texto">
+                    <a href="#" class="footer-marca-titulo-link text-decoration-none" data-ruta="inicio">
+                        <span class="footer-marca-titulo">aguacate make up.</span>
+                    </a>
+                    <p class="footer-marca-texto">
+                        Maquillaje, skincare y accesorios para celebrar tu propia versión de la belleza.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Accesos a las líneas de productos, soporte y corporativo -->
+            <div class="footer-columnas-nav">
+                <!-- Columna Descubre -->
+                <div class="footer-col">
+                    <h4 class="footer-titulo-seccion">Descubre</h4>
+                    <ul class="footer-lista list-unstyled mb-0">
+                        <li><a href="#" class="footer-enlace" data-ruta="catalogo">Catálogo · Maquillaje</a></li>
+                        <li><a href="#" class="footer-enlace" data-ruta="catalogo">Skincare · Accesorios</a></li>
+                        <li><a href="#" class="footer-enlace" data-ruta="novedades">Ofertas y novedades</a></li>
+                    </ul>
+                </div>
+
+                <!-- Columna Te ayudamos -->
+                <div class="footer-col">
+                    <h4 class="footer-titulo-seccion">Te ayudamos</h4>
+                    <ul class="footer-lista list-unstyled mb-0">
+                        <li><a href="#" class="footer-enlace" data-ruta="contacto">Contáctenos</a></li>
+                        <li><a href="#envios" class="footer-enlace">Envíos y devoluciones</a></li>
+                        <li><a href="#preguntas-frecuentes" class="footer-enlace">Preguntas frecuentes</a></li>
+                    </ul>
+                </div>
+
+                <!-- Columna Aguacate Make Up -->
+                <div class="footer-col">
+                    <h4 class="footer-titulo-seccion">Aguacate Make Up</h4>
+                    <ul class="footer-lista list-unstyled mb-0">
+                        <li><a href="#" class="footer-enlace" data-ruta="nosotros">Acerca de nosotros</a></li>
+                        <li class="footer-redes-wrapper">
+                            <a href="https://www.instagram.com/aguacate_makeup/" target="_blank" rel="noopener noreferrer" class="footer-enlace">Instagram</a>
+                            <span class="footer-punto-separador">·</span>
+                            <a href="https://www.tiktok.com/@aguacatemakeup" target="_blank" rel="noopener noreferrer" class="footer-enlace">TikTok</a>
+                        </li>
+                        <li><a href="mailto:contacto@aguacatemakeup.com" class="footer-enlace footer-email">contacto@aguacatemakeup.com</a></li>
+                    </ul>
+                </div>
+            </div>
+
         </div>
-        <div class="col-12 col-md-4 text-center text-md-center"> 
-            <p class="mb-0">2026 Aguacate Make Up,<br> Belleza que fluye contigo</p>
+
+        <!-- Barra inferior para normativas de privacidad y términos legales -->
+        <div class="footer-barra-legal">
+            <div class="footer-legal-copyright">
+                © 2026 Aguacate Make Up · Marca conceptual
+            </div>
+            <div class="footer-legal-enlaces">
+                <a href="#privacidad" class="footer-legal-link">Privacidad</a>
+                <span class="footer-punto-separador">·</span>
+                <a href="#terminos" class="footer-legal-link">Términos</a>
+                <span class="footer-punto-separador">·</span>
+                <a href="#cookies" class="footer-legal-link">Cookies</a>
+            </div>
         </div>
-        <div class="col-12 col-md-4 text-center text-md-end">
-            <h5>Síguenos</h5>
-            <p class="small mb-1">contacto@aguacatemakeup.com</p>
-            <p class="small">
-                <a href="https://www.instagram.com/aguacate_makeup/" target="_blank">Instagram</a>
-                <a href="https://www.tiktok.com/@aguacatemakeup" target="_blank">TikTok</a>
-            </p>
-        </div>
+    </div>
 </div>
-</footer>
