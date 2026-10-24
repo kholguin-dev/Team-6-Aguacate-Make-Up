@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Buscamos los elementos del panel
     const tabla = document.querySelector(".dashboard-container tbody");
-    const botonCrear = document.querySelector(".btn-brand");
+    const BotonCrearProducto = document.querySelector(".btn-brand");
     const campoBusqueda = document.querySelector(
         '.dashboard-container input[type="text"]'
     );
@@ -24,138 +24,73 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
-    // CAMBIAR esta ruta cuando tengamos la página de creación
-    const URL_CREAR_PRODUCTO = "Admincrearproductos.html";
+    // Ruta de la pagina para crear o registrar un producto
+    const Urlcrearproducto = "Admincrearproductos.html";
 
-    // Esta clave debe ser igual en las dos páginas
-    const CLAVE_PRODUCTOS = "admincrearproductos";
-    const PRODUCTOS_POR_PAGINA = 8;
+    // Clave para guardar y consultar en localstorage
+    const Claveproductos = "admincrearproductos";
+    const Productosporpagina = 8;
 
     let categoriaActual = "Todas";
     let estadoActual = "";
     let paginaActual = 1;
 
-    // Datos iniciales de demostración si el almacenamiento está vacío
-    const PRODUCTOS_POR_DEFECTO = [
-        {
-            id: 1,
-            nombre: "Sérum Calmante de Aguacate",
-            sku: "SK-001",
-            categoria: "Skincare",
-            subcategoria: "Cara",
-            descripcion: "Sérum calmante e hidratante con extracto de aguacate.",
-            precio: 24.90,
-            stock: 86,
-            estado: "Publicado"
-        },
-        {
-            id: 2,
-            nombre: "Labial Velvet Matte - Berry",
-            sku: "MQ-002",
-            categoria: "Maquillaje",
-            subcategoria: "Labios",
-            descripcion: "Labial mate con fórmula aterciopelada y larga duración.",
-            precio: 16.90,
-            stock: 54,
-            estado: "Publicado"
-        },
-        {
-            id: 3,
-            nombre: "Gloss Hidratante Aguacate",
-            sku: "MQ-003",
-            categoria: "Maquillaje",
-            subcategoria: "Labios",
-            descripcion: "Brillo nutritivo enriquecido con aceites naturales.",
-            precio: 14.50,
-            stock: 42,
-            estado: "Publicado"
-        },
-        {
-            id: 4,
-            nombre: "Base Líquida Acabado Natural",
-            sku: "MQ-004",
-            categoria: "Maquillaje",
-            subcategoria: "Cara",
-            descripcion: "Base ultraligera con cobertura modulable y FPS 20.",
-            precio: 21.90,
-            stock: 8,
-            estado: "Publicado"
-        },
-        {
-            id: 5,
-            nombre: "Crema Contorno de Ojos",
-            sku: "SK-005",
-            categoria: "Skincare",
-            subcategoria: "Ojos",
-            descripcion: "Crema iluminadora y anti-fatiga para el contorno ocular.",
-            precio: 28.00,
-            stock: 35,
-            estado: "Publicado"
-        },
-        {
-            id: 6,
-            nombre: "Set de Brochas Profesionales x8",
-            sku: "AC-006",
-            categoria: "Accesorios",
-            subcategoria: "Sin subcategoría",
-            descripcion: "Set de brochas profesionales con cerdas ultrasuaves.",
-            precio: 35.00,
-            stock: 6,
-            estado: "Publicado"
-        },
-        {
-            id: 7,
-            nombre: "Mascarilla Purificante Arcilla Verde",
-            sku: "SK-007",
-            categoria: "Skincare",
-            subcategoria: "Cara",
-            descripcion: "Limpieza profunda y reducción de poros visible.",
-            precio: 18.50,
-            stock: 24,
-            estado: "Borrador"
-        },
-        {
-            id: 8,
-            nombre: "Esponja Beauty Blender Ergonómica",
-            sku: "AC-008",
-            categoria: "Accesorios",
-            subcategoria: "Sin subcategoría",
-            descripcion: "Esponja libre de látex para difuminado impecable.",
-            precio: 9.90,
-            stock: 3,
-            estado: "Borrador"
-        }
-    ];
-
-    // Cargamos los productos guardados o sembramos los iniciales
-    function cargarProductos() {
-        try {
-            const datos = localStorage.getItem(CLAVE_PRODUCTOS);
-            if (datos) {
-                const lista = JSON.parse(datos);
-                if (Array.isArray(lista) && lista.length > 0) {
-                    return lista;
-                }
-            }
-            localStorage.setItem(CLAVE_PRODUCTOS, JSON.stringify(PRODUCTOS_POR_DEFECTO));
-            return PRODUCTOS_POR_DEFECTO;
-        } catch (error) {
-            console.error("No se pudieron cargar los productos:", error);
-            return PRODUCTOS_POR_DEFECTO;
-        }
-    }
-
+    // Acceso a almacenamiento local usando la capa centralizada
+    const cargarProductos = () => (typeof window.Obtenerlistadoproductos === 'function' ? window.Obtenerlistadoproductos() : JSON.parse(localStorage.getItem(Claveproductos) || '[]'));
     let productos = cargarProductos();
 
-    // Guardamos los cambios localStorage 
-    function guardarProductos() {
+    const guardarProductos = () => {
+        if (typeof window.Guardarlistadoproductos === 'function') return window.Guardarlistadoproductos(productos);
         try {
-            localStorage.setItem(CLAVE_PRODUCTOS, JSON.stringify(productos));
+            localStorage.setItem(Claveproductos, JSON.stringify(productos));
             return true;
-        } catch (error) {
-            console.error("No se pudieron guardar los productos:", error);
-            alert("No se pudieron guardar los cambios.");
+        } catch (e) {
+            console.error("No se pudieron guardar los productos:", e);
             return false;
+        }
+    };
+
+    // Sincroniza los productos remotos de Google Sheets con la vista local
+    async function sincronizarConServidor() {
+        if (typeof Obtenerproductosservidor !== "function") return;
+
+        const respuesta = await Obtenerproductosservidor();
+        if (respuesta && respuesta.status === "success" && Array.isArray(respuesta.data) && respuesta.data.length > 0) {
+            const mapaServidor = new Map();
+            respuesta.data.forEach(item => {
+                if (item.sku) {
+                    mapaServidor.set(item.sku.toString().trim().toUpperCase(), item);
+                }
+            });
+
+            mapaServidor.forEach((itemServidor, skuClave) => {
+                const indice = productos.findIndex(p => (p.sku || "").toString().trim().toUpperCase() === skuClave);
+                const productoMapeado = {
+                    id: itemServidor.id || Date.now(),
+                    nombre: itemServidor.nombre,
+                    sku: itemServidor.sku,
+                    marca: itemServidor.marca || "Aguacate Make Up",
+                    categoria: itemServidor.categoria,
+                    subcategoria: itemServidor.subcategoria,
+                    descripcion: itemServidor.descripcion,
+                    precio: Number(itemServidor.precio),
+                    preciopromocional: itemServidor.precioPromocional ? Number(itemServidor.precioPromocional) : null,
+                    stock: Number(itemServidor.stock),
+                    tamano: itemServidor.tamano,
+                    disponibilidad: itemServidor.disponibilidad,
+                    imagen: (typeof NormalizarUrlImagen === "function" ? NormalizarUrlImagen(itemServidor.imagenUrl) : itemServidor.imagenUrl) || "../img/logo.png",
+                    estado: itemServidor.estado || "Publicado"
+                };
+
+                if (indice >= 0) {
+                    productos[indice] = Object.assign({}, productos[indice], productoMapeado);
+                } else {
+                    productos.push(productoMapeado);
+                }
+            });
+
+            guardarProductos();
+            renderizarProductos();
         }
     }
 
@@ -170,12 +105,12 @@ document.addEventListener("DOMContentLoaded", () => {
         })[caracter]);
     }
 
-    // Mostramos el precio con dos decimales
+    // Formato de precio en pesos colombianos sin decimales
     function formatoPrecio(precio) {
-        return Number(precio).toLocaleString("es-ES", {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        }) + " $";
+        return "$ " + Number(precio || 0).toLocaleString("es-CO", {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        });
     }
 
     // Actualizamos los contadores del panel
@@ -230,24 +165,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const totalPaginas = Math.max(
             1,
-            Math.ceil(filtrados.length / PRODUCTOS_POR_PAGINA)
+            Math.ceil(filtrados.length / Productosporpagina)
         );
 
         paginaActual = Math.min(paginaActual, totalPaginas);
 
-        const inicio = (paginaActual - 1) * PRODUCTOS_POR_PAGINA;
+        const inicio = (paginaActual - 1) * Productosporpagina;
         const visibles = filtrados.slice(
             inicio,
-            inicio + PRODUCTOS_POR_PAGINA
+            inicio + Productosporpagina
         );
 
         // Mostramos los productos en la tabla
         tabla.innerHTML = visibles.map(producto => `
             <tr>
                 <td>
-                    <div class="fw-bold">${escapar(producto.nombre)}</div>
-                    <div class="text-muted" style="font-size: 0.75rem;">
-                        ${escapar(producto.sku || producto.referencia || "SKU-" + producto.id)}
+                    <div class="d-flex align-items-center gap-2">
+                        <img src="${typeof NormalizarUrlImagen === 'function' ? NormalizarUrlImagen(producto.imagen) : (producto.imagen || '../img/logo.png')}" alt="${escapar(producto.nombre)}" class="rounded" style="width: 36px; height: 36px; object-fit: cover; flex-shrink: 0; border: 1px solid #EFE4F8;" onerror="this.src='../img/logo.png'">
+                        <div>
+                            <div class="fw-bold">${escapar(producto.nombre)}</div>
+                            <div class="text-muted" style="font-size: 0.75rem;">
+                                ${escapar(producto.sku || producto.referencia || "SKU-" + producto.id)}
+                            </div>
+                        </div>
                     </div>
                 </td>
                 <td>
@@ -271,15 +211,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 </td>
                 <td class="text-end text-nowrap">
                     <button class="btn btn-link btn-sm text-brand"
-                            data-accion="ver" data-id="${producto.id}">
+                            data-accion="ver" data-id="${producto.id}" data-sku="${escapar(producto.sku || '')}">
                         Ver
                     </button>
                     <button class="btn btn-link btn-sm text-brand"
-                            data-accion="editar" data-id="${producto.id}">
+                            data-accion="editar" data-id="${producto.id}" data-sku="${escapar(producto.sku || '')}">
                         Editar
                     </button>
                     <button class="btn btn-link btn-sm text-danger"
-                            data-accion="eliminar" data-id="${producto.id}">
+                            data-accion="eliminar" data-id="${producto.id}" data-sku="${escapar(producto.sku || '')}">
                         Eliminar
                     </button>
                 </td>
@@ -305,7 +245,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <span class="text-muted small">
                     ${filtrados.length
                         ? `Mostrando ${inicio + 1}–${Math.min(
-                            inicio + PRODUCTOS_POR_PAGINA,
+                            inicio + Productosporpagina,
                             filtrados.length
                         )} de ${filtrados.length} productos`
                         : "No hay productos para mostrar"}
@@ -339,10 +279,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Abrimos la página que está creando mi compañero
-    if (botonCrear) {
-        botonCrear.addEventListener("click", () => {
-            window.location.href = URL_CREAR_PRODUCTO;
+    // Redirige al formulario de crear producto
+    if (BotonCrearProducto) {
+        BotonCrearProducto.addEventListener("click", () => {
+            window.location.href = Urlcrearproducto;
         });
     }
 
@@ -386,12 +326,19 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Atendemos las acciones de cada producto
-    tabla.addEventListener("click", evento => {
+    tabla.addEventListener("click", async evento => {
         const boton = evento.target.closest("button[data-accion]");
         if (!boton) return;
 
-        const id = Number(boton.dataset.id);
-        const producto = productos.find(p => Number(p.id) === id);
+        const id = String(boton.dataset.id || "").trim();
+        const sku = String(boton.dataset.sku || "").trim().toUpperCase();
+        const producto = productos.find(p => {
+            const pid = String(p.id || "").trim();
+            const psku = String(p.sku || "").trim().toUpperCase();
+            return (id && (pid === id || pid.replace("PROD-", "") === id.replace("PROD-", ""))) ||
+                   (sku && psku === sku) ||
+                   (id && psku === id.toUpperCase());
+        });
 
         if (!producto) return;
 
@@ -401,9 +348,9 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        // Abrimos la página del formulario para editar
+        // Abrimos la página del formulario con los datos a editar o continuar borrador
         if (boton.dataset.accion === "editar") {
-           window.location.href = "Admincrearproductos.html";
+           window.location.href = Urlcrearproducto + "?id=" + encodeURIComponent(producto.id) + "&sku=" + encodeURIComponent(producto.sku || "");
         }
 
         // Confirmamos antes de eliminar
@@ -412,13 +359,18 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            const productosAnteriores = productos;
-            productos = productos.filter(p => Number(p.id) !== id);
-
-            if (guardarProductos()) {
+            if (typeof EliminarProductoInventario === 'function') {
+                await EliminarProductoInventario(producto.id || producto.sku);
+                productos = cargarProductos();
                 renderizarProductos();
             } else {
-                productos = productosAnteriores;
+                const productosAnteriores = productos;
+                productos = productos.filter(p => String(p.id) !== id);
+                if (guardarProductos()) {
+                    renderizarProductos();
+                } else {
+                    productos = productosAnteriores;
+                }
             }
         }
     });
@@ -434,6 +386,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Mostramos la tabla al entrar
+    // Mostramos la tabla al entrar y sincronizamos en segundo plano
     renderizarProductos();
+    sincronizarConServidor();
 });

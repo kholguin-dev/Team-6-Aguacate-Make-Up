@@ -43,11 +43,58 @@ function ajustarEnlacesBarra(contenedor) {
     }
 }
 
-// Descarga e inserta la plantilla de la barra lateral en la página
+// Plantilla directa de respaldo para evitar que quede vacia cuando se abre localmente sin servidor
+const Plantillabarralateral = `
+<aside class="barra-lateral" id="barraLateral">
+    <div class="bloque-marca">
+        <span class="nombre-marca">Aguacate Make Up</span>
+        <span class="subtitulo-marca">PANEL DE ADMINISTRACIÓN</span>
+    </div>
+
+    <!-- Opciones de navegación del panel -->
+    <nav class="navegacion-lateral" aria-label="Navegación del panel">
+        <a href="#" class="enlace-lateral" data-seccion="dashboard">
+            <span class="material-symbols-outlined icono-nav">dashboard</span>
+            <span>Dashboard</span>
+        </a>
+        <a href="admin-productos.html" class="enlace-lateral" data-seccion="productos" id="enlaceSidebarProductos">
+            <span class="material-symbols-outlined icono-nav">inventory_2</span>
+            <span>Productos</span>
+        </a>
+        <a href="#" class="enlace-lateral" data-seccion="categorias">
+            <span class="material-symbols-outlined icono-nav">category</span>
+            <span>Categorías</span>
+        </a>
+        <a href="#" class="enlace-lateral" data-seccion="usuarios">
+            <span class="material-symbols-outlined icono-nav">group</span>
+            <span>Usuarios</span>
+        </a>
+    </nav>
+
+    <!-- Tarjeta informativa del rol actual -->
+    <div class="tarjeta-rol">
+        <span class="rol-titulo">Administrador</span>
+        <span class="rol-descripcion">Crear, consultar, editar y eliminar registros.</span>
+    </div>
+
+    <!-- Enlaces de salida y vista previa -->
+    <div class="acciones-sesion">
+        <a href="#" class="enlace-tienda" id="enlaceVerTienda" onclick="event.preventDefault(); return false;">↗ Ver tienda</a>
+        <a href="../index.html" class="enlace-salida" id="enlaceCerrarSesion">Cerrar sesión</a>
+    </div>
+</aside>
+`;
+
+// Descarga e inserta la plantilla de la barra lateral en la página con respaldo inmediato
 function cargarBarraLateralAdmin() {
     const contenedor = document.getElementById("adminBarraLateral") || document.getElementById("barraLateral");
     if (!contenedor) {
         return;
+    }
+
+    function aplicarHtml(html) {
+        contenedor.innerHTML = html;
+        ajustarEnlacesBarra(contenedor);
     }
 
     const rutaBase = obtenerRutaBaseAdminBarra();
@@ -59,11 +106,11 @@ function cargarBarraLateralAdmin() {
             return respuesta.text();
         })
         .then(function (html) {
-            contenedor.innerHTML = html;
-            ajustarEnlacesBarra(contenedor);
+            aplicarHtml(html);
         })
-        .catch(function (error) {
-            console.error("Hubo un fallo cargando la barra lateral:", error);
+        .catch(function () {
+            // Si fetch no esta disponible (por ejemplo abriendo via file://), usa la plantilla integrada
+            aplicarHtml(Plantillabarralateral);
         });
 }
 
