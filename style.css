@@ -1,5 +1,5 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@400;500;600;700&display=swap');
 
 :root {
     --primary: #310055;
@@ -38,109 +38,258 @@ body {
     line-height: 1;
 }
 
-/* Header */
+/* ==========================================================================
+   Header / Navegación (Color #8339B6 y Logo Centrado estilo Prototipo)
+   ========================================================================== */
 
-.navbar-custom {
-    background-color: var(--primary-light);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-}
-
-.navbar-custom .navbar-brand img {
-    transition: transform 0.3s ease;
-}
-
-.navbar-custom .navbar-brand:hover img {
-    transform: rotate(6deg);
-}
-
-.navbar-custom .nav-link {
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 0.9375rem;
-    transition: color 0.2s ease;
+.header-custom-figma {
     position: relative;
+    background-color: #8339B6 !important; /* Violeta medio exacto solicitado */
+    color: #ffffff;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
+    z-index: 1000;
+    filter: none !important; /* Evita que filtros externos aclaren los colores */
 }
 
-.navbar-custom .nav-link:hover {
-    color: var(--pink-light);
+.nav-custom-figma {
+    position: relative;
+    max-width: 1440px;
+    min-height: 90px;
+    margin: 0 auto;
+    padding: 0 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    box-sizing: border-box;
 }
 
-.navbar-custom .nav-link.active {
-    color: var(--pink);
+/* Enlaces de navegación Izquierda */
+.links-custom-figma {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.header-custom-figma a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.links-custom-figma a:hover {
+    color: #FFA8D9;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+.links-custom-figma a.active {
+    color: #FFA8D9;
     font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 6px;
 }
 
-.navbar-custom .nav-link.active::after {
-    content: '';
+/* Logo Central Sobresaliente (Centrado, estático, sin efecto botón ni zoom) */
+.logo-custom-figma {
     position: absolute;
-    bottom: 0;
-    left: 0.5rem;
-    right: 0.5rem;
-    height: 2px;
-    background-color: var(--pink);
+    z-index: 1005;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 142px;
+    height: 142px;
+    padding: 8px; /* Ajustado de 16px a 8px para que el logo sea más grande */
+    box-sizing: border-box;
+    border-radius: 36px;
+    background-color: #ac3ee6 !important; /* Morado del prototipo */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden; /* Garantiza que el aguacate nunca se salga del cuadro */
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.3);
+    cursor: default;
+    pointer-events: auto;
 }
 
-.search-custom {
+.logo-custom-figma:hover {
+    transform: translateX(-50%);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.3);
+}
+
+/* Regla por si en tu HTML tienes un <a> dentro de un <div> con la clase logo-custom-figma */
+.logo-custom-figma > a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.logo-custom-figma img {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 126px !important;
+    max-height: 126px !important;
+    margin: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.18));
+}
+
+/* Acciones Derecha */
+.actions-custom-figma {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-left: auto;
+}
+
+/* Barra de Búsqueda */
+.search-box-figma {
     position: relative;
+    display: flex;
+    align-items: center;
 }
 
-.search-custom input {
-    background-color: rgba(255, 255, 255, 0.1);
-    color: var(--white);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    transition: all 0.3s ease;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
-    padding-left: 2.5rem !important;
+.search-box-figma input {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 20px;
+    padding: 7px 14px 7px 36px;
+    font-size: 14px;
+    line-height: 1.2;
+    color: #ffffff;
+    outline: none;
+    width: 160px;
+    box-sizing: border-box;
+    transition: all 0.25s ease;
 }
 
-.search-custom input::placeholder {
-    color: rgba(255, 255, 255, 0.7);
+.search-box-figma input::placeholder {
+    color: rgba(255, 255, 255, 0.8);
 }
 
-.search-custom input:hover {
-    background-color: rgba(255, 255, 255, 0.15);
+.search-box-figma input:hover {
+    background: rgba(255, 255, 255, 0.22);
+    border-color: rgba(255, 168, 217, 0.6);
 }
 
-.search-custom input:focus {
-    background-color: var(--white);
-    color: var(--primary);
-    border-color: var(--pink);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+.search-box-figma input:focus {
+    background: #ffffff;
+    color: #310055;
+    border-color: #FFA8D9;
+    width: 210px;
+    box-shadow: 0 0 0 3px rgba(255, 168, 217, 0.35);
 }
 
-.search-custom .search-icon {
+.search-icon-figma {
     position: absolute;
-    left: 0.75rem;
-    top: 50%;
-    transform: translateY(-50%);
-    color: rgba(255, 255, 255, 0.7);
+    left: 12px;
+    font-size: 16px;
+    line-height: 1;
+    color: rgba(255, 255, 255, 0.85);
     pointer-events: none;
-    transition: color 0.3s ease;
-    z-index: 4;
+    transition: color 0.2s ease;
 }
 
-.search-custom input:focus ~ .search-icon {
-    color: var(--primary);
+/* Funciona sin importar si el ícono está antes o después del input en el HTML */
+.search-box-figma:focus-within .search-icon-figma {
+    color: #8339B6;
 }
 
-.btn-action {
-    background-color: rgba(255, 255, 255, 0.1);
-    color: var(--white);
+/* Botones de acción del encabezado (solo iconos circulares) */
+.action-btn-figma {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    color: #ffffff;
+    font-size: 18px;
+    line-height: 1;
     transition: all 0.2s ease;
     text-decoration: none;
 }
 
-.btn-account:hover {
-    background-color: rgba(255, 255, 255, 0.05);
-    color: var(--pink-light);
+/* Efecto al pasar el cursor sobre los accesos de usuario */
+.action-btn-figma:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+    color: #FFA8D9;
+    text-decoration: none;
+    transform: translateY(-1px);
 }
 
-.btn-cart:hover {
-    background-color: var(--secondary);
-    color: var(--white);
+/* Estilo distintivo para el botón del carrito */
+.cart-btn-figma {
+    background-color: #ac3ee6 !important;
+    border-color: transparent !important;
+    box-shadow: 0 3px 10px rgba(172, 62, 230, 0.35);
 }
 
-.btn-action:active {
-    transform: scale(0.95);
+.cart-btn-figma:hover {
+    background-color: #ca82ed !important;
+    color: #ffffff !important;
+    box-shadow: 0 5px 15px rgba(202, 130, 237, 0.5);
+}
+
+/* Indicador numérico flotante para la cantidad de productos */
+.cart-count-figma {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: #ffffff;
+    color: #8339B6;
+    font-weight: 700;
+    font-size: 11px;
+    line-height: 1;
+    min-width: 19px;
+    height: 19px;
+    padding: 0 4px;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+    pointer-events: none;
+}
+
+/* Tamaño de los iconos internos */
+.icon-figma {
+    font-size: 18px;
+    line-height: 1;
+}
+
+/* Adaptación responsive para pantallas móviles / tablets */
+@media (max-width: 860px) {
+    .nav-custom-figma {
+        padding: 106px 20px 16px;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 16px;
+    }
+    .links-custom-figma,
+    .actions-custom-figma {
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
+        margin-left: 0;
+        gap: 12px;
+    }
+    .logo-custom-figma {
+        width: 90px;
+        height: 90px;
+        border-radius: 24px;
+        padding: 6px;
+        top: 6px;
+    }
 }
 
 /* Sección principal */
@@ -316,18 +465,267 @@ body {
     transform: scale(1.15);
 }
 
-/* Footer */
+/* ==========================================================================
+   Footer / Pie de Página (Especificaciones Figma)
+   ========================================================================== */
 
-.tamañologo {
-    height: 35px;
-    width: auto;
-    vertical-align: middle;
+#footer,
+footer#footer,
+.pie-de-pagina,
+.pie-de-pagina-bloque {
+    background-color: #310055 !important;
+    color: #FFFFFF !important;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    padding: 0 !important;
+    margin: 0 !important;
+    border-top: none;
+    width: 100%;
 }
 
-.logo-aguacate-makeup {
-    font-size: 1.25rem;
+.pie-de-pagina-bloque {
+    width: 100%;
+    overflow: hidden;
+    background-color: #310055;
+}
+
+/* Contenedor con márgenes de diseño: 36px sup/inf y 64px laterales */
+.footer-contenedor {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 36px 64px;
+    box-sizing: border-box;
+}
+
+@media (max-width: 991px) {
+    .footer-contenedor {
+        padding: 36px 32px;
+    }
+}
+
+@media (max-width: 575px) {
+    .footer-contenedor {
+        padding: 32px 20px;
+    }
+}
+
+/* Fila superior: Logo+Texto a la izquierda, columnas de enlaces a la derecha */
+.footer-fila-principal {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 36px;
+    flex-wrap: wrap;
+}
+
+/* Conjunto de logo y texto: 360 × 91 px */
+.footer-conjunto-marca {
+    display: flex;
+    align-items: center;
+    width: 360px;
+    min-height: 91px;
+    gap: 12px; /* Separación logo–texto: 12 px */
+    flex-shrink: 0;
+}
+
+@media (max-width: 420px) {
+    .footer-conjunto-marca {
+        width: 100%;
+        flex-wrap: wrap;
+        height: auto;
+    }
+}
+
+/* Logo: 66 × 91 px (estático, sin botón ni animación de elevación) */
+.footer-logo-enlace {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 66px;
+    height: 91px;
+    flex-shrink: 0;
+    cursor: default;
+}
+
+.footer-logo-img {
+    width: 66px;
+    height: 91px;
+    object-fit: contain;
+    display: block;
+}
+
+/* Bloque de texto: 282 × 86 px */
+.footer-bloque-texto {
+    width: 282px;
+    min-height: 86px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.footer-marca-titulo-link {
+    display: inline-block;
+    text-decoration: none !important;
+}
+
+.footer-marca-titulo {
+    color: #FFA8D9;
+    font-size: 1.45rem; /* ~23px */
     font-weight: 700;
-    color: var(--primary);
+    line-height: 1.2;
+    letter-spacing: -0.4px;
+    font-family: 'Inter', sans-serif;
+    margin: 0 0 10px 0; /* Separación nombre–descripción: 10 px */
+    display: block;
+    transition: color 0.2s ease;
+}
+
+.footer-marca-titulo-link:hover .footer-marca-titulo {
+    color: #FFC0E5;
+}
+
+.footer-marca-texto {
+    color: #FFFFFF;
+    font-size: 0.8125rem; /* 13px */
+    line-height: 1.45;
+    margin: 0;
+    opacity: 0.92;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Columnas temáticas de navegación */
+.footer-columnas-nav {
+    display: flex;
+    gap: 48px;
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+
+@media (max-width: 991px) {
+    .footer-columnas-nav {
+        gap: 32px;
+        width: 100%;
+        justify-content: flex-start;
+    }
+}
+
+@media (max-width: 575px) {
+    .footer-columnas-nav {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        width: 100%;
+    }
+    .footer-columnas-nav .footer-col:last-child {
+        grid-column: span 2;
+    }
+}
+
+.footer-col {
+    min-width: 120px;
+}
+
+.footer-titulo-seccion {
+    color: #FFA8D9;
+    font-size: 0.875rem; /* 14px */
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 0.65rem;
+    font-family: 'Inter', sans-serif;
+}
+
+.footer-lista {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-lista li {
+    margin-bottom: 0.45rem;
+}
+
+.footer-enlace {
+    color: #FFFFFF !important;
+    font-size: 0.75rem; /* 12px */
+    line-height: 1.5;
+    text-decoration: none !important;
+    transition: color 0.2s ease, transform 0.2s ease;
+    display: inline-block;
+    opacity: 0.92;
+    font-family: 'Inter', sans-serif;
+}
+
+.footer-enlace:hover {
+    color: #FFA8D9 !important;
+    opacity: 1;
+    transform: translateX(2px);
+}
+
+.footer-punto-separador {
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 400;
+    margin: 0 0.3rem;
+}
+
+.footer-email {
+    word-break: break-all;
+}
+
+/* Barra inferior legal */
+.footer-barra-legal {
+    border-top: 1px solid #4A0E70;
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.75rem; /* 12px */
+    line-height: 1.5;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-top: 26px;
+    padding-top: 18px;
+    flex-wrap: wrap;
+    font-family: 'Inter', sans-serif;
+}
+
+.footer-legal-copyright {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.footer-legal-enlaces {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.footer-legal-link {
+    color: rgba(255, 255, 255, 0.85) !important;
+    text-decoration: none !important;
+    transition: color 0.2s ease;
+}
+
+.footer-legal-link:hover {
+    color: #FFA8D9 !important;
+    text-decoration: underline !important;
+}
+
+/* Compatibilidad con clases previas */
+.footer-marca-link {
+    transition: transform 0.2s ease;
+}
+.fondofooter {
+    background-color: #310055 !important;
+}
+.tamañologo {
+    height: 91px;
+    width: 66px;
+    object-fit: contain;
+    vertical-align: middle;
+}
+.logo-aguacate-makeup {
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: #FFA8D9;
 }
 
 #seccion-universo { 
@@ -411,9 +809,6 @@ body {
   font-weight: 700;
 }
 
-.fondofooter{
-    background-color: #C084FC;
-}
 
 @media (max-width: 767px) {
 

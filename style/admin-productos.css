@@ -14,19 +14,92 @@
   box-shadow: 0 4px 24px var(--shadow);
 }
 
+.subtitulo-seccion {
+    color: var(--primary-light, #5E1797) !important;
+    font-size: 16px !important;
+}
+
+.table {
+    width: 100%;
+}
+
+/* Columna 1: Producto (más ancha para que entre la descripcion)*/
+.table th:nth-child(1), .table td:nth-child(1) {
+    width: 32%;
+}
+
+/* Columna 2: Categoría */
+.table th:nth-child(2), .table td:nth-child(2) {
+    width: 20%;
+}
+
+/* Columna 3: Precio */
+.table th:nth-child(3), .table td:nth-child(3) {
+    width: 13%;
+}
+
+/* Columna 4: Stock */
+.table th:nth-child(4), .table td:nth-child(4) {
+    width: 10%;
+}
+
+/* Columna 5: Estado */
+.table th:nth-child(5), .table td:nth-child(5) {
+    width: 13%;
+}
+
+/* Columna 6: Acciones */
+.table th:nth-child(6) {
+    text-align: left; 
+    padding-left: 0.75rem;
+}
+
+.table td:nth-child(6) {
+    width: 12%;
+    text-align: right;
+    padding-right: 1.5rem;
+}
+
 .table thead th {
-  background-color: #ff97d0;
-  color: black;
+  background-color:#FFCCE8;
+  color: #310055;
   border-color: #ff62bb;
+}
+
+.text-brand {
+    color: var(--primary-light) !important;
+}
+
+.text-brand:hover {
+    color: #4c117a !important;
+    text-decoration: underline !important;
 }
 
 .form-control,
 .form-select,
-.btn-outline-secondary {
+.btn-outline-secondary,
+.btn-primary {
   border-radius: 0.5rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  padding: 0.55rem 1rem !important;
   border: 1px solid #ca82ed;
+}
+
+.btn-filtrar-custom {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 38px;
+    padding: 0.55rem 1rem !important;
+    font-size: 0.90rem;
+    border: 1px solid #ca82ed;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
+
+.btn-filtrar-custom:hover {
+    background-color: var(--primary-light, #5E1797) !important;
+    color: #ffffff !important;
+    border-color: var(--primary-light, #5E1797) !important;
 }
 
 .nav-category-btn {
@@ -34,6 +107,9 @@
     color: var(--primary-light) !important;
     border: 1px solid var(--primary-light) !important;
     transition: all 0.2s ease-in-out;
+    padding: 0.45rem 1.15rem !important;
+    font-size: 0.875rem;
+    white-space: nowrap;
 }
 
 
@@ -47,12 +123,89 @@
     box-shadow: none !important;
 }
 
+section.d-flex.flex-wrap.gap-2.mb-4 .badge {
+    color: #310055 !important;
+}
+
+.pagination .page-item .page-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 40px;
+    padding: 0 !important;
+    border-radius: 0.5rem !important;
+    margin: 0 0.15rem;
+}
+
 .table-responsive {
   border-radius: 0.75rem;
   overflow: hidden;
   border: 1px solid #ca82ed;
 }
 
-.table {
+.table, 
+.table th, 
+.table td {
     margin-bottom: 0 !important;
+    border-color: #ca82ed !important;
+}
+
+
+/* hacerlo responsive*/
+@media (max-width: 768px) {
+  body {
+    padding: 0.5rem !important;
+  }
+  
+  .dashboard-container {
+    padding: 1rem !important;
+  }
+
+  header.d-flex {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 1rem !important;
+  }
+  
+  header .d-flex.align-items-center.gap-3 {
+    width: 100%;
+    justify-content: space-between;
+    margin-right: 0 !important;
+  }
+
+  section.d-flex.justify-content-between.align-items-center.mb-3 {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 1rem !important;
+  }
+
+  section.d-flex.justify-content-between.align-items-center.mb-3 button {
+    width: 100% !important;
+  }
+
+  section.row.g-2 > div {
+    width: 100% !important;
+  }
+
+  .filtro-espaciador {
+    display: none !important;
+  }
+
+  nav.d-flex.align-items-center.gap-2.mb-4 {
+    flex-wrap: wrap !important;
+    row-gap: 0.5rem !important;
+  }
+
+  footer.d-flex {
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    gap: 1rem !important;
+  }
+  
+  footer .d-flex.align-items-center.gap-2 {
+    justify-content: center;
+    width: 100%;
+  }
 }
