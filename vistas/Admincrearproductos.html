@@ -66,38 +66,40 @@
 
                             <div class="fila-dos-columnas">
                                 <div class="campo-grupo">
-                                    <label for="skuProducto" class="etiqueta-campo">Referencia / SKU *</label>
-                                    <input type="text" id="skuProducto" class="entrada-texto" placeholder="Ej. LB-049" required>
-                                    <span class="texto-ayuda">Debe ser única en el catálogo.</span>
-                                    <span class="mensaje-error" id="errorSku">El código SKU es obligatorio y no puede estar repetido.</span>
+                                    <label for="categoriaProducto" class="etiqueta-campo">Categoría *</label>
+                                    <select id="categoriaProducto" class="entrada-seleccion" required>
+                                        <option value="" selected>Selecciona una categoría</option>
+                                        <option value="Skincare">Skincare</option>
+                                        <option value="Maquillaje">Maquillaje</option>
+                                        <option value="Accesorios">Accesorios</option>
+                                    </select>
                                 </div>
                                 <div class="campo-grupo">
-                                    <label for="marcaProducto" class="etiqueta-campo">Marca *</label>
-                                    <input type="text" id="marcaProducto" class="entrada-texto" value="Aguacate Make Up" required>
+                                    <label for="subcategoriaProducto" class="etiqueta-campo">Subcategoría *</label>
+                                    <select id="subcategoriaProducto" class="entrada-seleccion" required>
+                                        <option value="" selected>Selecciona una subcategoría</option>
+                                    </select>
+                                    <span class="texto-ayuda">Subcategoría vinculada a la nomenclatura de inventario.</span>
                                 </div>
                             </div>
 
                             <div class="fila-dos-columnas">
                                 <div class="campo-grupo">
-                                    <label for="categoriaProducto" class="etiqueta-campo">Categoría *</label>
-                                    <select id="categoriaProducto" class="entrada-seleccion" required>
-                                        <option value="">Selecciona una categoría</option>
-                                        <option value="Skincare" selected>Skincare</option>
-                                        <option value="Maquillaje">Maquillaje</option>
-                                        <option value="Cuidado Facial">Cuidado Facial</option>
-                                        <option value="Labiales">Labiales</option>
-                                    </select>
+                                    <label for="skuProducto" class="etiqueta-campo">Referencia / SKU *</label>
+                                    <div class="grupo-entrada-boton">
+                                        <input type="text" id="skuProducto" class="entrada-texto text-uppercase" placeholder="Ej. SKSER001 o MQCAR001" maxlength="12" required autocomplete="off">
+                                        <button type="button" id="botonGenerarSku" class="boton-accion-sku" title="Regenerar SKU automáticamente según categoría">
+                                            <span class="material-symbols-outlined fs-6">sync</span>
+                                            <span>Auto</span>
+                                        </button>
+                                    </div>
+                                    <span class="texto-ayuda" id="ayudaSku">Estructura requerida: exactamente 5 letras mayúsculas seguidas de 3 a 7 números (8 a 12 caracteres).</span>
+                                    <span class="mensaje-error" id="errorSku">El código SKU es obligatorio y no puede estar repetido.</span>
+                                    <span class="mensaje-exito" id="exitoSku" style="display:none; color:#1F7A37; font-size:12px; font-weight:600; margin-top:4px;">Código disponible para usar.</span>
                                 </div>
                                 <div class="campo-grupo">
-                                    <label for="subcategoriaProducto" class="etiqueta-campo">Subcategoría</label>
-                                    <select id="subcategoriaProducto" class="entrada-seleccion">
-                                        <option value="Sin subcategoría">Sin subcategoría</option>
-                                        <option value="Cara">Cara</option>
-                                        <option value="Ojos">Ojos</option>
-                                        <option value="Labios">Labios</option>
-                                        <option value="Cejas">Cejas</option>
-                                    </select>
-                                    <span class="texto-ayuda">Cara, ojos, labios o cejas para maquillaje.</span>
+                                    <label for="marcaProducto" class="etiqueta-campo">Marca *</label>
+                                    <input type="text" id="marcaProducto" class="entrada-texto" value="Aguacate Make Up" required>
                                 </div>
                             </div>
 
@@ -115,13 +117,13 @@
                             <div class="fila-dos-columnas">
                                 <div class="campo-grupo">
                                     <label for="precioHabitual" class="etiqueta-campo">Precio ($ COP) *</label>
-                                    <input type="number" id="precioHabitual" class="entrada-texto" placeholder="26900" min="1" step="100" required>
+                                    <input type="text" inputmode="numeric" id="precioHabitual" class="entrada-texto" placeholder="Ej. 26900" required autocomplete="off">
                                     <span class="texto-ayuda">En pesos colombianos, IVA incluido. Mayor a 0.</span>
                                     <span class="mensaje-error" id="errorPrecio">Ingresa un precio válido en pesos mayor a 0.</span>
                                 </div>
                                 <div class="campo-grupo">
                                     <label for="precioPromocional" class="etiqueta-campo">Precio promocional ($ COP)</label>
-                                    <input type="number" id="precioPromocional" class="entrada-texto" placeholder="Opcional" min="1" step="100">
+                                    <input type="text" inputmode="numeric" id="precioPromocional" class="entrada-texto" placeholder="Opcional" autocomplete="off">
                                     <span class="texto-ayuda">Debe ser menor al precio habitual.</span>
                                 </div>
                             </div>
@@ -129,7 +131,7 @@
                             <div class="fila-dos-columnas">
                                 <div class="campo-grupo">
                                     <label for="stockProducto" class="etiqueta-campo">Stock disponible *</label>
-                                    <input type="number" id="stockProducto" class="entrada-texto" placeholder="0" min="0" step="1" required>
+                                    <input type="text" inputmode="numeric" id="stockProducto" class="entrada-texto" placeholder="Ej. 10" required autocomplete="off">
                                     <span class="mensaje-error" id="errorStock">El stock debe ser un número entero igual o mayor que 0.</span>
                                 </div>
                                 <div class="campo-grupo">
@@ -181,17 +183,24 @@
                         <section class="tarjeta-formulario">
                             <h2 class="titulo-tarjeta">Imagen *</h2>
                             
-                            <div class="contenedor-previsualizacion" id="cajaPrevisualizacion">
-                                <img id="imagenPrevia" src="../img/logo.png" alt="Previsualización de producto" class="imagen-muestra">
-                                <span class="nombre-archivo-muestra" id="nombreArchivoMuestra">Selecciona una imagen</span>
+                            <div class="caja-subida" id="cajaPrevisualizacion" title="Haz clic o arrastra una imagen aquí">
+                                <img id="imagenPrevia" src="../img/logo.png" alt="Previsualización de producto" class="imagen-previa">
+                                <span class="nombre-archivo" id="nombreArchivoMuestra">Haz clic o arrastra para seleccionar una imagen</span>
+                                <button type="button" id="botonEliminarImagenFlotante" class="boton-eliminar-flotante d-none" title="Eliminar imagen seleccionada">&times;</button>
                             </div>
 
                             <input type="file" id="archivoImagen" class="d-none" accept="image/png, image/jpeg, image/webp">
                             
-                            <button type="button" class="boton-secundario w-100 mt-2" id="botonSubirImagen">
-                                <span class="material-symbols-outlined fs-5">upload</span>
-                                <span>Subir imagen</span>
-                            </button>
+                            <div class="d-flex gap-2 mt-2">
+                                <button type="button" class="boton-secundario flex-grow-1 d-flex align-items-center justify-content-center gap-1" id="botonSubirImagen">
+                                    <span class="material-symbols-outlined fs-5" id="iconoBotonSubir">upload</span>
+                                    <span id="textoBotonSubirImagen">Subir imagen</span>
+                                </button>
+                                <button type="button" class="boton-secundario text-danger d-none align-items-center justify-content-center gap-1" id="botonEliminarImagen" title="Eliminar imagen seleccionada">
+                                    <span class="material-symbols-outlined fs-5">delete</span>
+                                    <span>Eliminar imagen</span>
+                                </button>
+                            </div>
 
                             <div class="campo-grupo mt-3">
                                 <label for="textoAlternativo" class="etiqueta-campo">Texto alternativo *</label>
@@ -207,8 +216,8 @@
                             <div class="campo-grupo">
                                 <label for="estadoPublicacion" class="etiqueta-campo">Estado *</label>
                                 <select id="estadoPublicacion" class="entrada-seleccion" required>
-                                    <option value="Borrador" selected>Borrador</option>
-                                    <option value="Publicado">Publicado</option>
+                                    <option value="Publicado" selected>Publicado</option>
+                                    <option value="Borrador">Borrador</option>
                                 </select>
                             </div>
 
@@ -241,6 +250,7 @@
                     
                     <div class="d-flex gap-2">
                         <button type="button" class="boton-secundario" id="botonCancelar">Cancelar</button>
+                        <button type="button" class="boton-secundario" id="botonGuardarBorrador">Guardar borrador</button>
                         <button type="submit" class="boton-primario" id="botonGuardar">
                             <span class="material-symbols-outlined fs-5">save</span>
                             <span>Crear registro</span>
@@ -260,9 +270,23 @@
     <!-- Mensaje flotante de notificación -->
     <div id="alertaNotificacion" class="notificacion-flotante" role="alert" aria-live="assertive"></div>
 
+    <!-- Capa de bloqueo y animación de carga al guardar -->
+    <div id="capaCargando" class="capa-cargando d-none" aria-live="polite" role="status">
+        <div class="tarjeta-cargando">
+            <div id="contenedorIndicadorCarga">
+                <div class="spinner-aguacate" id="iconoAnimacionCarga"></div>
+            </div>
+            <h3 class="titulo-cargando" id="tituloCargando">Guardando información...</h3>
+            <p class="descripcion-cargando" id="descripcionCargando">Sincronizando el producto con la base de datos de inventario.</p>
+        </div>
+    </div>
+
     <!-- CDN de Bootstrap del curso -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/LocalStorage.js"></script>
     <script src="../js/Adminbarralateral.js"></script>
+    <script src="../js/Servidorinventario.js"></script>
+    <script src="../js/AccionesInventario.js"></script>
     <script src="../js/Admincrearproductos.js"></script>
 </body>
 </html>
