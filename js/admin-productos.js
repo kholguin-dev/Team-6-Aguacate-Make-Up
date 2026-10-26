@@ -250,17 +250,21 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Filtramos por categoría
-    botonesCategoria.forEach(boton => {
-        boton.addEventListener("click", () => {
-            categoriaActual = boton.textContent.trim();
+botonesCategoria.forEach(boton => {
+    boton.addEventListener("click", () => {
+        const categoriaSeleccionada = boton.textContent.trim();
 
-            botonesCategoria.forEach(b => b.classList.remove("active"));
-            boton.classList.add("active");
+        categoriaActual = categoriaSeleccionada === "Todas"
+            ? "Todos"
+            : categoriaSeleccionada;
 
-            paginaActual = 1;
-            renderizarProductos();
-        });
+        botonesCategoria.forEach(b => b.classList.remove("active"));
+        boton.classList.add("active");
+
+        paginaActual = 1;
+        renderizarProductos();
     });
+});
 
     // Atendemos las acciones de cada producto
     tabla.addEventListener("click", evento => {
