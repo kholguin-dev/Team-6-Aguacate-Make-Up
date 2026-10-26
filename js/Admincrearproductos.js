@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!CapaCargando) return;
         if (ContenedorIndicadorCarga) ContenedorIndicadorCarga.innerHTML = '<div class="spinner-aguacate"></div>';
         if (TituloCargando) TituloCargando.textContent = Titulo || 'Guardando información...';
-        if (DescripcionCargando) DescripcionCargando.textContent = Descripcion || 'Sincronizando el producto con la base de datos de inventario.';
+        if (DescripcionCargando) DescripcionCargando.textContent = Descripcion || 'Guardando el producto en el almacenamiento local.';
         CapaCargando.classList.remove('d-none');
         setTimeout(() => CapaCargando.classList.add('activa'), 10);
         AlternarBotonesAccion(true);
@@ -126,21 +126,57 @@ document.addEventListener('DOMContentLoaded', function () {
         if (Botoneliminarimagenflotante) Botoneliminarimagenflotante.classList.toggle('d-none', !tieneImagen);
     }
 
+    // Optimiza la imagen en memoria para evitar saturar el espacio de LocalStorage
+    function OptimizarImagenParaStorage(archivo, alTerminar) {
+        const lector = new FileReader();
+        lector.onload = function (eventoLector) {
+            const img = new Image();
+            img.onload = function () {
+                const limiteMaximo = 800;
+                let ancho = img.width;
+                let alto = img.height;
+
+                if (ancho > limiteMaximo || alto > limiteMaximo) {
+                    if (ancho > alto) {
+                        alto = Math.round((alto * limiteMaximo) / ancho);
+                        ancho = limiteMaximo;
+                    } else {
+                        ancho = Math.round((ancho * limiteMaximo) / alto);
+                        alto = limiteMaximo;
+                    }
+                }
+
+                const canvas = document.createElement('canvas');
+                canvas.width = ancho;
+                canvas.height = alto;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, ancho, alto);
+
+                // Comprimir en formato JPEG ligero para LocalStorage
+                const dataUrlOptimizada = canvas.toDataURL('image/jpeg', 0.82);
+                alTerminar(dataUrlOptimizada);
+            };
+            img.onerror = function () {
+                alTerminar(eventoLector.target.result);
+            };
+            img.src = eventoLector.target.result;
+        };
+        lector.readAsDataURL(archivo);
+    }
+
     function Cargararchivodeimagen(Archivo) {
         if (!Archivo) return;
         if (!Archivo.type.startsWith('image/')) return Mostrarnotificacion('Selecciona un archivo de imagen válido (JPG, PNG, WebP)');
         if (Archivo.size > 5 * 1024 * 1024) return Mostrarnotificacion('La imagen supera el límite permitido de 5 megas');
 
-        const Lector = new FileReader();
-        Lector.onload = function (res) {
-            Imagenenbase = res.target.result;
+        OptimizarImagenParaStorage(Archivo, function (resultadoDataUrl) {
+            Imagenenbase = resultadoDataUrl;
             if (Imagenprevia) Imagenprevia.src = Imagenenbase;
             if (Textonombrearchivo) Textonombrearchivo.textContent = Archivo.name;
             Actualizarbotonesimagen(true);
             ActualizarEstadoBotonActualizar();
             Mostrarnotificacion('Imagen cargada con éxito');
-        };
-        Lector.readAsDataURL(Archivo);
+        });
     }
 
     function Eliminarimagenseleccionada(e) {
@@ -384,21 +420,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         let encontrado = listado.find(coincide);
 
-        // Si no está localmente, consultar Google Sheets
-        if (!encontrado && typeof Obtenerproductosservidor === 'function') {
-            try {
-                const resServidor = await Obtenerproductosservidor();
-                if (resServidor && resServidor.status === 'success' && Array.isArray(resServidor.data)) {
-                    encontrado = resServidor.data.find(coincide);
-                    if (encontrado) {
-                        listado.push(encontrado);
-                        Guardarlistadoproductos(listado);
-                    }
-                }
-            } catch (err) {
-                console.warn('No se pudo recuperar producto remoto:', err);
-            }
-        }
+
 
         if (!encontrado) {
             Actualizarsubcategorias();
@@ -458,13 +480,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (Imagenprevia) {
                 Imagenprevia.src = Imagenenbase;
                 Imagenprevia.onerror = function () {
-                    const idMatch = (urlFoto || '').match(/[?&]id=([a-zA-Z0-9_-]+)/) || (urlFoto || '').match(/\/d\/([a-zA-Z0-9_-]+)/);
-                    if (idMatch && idMatch[1] && !this.dataset.falloThumbnail) {
-                        this.dataset.falloThumbnail = '1';
-                        this.src = 'https://drive.google.com/thumbnail?id=' + idMatch[1] + '&sz=w1000';
-                    } else {
-                        this.src = '../img/logo.png';
-                    }
+                    this.src = '../img/logo.png';
                 };
             }
             if (Textonombrearchivo) Textonombrearchivo.textContent = 'Imagen guardada';
@@ -602,7 +618,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             MostrarAnimacionCarga(
                 Idproductoeditar ? 'Actualizando registro...' : 'Guardando y publicando...',
-                'Sincronizando información del producto con la base de datos de inventario.'
+                'Guardando la información en el almacenamiento local...'
             );
 
             const nuevoProducto = ConstruirProductoFormulario(false);
