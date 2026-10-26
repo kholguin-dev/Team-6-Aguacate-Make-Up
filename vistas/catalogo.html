@@ -1,21 +1,248 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Catálogo | Aguacate Make Up</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="../style.css">
-    <link rel="icon" href="../img/faviconbien.png">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
-</head>
-<body class="d-flex flex-column min-vh-100">
-
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="../style/catalogo.css" />
+    <link rel="icon" href="../img/faviconbien.png" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="d-flex flex-column min-vh-100">
     <header id="header"></header>
 
-    <main class="container my-5 py-5 flex-grow-1">
-        <p class="m-0">esperando catalogo</p>
+    <main class="catalog-page container-fluid py-4">
+      <div class="catalog-layout row g-4">
+        <!-- Panel de filtros -->
+        <aside class="catalog-sidebar col-12 col-lg-3">
+          <form class="catalog-filters" data-catalog-filters>
+            <!-- Ordenar por -->
+            <div class="filter-sort mb-3">
+              <label for="sort-products" class="form-label filter-label">
+                Ordenar por
+              </label>
+
+              <select class="form-select" id="sort-products" name="orden">
+                <option value="recommended">Recomendados</option>
+                <option value="price-asc">Precio: menor a mayor</option>
+                <option value="price-desc">Precio: mayor a menor</option>
+                <option value="name-asc">Nombre: A-Z</option>
+                <option value="name-desc">Nombre: Z-A</option>
+              </select>
+            </div>
+
+            <!-- Categorías -->
+            <section class="filter-section card mb-3">
+              <div class="card-body">
+                <h2 class="filter-title h6">Categorías</h2>
+
+                <div class="form-check filter-option">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="category-all"
+                    name="categorias"
+                    value="all"
+                    checked
+                  />
+                  <label class="form-check-label" for="category-all">
+                    Todas
+                    <span data-category-total>(0)</span>
+                  </label>
+                </div>
+
+                <!-- Las categorías se cargarán desde JavaScript -->
+                <div class="category-list" data-category-list>
+                  <!-- Categorías dinámicas -->
+                </div>
+              </div>
+            </section>
+
+            <!-- Filtros de precio y disponibilidad -->
+            <section class="filter-section card">
+              <div class="card-body">
+                <h2 class="filter-title h6">Precio</h2>
+
+                <div class="row g-2 filter-price">
+                  <div class="col-6">
+                    <label for="price-min" class="form-label"> Desde </label>
+
+                    <input
+                      class="form-control"
+                      type="number"
+                      id="price-min"
+                      name="precioMin"
+                      min="0"
+                      step="0.01"
+                      placeholder="0 $"
+                    />
+                  </div>
+
+                  <div class="col-6">
+                    <label for="price-max" class="form-label"> Hasta </label>
+
+                    <input
+                      class="form-control"
+                      type="number"
+                      id="price-max"
+                      name="precioMax"
+                      min="0"
+                      step="0.01"
+                      placeholder="50 $"
+                    />
+                  </div>
+                </div>
+
+                <!-- Disponibilidad -->
+                <fieldset class="filter-availability mt-4">
+                  <legend class="filter-title h6">Disponibilidad</legend>
+
+                  <div class="form-check filter-option">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="filter-stock"
+                      name="disponibilidad"
+                      value="stock"
+                    />
+                    <label class="form-check-label" for="filter-stock">
+                      En stock
+                    </label>
+                  </div>
+
+                  <div class="form-check filter-option">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="filter-offers"
+                      name="disponibilidad"
+                      value="ofertas"
+                    />
+                    <label class="form-check-label" for="filter-offers">
+                      Solo ofertas
+                    </label>
+                  </div>
+                </fieldset>
+
+                <!-- Acciones de filtros -->
+                <div class="filter-actions mt-3">
+                  <button class="btn btn-primary w-100" type="submit">
+                    Aplicar filtros
+                  </button>
+
+                  <button class="btn btn-link w-100" type="reset">
+                    Limpiar filtros
+                  </button>
+                </div>
+              </div>
+            </section>
+          </form>
+        </aside>
+
+        <!-- contenido principal del catélogo -->
+        <section
+          class="catalog-content col-12 col-lg-9"
+          aria-labelledby="catalog-heading"
+        >
+          <!-- Cabecera del catálogo -->
+          <header
+            class="catalog-header mb-3 d-flex justify-content-between align-items-center flex-wrap gap-3"
+          >
+            <div class="catalog-summary">
+              <h1 class="catalog-title h6" id="catalog-heading">
+                Catálogo de productos
+              </h1>
+
+              <p
+                class="catalog-results mb-0"
+                aria-live="polite"
+                data-catalog-results
+              >
+                Mostrando 0 productos
+              </p>
+            </div>
+
+            <button
+              class="btn btn-outline-primary catalog-category-button"
+              type="button"
+              data-show-all-categories
+            >
+              Todas las categorías
+            </button>
+          </header>
+
+          <!-- Cuadrícula de productos -->
+          <div
+            class="row row-cols-1 row-cols-sm-2 row-cols-xl-4 g-3 product-grid"
+            data-product-grid
+            aria-live="polite"
+          >
+            <!--
+                        Las tarjetas se generarán en el catalogo.js.
+                        Cada producto tendrá su propia tarjeta.
+                    -->
+          </div>
+
+          <!-- Mensaje para catálogo vacío -->
+          <div
+            class="catalog-empty d-none text-center py-5"
+            data-catalog-empty
+            role="status"
+          >
+            <p class="mb-0">
+              No se encontraron productos con los filtros seleccionados.
+            </p>
+          </div>
+
+          <!-- Paginación -->
+          <nav
+            class="catalog-pagination mt-4"
+            aria-label="Paginación del catálogo"
+          >
+            <ul
+              class="pagination justify-content-center flex-wrap gap-2"
+              data-pagination
+            >
+              <!-- Los botones de paginación se generarán con Js -->
+            </ul>
+
+            <p class="pagination-info text-center mb-0" data-pagination-info>
+              Página 1 de 1
+            </p>
+          </nav>
+        </section>
+      </div>
+
+      <!-- banner inferior -->
+      <section
+        class="catalog-help-banner mt-4 p-3"
+        aria-label="Ayuda para elegir productos"
+      >
+        <div
+          class="catalog-help-content d-flex justify-content-between align-items-center flex-wrap gap-3"
+        >
+          <h2 class="catalog-help-title h6 mb-0">
+            ¿No sabes por dónde empezar?
+          </h2>
+
+          <a class="catalog-help-link" href="contacto.html">
+            Escríbenos y te ayudamos
+            <i class="bi bi-arrow-right" aria-hidden="true"></i>
+          </a>
+        </div>
+      </section>
     </main>
 
     <footer class="py-4 mt-auto" id="footer"></footer>
@@ -23,5 +250,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../js/header.js"></script>
     <script src="../js/footer.js"></script>
-</body>
+    <script src="../js/catalogo.js"></script>
+  </body>
 </html>
