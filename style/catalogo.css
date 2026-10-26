@@ -1,1 +1,105 @@
 
+.form-select{
+border-radius: 11px;
+background-color: #fff;
+border: 1px solid #ffcce8;
+min-height: 48px;
+color: #170027;
+}
+
+.form-select:focus{
+  border: 1px solid #5e1797 !important;
+  box-shadow: 0 0 0 0.2rem rgba(94, 23, 151, 0.15) !important;
+  outline: none;
+}
+
+.form-select option:hover {
+    background-color: #170027;
+    color: #ffffff;
+}
+
+.filter-section{
+    border: 1px solid #ffcce8;
+}
+
+.filter-title{
+    color: #170027;
+}
+.form-check-input{
+    border: 1px solid #ca82ed;
+    overflow: hidden;
+}
+.form-check-input:focus{
+  border: 1px solid #5e1797 !important;
+  box-shadow: 0 0 0 0.2rem rgba(94, 23, 151, 0.15) !important;
+  outline: none;
+
+}
+
+.form-check-input:checked {
+    background-color: #5b009e;
+    border-color: #5b009e;
+}
+
+.form-control{
+    border: 1px solid #ca82ed
+}
+.form-control:focus{
+  border: 1px solid #5e1797 !important;
+  box-shadow: 0 0 0 0.2rem rgba(94, 23, 151, 0.15) !important;
+  outline: none;
+
+}
+
+.btn-primary{
+    background-color: #5b009e;
+    border: 1px solid #5b009e;
+    border-radius: 11px;
+}
+
+.btn-primary:hover{
+    background-color: #481174;
+    border-color: #481174;
+
+}
+.btn-link{
+    color: #5b009e;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+.btn-link:hover{
+    color: #481174;
+    
+
+}
+
+.btn-outline-primary{
+    color: #170027;
+    background-color: #ca82ed;
+    border-color: #ca82ed;
+    border-radius: 100px;
+
+}
+.btn-outline-primary:hover{
+    background-color: #5e1797;
+    border-color: #5e1797;
+}
+
+
+.catalog-help-link{
+    color: #5b009e;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.catalog-help-link:hover{
+    color: #481174 ;
+
+}
+.catalog-help-link i {
+    transition: transform 0.3s ease;
+}
+
+.catalog-help-link:hover i {
+    transform: translateX(5px);
+}
