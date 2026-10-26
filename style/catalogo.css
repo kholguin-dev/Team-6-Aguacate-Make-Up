@@ -1,10 +1,12 @@
-
+.form-label{
+    color: #481174;
+}
 .form-select{
-border-radius: 11px;
+border-radius: 11px !important;
 background-color: #fff;
-border: 1px solid #ffcce8;
+border: 1px solid #ffcce8 !important;
 min-height: 48px;
-color: #170027;
+color: #170027 !important;
 }
 
 .form-select:focus{
@@ -14,19 +16,19 @@ color: #170027;
 }
 
 .form-select option:hover {
-    background-color: #170027;
+    background-color: #170027 !important;
     color: #ffffff;
 }
 
 .filter-section{
-    border: 1px solid #ffcce8;
+    border: 1px solid #ffcce8 !important;
 }
 
 .filter-title{
-    color: #170027;
+    color: #170027 !important;
 }
 .form-check-input{
-    border: 1px solid #ca82ed;
+    border: 1px solid #ca82ed !important;
     overflow: hidden;
 }
 .form-check-input:focus{
@@ -37,12 +39,12 @@ color: #170027;
 }
 
 .form-check-input:checked {
-    background-color: #5b009e;
-    border-color: #5b009e;
+    background-color: #5b009e !important;
+    border-color: #5b009e !important;
 }
 
 .form-control{
-    border: 1px solid #ca82ed
+    border: 1px solid #ca82ed !important;
 }
 .form-control:focus{
   border: 1px solid #5e1797 !important;
@@ -52,37 +54,37 @@ color: #170027;
 }
 
 .btn-primary{
-    background-color: #5b009e;
-    border: 1px solid #5b009e;
-    border-radius: 11px;
+    background-color: #5b009e !important;
+    border: 1px solid #5b009e !important;
+    border-radius: 11px !important;
 }
 
 .btn-primary:hover{
-    background-color: #481174;
-    border-color: #481174;
+    background-color: #481174 !important;
+    border-color: #481174 !important;
 
 }
 .btn-link{
-    color: #5b009e;
-    text-decoration: none;
+    color: #5b009e !important;
+    text-decoration: none !important;
     transition: color 0.3s ease;
 }
 .btn-link:hover{
-    color: #481174;
+    color: #481174 !important;
     
 
 }
 
 .btn-outline-primary{
-    color: #170027;
-    background-color: #ca82ed;
-    border-color: #ca82ed;
-    border-radius: 100px;
+    color: #170027 !important;
+    background-color: #ca82ed !important;
+    border-color: #ca82ed !important;
+    border-radius: 100px !important;
 
 }
 .btn-outline-primary:hover{
-    background-color: #5e1797;
-    border-color: #5e1797;
+    background-color: #5e1797 !important;
+    border-color: #5e1797 !important;
 }
 
 
