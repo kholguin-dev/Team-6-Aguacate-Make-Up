@@ -50,49 +50,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    // Sincroniza los productos remotos de Google Sheets con la vista local
-    async function sincronizarConServidor() {
-        if (typeof Obtenerproductosservidor !== "function") return;
-
-        const respuesta = await Obtenerproductosservidor();
-        if (respuesta && respuesta.status === "success" && Array.isArray(respuesta.data) && respuesta.data.length > 0) {
-            const mapaServidor = new Map();
-            respuesta.data.forEach(item => {
-                if (item.sku) {
-                    mapaServidor.set(item.sku.toString().trim().toUpperCase(), item);
-                }
-            });
-
-            mapaServidor.forEach((itemServidor, skuClave) => {
-                const indice = productos.findIndex(p => (p.sku || "").toString().trim().toUpperCase() === skuClave);
-                const productoMapeado = {
-                    id: itemServidor.id || Date.now(),
-                    nombre: itemServidor.nombre,
-                    sku: itemServidor.sku,
-                    marca: itemServidor.marca || "Aguacate Make Up",
-                    categoria: itemServidor.categoria,
-                    subcategoria: itemServidor.subcategoria,
-                    descripcion: itemServidor.descripcion,
-                    precio: Number(itemServidor.precio),
-                    preciopromocional: itemServidor.precioPromocional ? Number(itemServidor.precioPromocional) : null,
-                    stock: Number(itemServidor.stock),
-                    tamano: itemServidor.tamano,
-                    disponibilidad: itemServidor.disponibilidad,
-                    imagen: (typeof NormalizarUrlImagen === "function" ? NormalizarUrlImagen(itemServidor.imagenUrl) : itemServidor.imagenUrl) || "../img/logo.png",
-                    estado: itemServidor.estado || "Publicado"
-                };
-
-                if (indice >= 0) {
-                    productos[indice] = Object.assign({}, productos[indice], productoMapeado);
-                } else {
-                    productos.push(productoMapeado);
-                }
-            });
-
-            guardarProductos();
-            renderizarProductos();
-        }
-    }
 
     // Evitamos interpretar los textos como código HTML
     function escapar(texto) {
@@ -386,7 +343,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Mostramos la tabla al entrar y sincronizamos en segundo plano
+    // Mostramos la tabla al entrar con los datos de LocalStorage
     renderizarProductos();
-    sincronizarConServidor();
 });
