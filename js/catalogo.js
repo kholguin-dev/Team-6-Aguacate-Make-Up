@@ -1,29 +1,20 @@
 
 document.addEventListener("DOMContentLoaded",()=>{
-
     const CLAVE_PRODUCTOS = "admincrearproductos";
-
     const contenedorProductos =
         document.querySelector("[data-product-grid]");
-
     const mensajeVacio =
         document.querySelector("[data-catalog-empty]");
-
     const contadorResultados =
         document.querySelector("[data-catalog-results]");
-
     const listaCategorias =
         document.querySelector("[data-category-list]");
-
     const casillaTodasCategorias =
         document.querySelector("#category-all");
-
     const entradaPrecioMinimo =
         document.querySelector("#price-min");
-
     const entradaPrecioMaximo =
         document.querySelector("#price-max");
-
     const filtroStock =
         document.querySelector("#filter-stock");
 
