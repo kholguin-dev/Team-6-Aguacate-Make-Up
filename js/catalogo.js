@@ -73,6 +73,9 @@ document.addEventListener("DOMContentLoaded",()=>{
 
     // mostrar los productos
 
+  
+    // mostrar los productos
+
     function mostrarProductos(listaProductos){
         if(!contenedorProductos){
             return;
@@ -132,7 +135,32 @@ document.addEventListener("DOMContentLoaded",()=>{
                     });
             }
 
-            contenido.append(nombre,categoria,descripcion,precio);
+
+            // boton del carrito
+
+            const botonCarrito = document.createElement("button");
+            botonCarrito.className = "btn btn-primary w-100";
+            botonCarrito.type = "button";
+
+            botonCarrito.innerHTML =
+                '<i class="bi bi-cart-plus"></i> Agregar al carrito';
+
+            botonCarrito.addEventListener("click",()=>{
+                if(window.servicioCarrito){
+                    window.servicioCarrito.agregarProducto(producto,1);
+                    botonCarrito.textContent = "Agregado al carrito";
+                }else{
+                    console.error("No se encontró el servicio del carrito");
+                }
+            });
+
+            contenido.append(
+                nombre,
+                categoria,
+                descripcion,
+                precio,
+                botonCarrito
+            );
 
             tarjeta.append(imagen,contenido);
             contenedorProductos.appendChild(tarjeta);
@@ -150,6 +178,8 @@ document.addEventListener("DOMContentLoaded",()=>{
             );
         }
     }
+
+
 
 
     // mostrar las categorias
