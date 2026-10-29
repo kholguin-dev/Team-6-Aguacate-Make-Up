@@ -28,6 +28,10 @@ document.addEventListener("DOMContentLoaded",()=>{
         document.querySelector("#sort-products");
 
 
+    if (typeof window.InicializarProductosSemilla === "function") {
+        window.InicializarProductosSemilla();
+    }
+
     // recuperar los productos
 
     function obtenerProductosGuardados(){
@@ -79,12 +83,17 @@ document.addEventListener("DOMContentLoaded",()=>{
             tarjeta.className = "card h-100";
 
             const imagen = document.createElement("img");
-            imagen.src = producto.imagen || "../img/logo.png";
-            imagen.alt = producto.textoalternativo || producto.nombre || "Producto";
+            const urlImagen = (typeof window.NormalizarUrlImagen === "function")
+                ? window.NormalizarUrlImagen(producto.imagen)
+                : (producto.imagen || "../img/logo.png");
+            imagen.src = urlImagen;
+            imagen.alt = producto.textoAlternativo || producto.textoalternativo || producto.nombre || "Producto";
             imagen.className = "card-img-top";
 
             imagen.addEventListener("error",()=>{
-                imagen.src = "../img/logo.png";
+                imagen.src = (typeof window.NormalizarUrlImagen === "function")
+                    ? window.NormalizarUrlImagen("../img/logo.png")
+                    : "../img/logo.png";
             },{once:true});
 
             const contenido = document.createElement("div");
@@ -141,8 +150,8 @@ document.addEventListener("DOMContentLoaded",()=>{
             }
 
             botonCarrito.addEventListener("click",()=>{
-                if(!window.servicioCarrito){
-                    alert("No se pudo conectar con el carrito. Intenta nuevamente.");
+                const servicio = window.servicioCarrito || window.servicioscarrito;
+                if(!servicio){
                     console.error("No se encontró el servicio del carrito");
                     return;
                 }
@@ -153,15 +162,12 @@ document.addEventListener("DOMContentLoaded",()=>{
                 }
 
                 try{
-                    window.servicioCarrito.agregarProducto(producto,1);
-
-                    alert(
-                        producto.nombre +
-                        " se agregó al carrito correctamente."
-                    );
+                    servicio.agregarProducto(producto, 1);
+                    if (typeof window.openCart === "function") {
+                        window.openCart();
+                    }
                 }catch(error){
-                    console.error("Error al agregar al carrito:",error);
-                    alert("No se pudo agregar el producto. Intenta nuevamente.");
+                    console.error("Error al agregar al carrito:", error);
                 }
             });
 

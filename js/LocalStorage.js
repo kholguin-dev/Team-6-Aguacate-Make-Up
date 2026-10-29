@@ -6,14 +6,37 @@
 const Clavealmacenamiento = 'admincrearproductos';
 const Claveproductos = 'admincrearproductos';
 
-// Normaliza enlaces de imágenes (Base64, rutas locales o enlaces guardados de Google Drive)
+// Normaliza enlaces de imágenes (Base64, rutas locales relativas o enlaces de Google Drive)
 function NormalizarUrlImagen(Url) {
-    if (!Url || Url === '../img/logo.png') return '../img/logo.png';
-    const Cadena = String(Url).trim();
+    const estaEnVistas = typeof window !== 'undefined' &&
+        window.location.pathname.replace(/\\/g, "/").toLowerCase().includes("/vistas/");
+    const prefijo = estaEnVistas ? "../img/" : "img/";
+    const logoPorDefecto = prefijo + "logo.png";
+
+    if (!Url) return logoPorDefecto;
+    let Cadena = String(Url).trim();
     if (Cadena.startsWith('data:image')) return Cadena;
+
+    // Normaliza nombres de carpetas con tildes o codificación URL hacia img-catalogo
+    Cadena = Cadena.replace(/img-cat[%C3%A1|álogo]+/gi, 'img-catalogo');
+
     // Soporte para enlaces de Google Drive existentes en almacenamiento
     const Coincidencia = Cadena.match(/[?&]id=([a-zA-Z0-9_-]+)/) || Cadena.match(/\/d\/([a-zA-Z0-9_-]+)/);
-    return Coincidencia ? 'https://lh3.googleusercontent.com/d/' + Coincidencia[1] : Cadena;
+    if (Coincidencia) {
+        return 'https://lh3.googleusercontent.com/d/' + Coincidencia[1];
+    }
+
+    if (Cadena.startsWith('http://') || Cadena.startsWith('https://')) {
+        return Cadena;
+    }
+
+    if (Cadena.endsWith('logo.png')) {
+        return logoPorDefecto;
+    }
+
+    // Limpia prefijos relativos anteriores como ../img/ o ./img/ o /img/ o img/
+    const limpia = Cadena.replace(/^(\.\.\/|\.\/|\/)?img\//i, '');
+    return prefijo + limpia;
 }
 
 // Lee los productos guardados o retorna arreglo vacío
