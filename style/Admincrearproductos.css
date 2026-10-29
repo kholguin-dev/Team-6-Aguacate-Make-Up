@@ -47,59 +47,7 @@ body.cuerpo-administracion {
     overflow-y: auto;
 }
 
-/* Barra superior */
-.barra-superior {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-bottom: 18px;
-    border-bottom: 1px solid var(--borde-rosa);
-}
 
-.ruta-migas {
-    color: var(--texto-morado);
-    font-size: 13px;
-    font-weight: 500;
-}
-
-.perfil-usuario {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.icono-notificacion {
-    color: var(--color-primario);
-    cursor: pointer;
-}
-
-.avatar-usuario {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background-color: var(--acento-lila);
-    color: var(--fondo-barra);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    font-weight: 700;
-}
-
-.nombre-usuario {
-    color: var(--texto-oscuro);
-    font-size: 14px;
-    font-weight: 700;
-}
-
-.insignia-rol {
-    background-color: var(--acento-lila);
-    color: var(--fondo-barra);
-    padding: 3px 10px;
-    border-radius: 100px;
-    font-size: 11px;
-    font-weight: 700;
-}
 
 /* Encabezado de la vista */
 .encabezado-seccion {
