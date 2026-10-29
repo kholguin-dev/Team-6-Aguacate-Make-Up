@@ -99,11 +99,11 @@ body {
     top: 8px;
     left: 50%;
     transform: translateX(-50%);
-    width: 142px;
-    height: 142px;
+    width: 90px;
+    height: 90px;
     padding: 8px; /* Ajustado de 16px a 8px para que el logo sea más grande */
     box-sizing: border-box;
-    border-radius: 36px;
+    border-radius: 20px;
     background-color: #ac3ee6 !important; /* Morado del prototipo */
     display: flex;
     align-items: center;
@@ -270,7 +270,7 @@ body {
 /* Adaptación responsive para pantallas móviles / tablets */
 @media (max-width: 860px) {
     .nav-custom-figma {
-        padding: 106px 20px 16px;
+        padding: 100px 10px 16px;
         flex-wrap: wrap;
         justify-content: center;
         gap: 16px;
@@ -284,10 +284,10 @@ body {
         gap: 12px;
     }
     .logo-custom-figma {
-        width: 90px;
-        height: 90px;
-        border-radius: 24px;
-        padding: 6px;
+        width: 50px;
+        height: 50px;
+        border-radius: 10px;
+        padding: 4px;
         top: 6px;
     }
 }
