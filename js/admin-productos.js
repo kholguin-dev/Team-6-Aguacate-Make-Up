@@ -293,9 +293,59 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!producto) return;
 
-        // La acción "ver" no realiza ninguna acción
+
+        // mostrar la información del producto
+
         if (boton.dataset.accion === "ver") {
-            evento.preventDefault();
+            const modal = document.querySelector("#modalVerProducto");
+            const detalle = document.querySelector("#detalleProducto");
+
+            if (!modal || !detalle) {
+                alert("No se encontró la ventana del producto.");
+                return;
+            }
+
+            detalle.innerHTML = `
+                <div class="text-center mb-3">
+                    <img
+                        src="${typeof NormalizarUrlImagen === "function"
+                    ? NormalizarUrlImagen(producto.imagen)
+                    : (producto.imagen || "../img/logo.png")}"
+                        alt="${escapar(producto.nombre)}"
+                        class="img-fluid rounded"
+                        style="max-height: 180px; object-fit: contain;"
+                        onerror="this.src='../img/logo.png'"
+                    >
+                </div>
+
+                <h5>${escapar(producto.nombre)}</h5>
+
+                <p><strong>Referencia:</strong>
+                    ${escapar(producto.sku || producto.referencia || "Sin referencia")}
+                </p>
+
+                <p><strong>Categoría:</strong>
+                    ${escapar(producto.categoria || "Sin categoría")}
+                </p>
+
+                <p><strong>Descripción:</strong>
+                    ${escapar(producto.descripcion || "Sin descripción")}
+                </p>
+
+                <p><strong>Precio:</strong>
+                    ${formatoPrecio(producto.precio)}
+                </p>
+
+                <p><strong>Stock:</strong>
+                    ${Number(producto.stock) || 0} unidades
+                </p>
+
+                <p><strong>Estado:</strong>
+                    ${escapar(producto.estado || "Sin estado")}
+                </p>
+            `;
+
+            bootstrap.Modal.getOrCreateInstance(modal).show();
             return;
         }
 
