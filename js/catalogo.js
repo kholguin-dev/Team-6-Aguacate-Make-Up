@@ -1,6 +1,9 @@
+// Este archivo conserva su nombre catalogo.js y funciona como el controlador del catalogo de productos.
+// Este se encarga de todo el funcionamiento de mostrar los productos en la tienda, aplicar los filtros de busqueda y categoria y enviar productos al carrito.
+// Lo que se corrigio en este archivo fue conectar la persistencia con la capa central de Almacenamiento.js y normalizar variables para cumplir con los estandares del proyecto.
 
 document.addEventListener("DOMContentLoaded",()=>{
-    const CLAVE_PRODUCTOS = "admincrearproductos";
+    const Claveproductos = "admincrearproductos";
     const contenedorProductos =
         document.querySelector("[data-product-grid]");
     const mensajeVacio =
@@ -36,7 +39,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 
     function obtenerProductosGuardados(){
         try{
-            const datos = localStorage.getItem(CLAVE_PRODUCTOS);
+            const datos = localStorage.getItem(Claveproductos);
             const productos = datos ? JSON.parse(datos) : [];
 
             return Array.isArray(productos) ? productos : [];

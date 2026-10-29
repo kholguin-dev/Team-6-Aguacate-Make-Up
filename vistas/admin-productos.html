@@ -35,19 +35,7 @@
           class="container-fluid bg-white p-4 rounded-4 shadow-sm dashboard-container"
         >
           <!-- 1. Header reutilizable -->
-          <div id="header-container"></div>
-
-          <!-- Script para cargar header_admin.html -->
-          <script>
-            fetch("../componentes/header_admin.html")
-              .then((respuesta) => respuesta.text())
-              .then((html) => {
-                document.getElementById("header-container").innerHTML = html;
-              })
-              .catch((error) =>
-                console.error("Error al cargar el header:", error),
-              );
-          </script>
+          <div id="header-container" class="mb-4"></div>
 
           <!-- 2. Encabezado de Sección -->
           <section
@@ -293,7 +281,7 @@
                   <li class="page-item active">
                     <a
                       class="page-link rounded border-0"
-                      style="background-color: var(--primary-light, #5e1797)"
+                      style="background-color: #5B009E; border-color: #5B009E; color: #ffffff;"
                       href="#"
                       >1</a
                     >
@@ -305,7 +293,7 @@
                     <a class="page-link rounded" href="#"
                       ><i
                         class="bi bi-chevron-right"
-                        style="color: var(--primary-light, #5e1797)"
+                        style="color: #5B009E;"
                       ></i
                     ></a>
                   </li>
@@ -364,14 +352,8 @@
       </div>
     </div>
 
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
-      crossorigin="anonymous"
-    />
-    <script src="../js/LocalStorage.js"></script>
-    <script src="../js/datos-semilla.js"></script>
+    <script src="../js/Almacenamiento.js"></script>
+    <script src="../js/Datosinicial.js"></script>
     <script>
       window.InicializarProductosSemilla();
     </script>

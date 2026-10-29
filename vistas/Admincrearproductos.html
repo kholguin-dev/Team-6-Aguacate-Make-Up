@@ -3,9 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel Administrativo - Crear Producto | Aguacate Make Up</title>
-    <!-- CDN de Bootstrap del curso -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <title>Crear producto | Aguacate Make Up</title>
+    <!-- CDN de Bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
     <!-- Tipografía Inter y Material Symbols -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,262 +23,266 @@
     <!-- Hojas de estilo: global y modular -->
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="../style/Adminbarralateral.css">
-    <link rel="stylesheet" href="../style/header_admin.css" />
+    <link rel="stylesheet" href="../style/admin-productos.css">
+    <link rel="stylesheet" href="../style/header_admin.css">
     <link rel="stylesheet" href="../style/Admincrearproductos.css">
     <link rel="icon" href="../img/faviconbien.png">
 </head>
-<body class="cuerpo-administracion">
+<body class="cuerpo-administracion bg-light">
     <div class="contenedor-panel">
         
         <!-- Barra lateral administrativa modular -->
         <div id="adminBarraLateral"></div>
 
-        <!-- Área de contenido principal -->
-        <main class="area-contenido" id="areaContenido">
-            
-            <!-- Barra superior con usuario y migas de pan -->
-            <header class="barra-superior">
-                <div class="ruta-migas">Administración / Gestión productos / Crear productos</div>
-                <div class="perfil-usuario">
-                    <span class="material-symbols-outlined icono-notificacion">notifications</span>
-                    <div class="avatar-usuario">EV</div>
-                    <span class="nombre-usuario">Elena Vidal</span>
-                    <span class="insignia-rol">Administrador</span>
-                </div>
-            </header>
+        <!-- Área de contenido principal estructurada en tarjeta dashboard idéntica a admin-productos -->
+        <div class="flex-grow-1 overflow-auto">
+            <main class="container-fluid bg-white p-4 rounded-4 shadow-sm dashboard-container area-contenido" id="areaContenido">
+                
+                <!-- 1. Header reutilizable modular -->
+                <div id="header-admin-container" class="mb-4"></div>
 
-            <div id="header-admin-container"></div>
+                <!-- 2. Encabezado de Sección coherente con admin-productos -->
+                <section class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                    <div>
+                        <h2 class="fw-bold mb-1" style="color: #310055">Crear producto</h2>
+                        <p class="subtitulo-seccion m-0">Completa la ficha antes de publicar. Los campos con * son obligatorios.</p>
+                    </div>
 
-            
+                    <a href="admin-productos.html" class="btn btn-brand rounded-3 px-3 py-2 btn-sm fw-semibold text-white d-inline-flex align-items-center gap-1" style="background-color: var(--primary-light, #5B009E); border-color: var(--primary-light, #5B009E);">
+                        <i class="bi bi-arrow-left"></i> Volver a productos
+                    </a>
+                </section>
 
-            <!-- Encabezado de la vista -->
-            <section class="encabezado-seccion">
-                <h1 class="titulo-vista">Crear producto</h1>
-                <p class="descripcion-vista">Completa la ficha antes de publicar. Los campos con * son obligatorios.</p>
-                <div class="d-flex align-items-center gap-2 mt-2">
-                    <span class="insignia-estado">CREACIÓN · NUEVO REGISTRO</span>
-                    <span class="aviso-guardado">Los cambios no se publican hasta guardar.</span>
-                </div>
-            </section>
+                <!-- 3. Insignias / Badges de estado coherentes con admin-productos -->
+                <section class="d-flex flex-wrap gap-2 mb-4 align-items-center">
+                    <span class="badge text-white px-3 py-2 rounded-pill fw-bold" style="background-color: #ca82ed; color: #310055">CREACIÓN · NUEVO REGISTRO</span>
+                    <span class="badge text-white px-3 py-2 rounded-pill fw-bold" style="background-color: #ffcce8; color: #310055">Borrador automático activo</span>
+                    <span class="text-muted small ms-2">Los cambios no se publican en catálogo hasta guardar.</span>
+                </section>
 
-            <!-- Formulario de creación de producto -->
-            <form id="formularioProducto" class="formulario-creacion" novalidate>
-                <div class="rejilla-formulario">
-                    
-                    <!-- Columna principal (izquierda) -->
-                    <div class="columna-principal">
+                <!-- Formulario de creación de producto -->
+                <form id="formularioProducto" class="formulario-creacion" novalidate>
+                    <div class="rejilla-formulario">
                         
-                        <!-- Tarjeta 1: Información básica -->
-                        <section class="tarjeta-formulario">
-                            <h2 class="titulo-tarjeta">Información básica</h2>
+                        <!-- Columna principal (izquierda) -->
+                        <div class="columna-principal">
                             
-                            <div class="campo-grupo">
-                                <label for="nombreProducto" class="etiqueta-campo">Nombre del producto *</label>
-                                <input type="text" id="nombreProducto" class="entrada-texto" placeholder="Ej. Sérum Calm" required>
-                                <span class="mensaje-error" id="errorNombre">Por favor ingresa el nombre del producto.</span>
-                            </div>
-
-                            <div class="fila-dos-columnas">
+                            <!-- Tarjeta 1: Información básica -->
+                            <section class="tarjeta-formulario">
+                                <h2 class="titulo-tarjeta">Información básica</h2>
+                                
                                 <div class="campo-grupo">
-                                    <label for="categoriaProducto" class="etiqueta-campo">Categoría *</label>
-                                    <select id="categoriaProducto" class="entrada-seleccion" required>
-                                        <option value="" selected>Selecciona una categoría</option>
-                                        <option value="Skincare">Skincare</option>
-                                        <option value="Maquillaje">Maquillaje</option>
-                                        <option value="Accesorios">Accesorios</option>
-                                    </select>
+                                    <label for="nombreProducto" class="etiqueta-campo">Nombre del producto *</label>
+                                    <input type="text" id="nombreProducto" class="entrada-texto" placeholder="Ej. Sérum Calm" required>
+                                    <span class="mensaje-error" id="errorNombre">Por favor ingresa el nombre del producto.</span>
                                 </div>
-                                <div class="campo-grupo">
-                                    <label for="subcategoriaProducto" class="etiqueta-campo">Subcategoría *</label>
-                                    <select id="subcategoriaProducto" class="entrada-seleccion" required>
-                                        <option value="" selected>Selecciona una subcategoría</option>
-                                    </select>
-                                    <span class="texto-ayuda">Subcategoría vinculada a la nomenclatura de inventario.</span>
-                                </div>
-                            </div>
 
-                            <div class="fila-dos-columnas">
-                                <div class="campo-grupo">
-                                    <label for="skuProducto" class="etiqueta-campo">Referencia / SKU *</label>
-                                    <div class="grupo-entrada-boton">
-                                        <input type="text" id="skuProducto" class="entrada-texto text-uppercase" placeholder="Ej. SKSER001 o MQCAR001" maxlength="12" required autocomplete="off">
-                                        <button type="button" id="botonGenerarSku" class="boton-accion-sku" title="Regenerar SKU automáticamente según categoría">
-                                            <span class="material-symbols-outlined fs-6">sync</span>
-                                            <span>Auto</span>
-                                        </button>
+                                <div class="fila-dos-columnas">
+                                    <div class="campo-grupo">
+                                        <label for="categoriaProducto" class="etiqueta-campo">Categoría *</label>
+                                        <select id="categoriaProducto" class="entrada-seleccion" required>
+                                            <option value="" selected>Selecciona una categoría</option>
+                                            <option value="Skincare">Skincare</option>
+                                            <option value="Maquillaje">Maquillaje</option>
+                                            <option value="Accesorios">Accesorios</option>
+                                        </select>
                                     </div>
-                                    <span class="texto-ayuda" id="ayudaSku">Estructura requerida: exactamente 5 letras mayúsculas seguidas de 3 a 7 números (8 a 12 caracteres).</span>
-                                    <span class="mensaje-error" id="errorSku">El código SKU es obligatorio y no puede estar repetido.</span>
-                                    <span class="mensaje-exito" id="exitoSku" style="display:none; color:#1F7A37; font-size:12px; font-weight:600; margin-top:4px;">Código disponible para usar.</span>
+                                    <div class="campo-grupo">
+                                        <label for="subcategoriaProducto" class="etiqueta-campo">Subcategoría *</label>
+                                        <select id="subcategoriaProducto" class="entrada-seleccion" required>
+                                            <option value="" selected>Selecciona una subcategoría</option>
+                                        </select>
+                                        <span class="texto-ayuda">Subcategoría vinculada a la nomenclatura de inventario.</span>
+                                    </div>
                                 </div>
+
+                                <div class="fila-dos-columnas">
+                                    <div class="campo-grupo">
+                                        <label for="skuProducto" class="etiqueta-campo">Referencia / SKU *</label>
+                                        <div class="grupo-entrada-boton">
+                                            <input type="text" id="skuProducto" class="entrada-texto text-uppercase" placeholder="Ej. SKSER001 o MQCAR001" maxlength="12" required autocomplete="off">
+                                            <button type="button" id="botonGenerarSku" class="boton-accion-sku" title="Regenerar SKU automáticamente según categoría">
+                                                <span class="material-symbols-outlined fs-6">sync</span>
+                                                <span>Auto</span>
+                                            </button>
+                                        </div>
+                                        <span class="texto-ayuda" id="ayudaSku">Estructura requerida: exactamente 5 letras mayúsculas seguidas de 3 a 7 números (8 a 12 caracteres).</span>
+                                        <span class="mensaje-error" id="errorSku">El código SKU es obligatorio y no puede estar repetido.</span>
+                                        <span class="mensaje-exito" id="exitoSku" style="display:none; color:#1F7A37; font-size:12px; font-weight:600; margin-top:4px;">Código disponible para usar.</span>
+                                    </div>
+                                    <div class="campo-grupo">
+                                        <label for="marcaProducto" class="etiqueta-campo">Marca *</label>
+                                        <input type="text" id="marcaProducto" class="entrada-texto" value="Aguacate Make Up" required>
+                                    </div>
+                                </div>
+
                                 <div class="campo-grupo">
-                                    <label for="marcaProducto" class="etiqueta-campo">Marca *</label>
-                                    <input type="text" id="marcaProducto" class="entrada-texto" value="Aguacate Make Up" required>
+                                    <label for="descripcionProducto" class="etiqueta-campo">Descripción *</label>
+                                    <textarea id="descripcionProducto" class="entrada-area" rows="3" placeholder="Sérum calmante de textura ligera para una rutina de cuidado diario." required></textarea>
+                                    <span class="mensaje-error" id="errorDescripcion">Por favor describe brevemente el producto.</span>
                                 </div>
-                            </div>
+                            </section>
 
-                            <div class="campo-grupo">
-                                <label for="descripcionProducto" class="etiqueta-campo">Descripción *</label>
-                                <textarea id="descripcionProducto" class="entrada-area" rows="3" placeholder="Sérum calmante de textura ligera para una rutina de cuidado diario." required></textarea>
-                                <span class="mensaje-error" id="errorDescripcion">Por favor describe brevemente el producto.</span>
-                            </div>
-                        </section>
+                            <!-- Tarjeta 2: Precio y disponibilidad -->
+                            <section class="tarjeta-formulario">
+                                <h2 class="titulo-tarjeta">Precio y disponibilidad</h2>
+                                
+                                <div class="fila-dos-columnas">
+                                    <div class="campo-grupo">
+                                        <label for="precioHabitual" class="etiqueta-campo">Precio ($ COP) *</label>
+                                        <input type="text" inputmode="numeric" id="precioHabitual" class="entrada-texto" placeholder="Ej. 26900" required autocomplete="off">
+                                        <span class="texto-ayuda">En pesos colombianos, IVA incluido. Mayor a 0.</span>
+                                        <span class="mensaje-error" id="errorPrecio">Ingresa un precio válido en pesos mayor a 0.</span>
+                                    </div>
+                                    <div class="campo-grupo">
+                                        <label for="precioPromocional" class="etiqueta-campo">Precio promocional ($ COP)</label>
+                                        <input type="text" inputmode="numeric" id="precioPromocional" class="entrada-texto" placeholder="Opcional" autocomplete="off">
+                                        <span class="texto-ayuda">Debe ser menor al precio habitual.</span>
+                                    </div>
+                                </div>
 
-                        <!-- Tarjeta 2: Precio y disponibilidad -->
-                        <section class="tarjeta-formulario">
-                            <h2 class="titulo-tarjeta">Precio y disponibilidad</h2>
+                                <div class="fila-dos-columnas">
+                                    <div class="campo-grupo">
+                                        <label for="stockProducto" class="etiqueta-campo">Stock disponible *</label>
+                                        <input type="text" inputmode="numeric" id="stockProducto" class="entrada-texto" placeholder="Ej. 10" required autocomplete="off">
+                                        <span class="mensaje-error" id="errorStock">El stock debe ser un número entero igual o mayor que 0.</span>
+                                    </div>
+                                    <div class="campo-grupo">
+                                        <label for="tamanoProducto" class="etiqueta-campo">Contenido / tamaño *</label>
+                                        <input type="text" id="tamanoProducto" class="entrada-texto" placeholder="Ej. 30 ml" required>
+                                    </div>
+                                </div>
+
+                                <div class="campo-grupo">
+                                    <label for="disponibilidadProducto" class="etiqueta-campo">Disponibilidad *</label>
+                                    <select id="disponibilidadProducto" class="entrada-seleccion" required>
+                                        <option value="En stock" selected>En stock</option>
+                                        <option value="Agotado">Agotado</option>
+                                        <option value="Próximamente">Próximamente</option>
+                                    </select>
+                                </div>
+                            </section>
+
+                            <!-- Tarjeta 3: Información complementaria -->
+                            <section class="tarjeta-formulario">
+                                <h2 class="titulo-tarjeta">Información complementaria</h2>
+                                
+                                <div class="campo-grupo">
+                                    <label for="beneficiosProducto" class="etiqueta-campo">Beneficios</label>
+                                    <input type="text" id="beneficiosProducto" class="entrada-texto" placeholder="Calma e hidrata la piel">
+                                </div>
+
+                                <div class="campo-grupo">
+                                    <label for="modoUsoProducto" class="etiqueta-campo">Modo de uso</label>
+                                    <textarea id="modoUsoProducto" class="entrada-area" rows="2" placeholder="Aplica 2 a 3 gotas sobre la piel limpia, antes de la crema hidratante."></textarea>
+                                </div>
+
+                                <div class="campo-grupo">
+                                    <label for="ingredientesProducto" class="etiqueta-campo">Ingredientes clave</label>
+                                    <input type="text" id="ingredientesProducto" class="entrada-texto" placeholder="Pantenol, glicerina, extracto de aguacate">
+                                </div>
+
+                                <div class="campo-grupo">
+                                    <label for="precaucionesProducto" class="etiqueta-campo">Precauciones</label>
+                                    <textarea id="precaucionesProducto" class="entrada-area" rows="2" placeholder="Uso externo. Evitar el contacto directo con los ojos."></textarea>
+                                </div>
+                            </section>
+                        </div>
+
+                        <!-- Columna lateral (derecha) -->
+                        <div class="columna-lateral">
                             
-                            <div class="fila-dos-columnas">
-                                <div class="campo-grupo">
-                                    <label for="precioHabitual" class="etiqueta-campo">Precio ($ COP) *</label>
-                                    <input type="text" inputmode="numeric" id="precioHabitual" class="entrada-texto" placeholder="Ej. 26900" required autocomplete="off">
-                                    <span class="texto-ayuda">En pesos colombianos, IVA incluido. Mayor a 0.</span>
-                                    <span class="mensaje-error" id="errorPrecio">Ingresa un precio válido en pesos mayor a 0.</span>
+                            <!-- Tarjeta 4: Carga de imagen -->
+                            <section class="tarjeta-formulario">
+                                <h2 class="titulo-tarjeta">Imagen *</h2>
+                                
+                                <div class="caja-subida" id="cajaPrevisualizacion" title="Haz clic o arrastra una imagen aquí">
+                                    <img id="imagenPrevia" src="../img/logo.png" alt="Previsualización de producto" class="imagen-previa">
+                                    <span class="nombre-archivo" id="nombreArchivoMuestra">Haz clic o arrastra para seleccionar una imagen</span>
+                                    <button type="button" id="botonEliminarImagenFlotante" class="boton-eliminar-flotante d-none" title="Eliminar imagen seleccionada">&times;</button>
                                 </div>
-                                <div class="campo-grupo">
-                                    <label for="precioPromocional" class="etiqueta-campo">Precio promocional ($ COP)</label>
-                                    <input type="text" inputmode="numeric" id="precioPromocional" class="entrada-texto" placeholder="Opcional" autocomplete="off">
-                                    <span class="texto-ayuda">Debe ser menor al precio habitual.</span>
+
+                                <input type="file" id="archivoImagen" class="d-none" accept="image/png, image/jpeg, image/webp">
+                                
+                                <div class="d-flex gap-2 mt-2">
+                                    <button type="button" class="btn btn-outline-secondary flex-grow-1 d-inline-flex align-items-center justify-content-center gap-1" id="botonSubirImagen">
+                                        <span class="material-symbols-outlined fs-5" id="iconoBotonSubir">upload</span>
+                                        <span id="textoBotonSubirImagen">Subir imagen</span>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-danger d-none align-items-center justify-content-center gap-1" id="botonEliminarImagen" title="Eliminar imagen seleccionada">
+                                        <span class="material-symbols-outlined fs-5">delete</span>
+                                        <span>Eliminar imagen</span>
+                                    </button>
                                 </div>
-                            </div>
 
-                            <div class="fila-dos-columnas">
-                                <div class="campo-grupo">
-                                    <label for="stockProducto" class="etiqueta-campo">Stock disponible *</label>
-                                    <input type="text" inputmode="numeric" id="stockProducto" class="entrada-texto" placeholder="Ej. 10" required autocomplete="off">
-                                    <span class="mensaje-error" id="errorStock">El stock debe ser un número entero igual o mayor que 0.</span>
+                                <div class="campo-grupo mt-3">
+                                    <label for="textoAlternativo" class="etiqueta-campo">Texto alternativo *</label>
+                                    <input type="text" id="textoAlternativo" class="entrada-texto" placeholder="Envase de Sérum Calm, 30 ml" required>
+                                    <span class="texto-ayuda">JPG o PNG · Máximo 5 MB · Imagen cuadrada recomendada.</span>
                                 </div>
+                            </section>
+
+                            <!-- Tarjeta 5: Publicación -->
+                            <section class="tarjeta-formulario">
+                                <h2 class="titulo-tarjeta">Publicación</h2>
+                                
                                 <div class="campo-grupo">
-                                    <label for="tamanoProducto" class="etiqueta-campo">Contenido / tamaño *</label>
-                                    <input type="text" id="tamanoProducto" class="entrada-texto" placeholder="Ej. 30 ml" required>
+                                    <label for="estadoPublicacion" class="etiqueta-campo">Estado *</label>
+                                    <select id="estadoPublicacion" class="entrada-seleccion" required>
+                                        <option value="Publicado" selected>Publicado</option>
+                                        <option value="Borrador">Borrador</option>
+                                    </select>
                                 </div>
-                            </div>
 
-                            <div class="campo-grupo">
-                                <label for="disponibilidadProducto" class="etiqueta-campo">Disponibilidad *</label>
-                                <select id="disponibilidadProducto" class="entrada-seleccion" required>
-                                    <option value="En stock" selected>En stock</option>
-                                    <option value="Agotado">Agotado</option>
-                                    <option value="Próximamente">Próximamente</option>
-                                </select>
-                            </div>
-                        </section>
+                                <div class="opcion-casilla">
+                                    <input type="checkbox" id="casillaDestacado" class="control-casilla">
+                                    <label for="casillaDestacado" class="etiqueta-casilla">Producto destacado</label>
+                                </div>
 
-                        <!-- Tarjeta 3: Información complementaria -->
-                        <section class="tarjeta-formulario">
-                            <h2 class="titulo-tarjeta">Información complementaria</h2>
-                            
-                            <div class="campo-grupo">
-                                <label for="beneficiosProducto" class="etiqueta-campo">Beneficios</label>
-                                <input type="text" id="beneficiosProducto" class="entrada-texto" placeholder="Calma e hidrata la piel">
-                            </div>
+                                <div class="opcion-casilla">
+                                    <input type="checkbox" id="casillaNovedades" class="control-casilla" checked>
+                                    <label for="casillaNovedades" class="etiqueta-casilla">Mostrar en novedades</label>
+                                </div>
 
-                            <div class="campo-grupo">
-                                <label for="modoUsoProducto" class="etiqueta-campo">Modo de uso</label>
-                                <textarea id="modoUsoProducto" class="entrada-area" rows="2" placeholder="Aplica 2 a 3 gotas sobre la piel limpia, antes de la crema hidratante."></textarea>
-                            </div>
+                                <span class="texto-ayuda mt-2">Un borrador no aparece en el catálogo público de la tienda.</span>
+                            </section>
 
-                            <div class="campo-grupo">
-                                <label for="ingredientesProducto" class="etiqueta-campo">Ingredientes clave</label>
-                                <input type="text" id="ingredientesProducto" class="entrada-texto" placeholder="Pantenol, glicerina, extracto de aguacate">
-                            </div>
-
-                            <div class="campo-grupo">
-                                <label for="precaucionesProducto" class="etiqueta-campo">Precauciones</label>
-                                <textarea id="precaucionesProducto" class="entrada-area" rows="2" placeholder="Uso externo. Evitar el contacto directo con los ojos."></textarea>
-                            </div>
-                        </section>
+                            <!-- Tarjeta 6: Reglas de validación -->
+                            <section class="tarjeta-aviso">
+                                <span class="aviso-titulo">Reglas de validación</span>
+                                <p class="aviso-cuerpo">
+                                    Nombre, SKU, categoría, imagen y precio son obligatorios. El SKU debe ser único. Precio en pesos positivo. Stock entero no negativo. Los datos se conservan si hay errores.
+                                </p>
+                            </section>
+                        </div>
                     </div>
 
-                    <!-- Columna lateral (derecha) -->
-                    <div class="columna-lateral">
-                        
-                        <!-- Tarjeta 4: Carga de imagen -->
-                        <section class="tarjeta-formulario">
-                            <h2 class="titulo-tarjeta">Imagen *</h2>
-                            
-                            <div class="caja-subida" id="cajaPrevisualizacion" title="Haz clic o arrastra una imagen aquí">
-                                <img id="imagenPrevia" src="../img/logo.png" alt="Previsualización de producto" class="imagen-previa">
-                                <span class="nombre-archivo" id="nombreArchivoMuestra">Haz clic o arrastra para seleccionar una imagen</span>
-                                <button type="button" id="botonEliminarImagenFlotante" class="boton-eliminar-flotante d-none" title="Eliminar imagen seleccionada">&times;</button>
-                            </div>
-
-                            <input type="file" id="archivoImagen" class="d-none" accept="image/png, image/jpeg, image/webp">
-                            
-                            <div class="d-flex gap-2 mt-2">
-                                <button type="button" class="boton-secundario flex-grow-1 d-flex align-items-center justify-content-center gap-1" id="botonSubirImagen">
-                                    <span class="material-symbols-outlined fs-5" id="iconoBotonSubir">upload</span>
-                                    <span id="textoBotonSubirImagen">Subir imagen</span>
-                                </button>
-                                <button type="button" class="boton-secundario text-danger d-none align-items-center justify-content-center gap-1" id="botonEliminarImagen" title="Eliminar imagen seleccionada">
-                                    <span class="material-symbols-outlined fs-5">delete</span>
-                                    <span>Eliminar imagen</span>
-                                </button>
-                            </div>
-
-                            <div class="campo-grupo mt-3">
-                                <label for="textoAlternativo" class="etiqueta-campo">Texto alternativo *</label>
-                                <input type="text" id="textoAlternativo" class="entrada-texto" placeholder="Envase de Sérum Calm, 30 ml" required>
-                                <span class="texto-ayuda">JPG o PNG · Máximo 5 MB · Imagen cuadrada recomendada.</span>
-                            </div>
-                        </section>
-
-                        <!-- Tarjeta 5: Publicación -->
-                        <section class="tarjeta-formulario">
-                            <h2 class="titulo-tarjeta">Publicación</h2>
-                            
-                            <div class="campo-grupo">
-                                <label for="estadoPublicacion" class="etiqueta-campo">Estado *</label>
-                                <select id="estadoPublicacion" class="entrada-seleccion" required>
-                                    <option value="Publicado" selected>Publicado</option>
-                                    <option value="Borrador">Borrador</option>
-                                </select>
-                            </div>
-
-                            <div class="opcion-casilla">
-                                <input type="checkbox" id="casillaDestacado" class="control-casilla">
-                                <label for="casillaDestacado" class="etiqueta-casilla">Producto destacado</label>
-                            </div>
-
-                            <div class="opcion-casilla">
-                                <input type="checkbox" id="casillaNovedades" class="control-casilla" checked>
-                                <label for="casillaNovedades" class="etiqueta-casilla">Mostrar en novedades</label>
-                            </div>
-
-                            <span class="texto-ayuda mt-2">Un borrador no aparece en el catálogo público de la tienda.</span>
-                        </section>
-
-                        <!-- Tarjeta 6: Reglas de validación -->
-                        <section class="tarjeta-aviso">
-                            <span class="aviso-titulo">Reglas de validación</span>
-                            <p class="aviso-cuerpo">
-                                Nombre, SKU, categoría, imagen y precio son obligatorios. El SKU debe ser único. Precio en pesos positivo. Stock entero no negativo. Los datos se conservan si hay errores.
-                            </p>
-                        </section>
-                    </div>
-                </div>
-
-                <!-- Barra de botones de acción -->
-                <div class="barra-acciones">
-                    <button type="button" class="boton-secundario" id="botonVolver">Volver al listado</button>
-                    
-                    <div class="d-flex gap-2">
-                        <button type="button" class="boton-secundario" id="botonCancelar">Cancelar</button>
-                        <button type="button" class="boton-secundario" id="botonGuardarBorrador">Guardar borrador</button>
-                        <button type="submit" class="boton-primario" id="botonGuardar">
-                            <span class="material-symbols-outlined fs-5">save</span>
-                            <span>Crear registro</span>
+                    <!-- Barra de botones de acción coherente -->
+                    <div class="barra-acciones d-flex justify-content-between align-items-center pt-3 border-top mt-4 flex-wrap gap-2">
+                        <button type="button" class="btn btn-outline-secondary rounded-3 px-3 py-2 fw-semibold d-inline-flex align-items-center gap-1" id="botonVolver">
+                            <i class="bi bi-arrow-left"></i> Volver al listado
                         </button>
+                        
+                        <div class="d-flex gap-2 flex-wrap">
+                            <button type="button" class="btn btn-outline-secondary rounded-3 px-3 py-2 fw-semibold" id="botonCancelar">Cancelar</button>
+                            <button type="button" class="btn rounded-3 px-3 py-2 fw-semibold text-dark d-inline-flex align-items-center gap-1" id="botonGuardarBorrador" style="background-color: #ffcce8; border-color: #ffcce8;">
+                                <i class="bi bi-pencil-square"></i> Guardar borrador
+                            </button>
+                            <button type="submit" class="btn rounded-3 px-4 py-2 fw-semibold text-white d-inline-flex align-items-center gap-1" id="botonGuardar" style="background-color: #5B009E; border-color: #5B009E;">
+                                <span class="material-symbols-outlined fs-5">save</span>
+                                <span>Crear registro</span>
+                            </button>
+                        </div>
                     </div>
-                </div>
-            </form>
+                </form>
 
-            <!-- Pie de página administrativo -->
-            <footer class="pie-administrativo">
-                <span>Aguacate Make Up · Gestión interna · 2026</span>
-                <span>Acceso restringido a administradores</span>
-            </footer>
-        </main>
+                <!-- Pie de página administrativo coherente con admin-productos -->
+                <footer class="d-flex justify-content-between align-items-center pt-3 border-top mt-4 text-muted small">
+                    <span>Aguacate Make Up · Gestión interna · 2026</span>
+                    <span>Acceso restringido a administradores</span>
+                </footer>
+            </main>
+        </div>
     </div>
 
     <!-- Mensaje flotante de notificación -->
@@ -286,11 +299,12 @@
         </div>
     </div>
 
-    <!-- CDN de Bootstrap del curso -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    
-    <script src="../js/LocalStorage.js"></script>
+    <script src="../js/Almacenamiento.js"></script>
+    <script src="../js/Validaciones.js"></script>
+    <script src="../js/Gestorimagen.js"></script>
     <script src="../js/Adminbarralateral.js"></script>
+    <script src="../js/header_admin.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../js/Admincrearproductos.js"></script>
 </body>
 </html>

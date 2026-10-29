@@ -1,4 +1,7 @@
-/* Tarea siete: Datos iniciales de productos para el catalogo */
+// Este archivo se llamaba datos-semilla.js y ahora se llama Datosinicial.js.
+// Este se encarga de todo el funcionamiento del listado inicial de productos de prueba para la tienda.
+// Lo que se corrigio creando este archivo fue organizar los datos de prueba en un formato limpio sin guiones para seguir el estandar del proyecto.
+
 
 const ProductosSemilla = [
   {

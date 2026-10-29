@@ -21,7 +21,7 @@ body.cuerpo-administracion {
     margin: 0;
     padding: 0;
     font-family: var(--fuente-principal);
-    background-color: var(--superficie-blanca);
+    background-color: var(--bs-light, #f8f9fa);
     color: var(--texto-oscuro);
     min-height: 100vh;
 }
@@ -39,12 +39,9 @@ body.cuerpo-administracion {
 /* Area de contenido principal */
 .area-contenido {
     flex: 1;
-    padding: 24px 40px;
     display: flex;
     flex-direction: column;
-    gap: 24px;
-    background-color: #FFFFFF;
-    overflow-y: auto;
+    gap: 20px;
 }
 
 
@@ -107,17 +104,17 @@ body.cuerpo-administracion {
 
 .tarjeta-formulario {
     background: #FFFFFF;
-    border: 1px solid var(--borde-rosa);
-    border-radius: var(--radio-tarjeta);
+    border: 1px solid #ca82ed;
+    border-radius: 0.75rem;
     padding: 24px;
     display: flex;
     flex-direction: column;
     gap: 18px;
-    box-shadow: 0 1px 3px rgba(49, 0, 85, 0.02);
+    box-shadow: 0 2px 8px rgba(49, 0, 85, 0.04);
 }
 
 .titulo-tarjeta {
-    color: var(--texto-oscuro);
+    color: #310055;
     font-size: 18px;
     font-weight: 700;
     margin: 0;
@@ -131,7 +128,7 @@ body.cuerpo-administracion {
 }
 
 .etiqueta-campo {
-    color: var(--texto-oscuro);
+    color: #310055;
     font-size: 13px;
     font-weight: 700;
     margin: 0;
@@ -143,8 +140,8 @@ body.cuerpo-administracion {
     width: 100%;
     min-height: 46px;
     padding: 10px 14px;
-    border: 1px solid var(--acento-lila);
-    border-radius: var(--radio-tarjeta);
+    border: 1px solid #ca82ed;
+    border-radius: 0.5rem;
     font-family: inherit;
     font-size: 14px;
     color: var(--texto-oscuro);
@@ -162,7 +159,7 @@ body.cuerpo-administracion {
 .entrada-seleccion:focus,
 .entrada-area:focus {
     border-color: var(--color-primario);
-    box-shadow: 0 0 0 3px rgba(91, 0, 158, 0.15);
+    box-shadow: 0 0 0 0.2rem rgba(91, 0, 158, 0.18);
 }
 
 .entrada-invalida {
@@ -269,8 +266,8 @@ input[type="number"] {
     width: 100%;
     min-height: 200px;
     background-color: #FAF5FD;
-    border: 2px dashed var(--acento-lila);
-    border-radius: var(--radio-tarjeta);
+    border: 2px dashed #ca82ed;
+    border-radius: 0.75rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -347,7 +344,8 @@ input[type="number"] {
 /* Tarjeta de aviso de validacion */
 .tarjeta-aviso {
     background-color: var(--alerta-fondo);
-    border-radius: var(--radio-tarjeta);
+    border: 1px solid #ffeeba;
+    border-radius: 0.75rem;
     padding: 16px;
     display: flex;
     flex-direction: column;
@@ -482,9 +480,7 @@ input[type="number"] {
     .contenedor-panel {
         flex-direction: column;
     }
-    .area-contenido {
-        padding: 20px 16px;
-    }
+    /* padding controlado por dashboard-container */
     .fila-dos-columnas {
         grid-template-columns: 1fr;
     }

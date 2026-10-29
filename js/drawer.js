@@ -1,4 +1,6 @@
-// Gestión interactiva del Carrito Lateral (Drawer) de Aguacate Make Up
+// Este archivo conserva su nombre drawer.js y funciona como el controlador visual del carrito lateral desplegable.
+// Este se encarga de todo el funcionamiento de abrir el panel del carrito, animar el fondo difuminado, actualizar cantidades y calcular totales.
+// Lo que se corrigio en este archivo fue vincular los eventos visuales con el servicio central del carrito para sincronizar la experiencia del usuario.
 
 function obtenerRutaBaseDrawer() {
     const rutaActual = window.location.pathname.replace(/\\/g, "/").toLowerCase();

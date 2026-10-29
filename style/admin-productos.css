@@ -135,11 +135,32 @@ section.d-flex.flex-wrap.gap-2.mb-4 .badge {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 42px;
+  min-width: 42px;
+  width: auto;
   height: 40px;
-  padding: 0 !important;
+  padding: 0 0.75rem !important;
   border-radius: 0.5rem !important;
   margin: 0 0.15rem;
+  color: #310055;
+  border-color: #EFE4F8;
+}
+
+.pagination .page-item .page-link:hover {
+  background-color: #F8F0FC;
+  color: #5B009E;
+  border-color: #ca82ed;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #5B009E !important;
+  border-color: #5B009E !important;
+  color: #ffffff !important;
+  box-shadow: none !important;
+}
+
+.pagination .page-item .page-link:focus {
+  box-shadow: 0 0 0 0.2rem rgba(91, 0, 158, 0.25) !important;
+  border-color: #5B009E !important;
 }
 
 .table-responsive {

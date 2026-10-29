@@ -1,3 +1,6 @@
+// Este archivo conserva su nombre admin-productos.js y funciona como el controlador de la tabla administrativa.
+// Este se encarga de todo el funcionamiento de mostrar la lista de productos, paginar los resultados, filtrar por estado o categoria y permitir eliminar o editar.
+// Lo que se corrigio en este archivo fue conectar directamente la capa central de Almacenamiento.js para no duplicar funciones de lectura y guardado.
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -211,7 +214,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             </button>
                         </li>
                         <li class="page-item active">
-                            <span class="page-link">
+                            <span class="page-link" style="background-color: #5B009E; border-color: #5B009E; color: #ffffff;">
                                 ${paginaActual} de ${totalPaginas}
                             </span>
                         </li>
