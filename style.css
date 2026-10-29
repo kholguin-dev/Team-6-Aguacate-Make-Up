@@ -1,3 +1,8 @@
+/*
+Este archivo conserva su nombre style.css como la hoja de estilos general del proyecto.
+Este se encarga de todo el diseno visual compartido, tipografias, carrusel principal y variables de color.
+Lo que se corrigio en este archivo fue retirar selectores obsoletos de versiones anteriores del pie de pagina que ya no estaban en uso.
+*/
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@400;500;600;700&display=swap');
 
@@ -709,24 +714,7 @@ footer#footer,
     text-decoration: underline !important;
 }
 
-/* Compatibilidad con clases previas */
-.footer-marca-link {
-    transition: transform 0.2s ease;
-}
-.fondofooter {
-    background-color: #310055 !important;
-}
-.tamañologo {
-    height: 91px;
-    width: 66px;
-    object-fit: contain;
-    vertical-align: middle;
-}
-.logo-aguacate-makeup {
-    font-size: 1.45rem;
-    font-weight: 700;
-    color: #FFA8D9;
-}
+/* Estilos de compatibilidad revisados y optimizados */
 
 #seccion-universo { 
     color: #290044;

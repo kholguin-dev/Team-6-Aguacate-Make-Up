@@ -1,4 +1,7 @@
-// Manejo del carrito de compras con LocalStorage
+// Este archivo conserva su nombre servicioscarrito.js y funciona como la capa de logica del carrito de compras.
+// Este se encarga de todo el funcionamiento de agregar productos, modificar cantidades, persistir el carrito y formatear precios en pesos colombianos.
+// Lo que se corrigio en este archivo fue asegurar la compatibilidad con las claves de almacenamiento y la normalizacion de productos para evitar duplicidades.
+
 
 const servicioCarrito = {
     // Nombres de las claves para guardar los datos en el navegador

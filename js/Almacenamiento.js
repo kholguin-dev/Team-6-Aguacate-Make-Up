@@ -1,6 +1,7 @@
-// ==========================================
-// CAPA CENTRAL DE ALMACENAMIENTO (LocalStorage)
-// ==========================================
+// Este archivo se llamaba LocalStorage.js y ahora se llama Almacenamiento.js.
+// Este se encarga de todo el funcionamiento de la persistencia de productos en el almacenamiento local del navegador y la normalizacion de rutas de imagenes.
+// Lo que se corrigio creando este archivo fue centralizar la lectura, escritura y actualizacion del inventario para que ninguna otra pantalla duplique codigo.
+
 
 // Clave compartida para guardar y consultar productos en localStorage
 const Clavealmacenamiento = 'admincrearproductos';
