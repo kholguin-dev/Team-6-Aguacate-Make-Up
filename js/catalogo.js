@@ -126,7 +126,6 @@ document.addEventListener("DOMContentLoaded",()=>{
                     });
             }
 
-
             // boton del carrito
 
             const botonCarrito = document.createElement("button");
@@ -136,14 +135,36 @@ document.addEventListener("DOMContentLoaded",()=>{
             botonCarrito.innerHTML =
                 '<i class="bi bi-cart-plus"></i> Agregar al carrito';
 
+            if(Number(producto.stock) <= 0){
+                botonCarrito.disabled = true;
+                botonCarrito.textContent = "Sin existencias";
+            }
+
             botonCarrito.addEventListener("click",()=>{
-                if(window.servicioCarrito){
-                    window.servicioCarrito.agregarProducto(producto,1);
-                    botonCarrito.textContent = "Agregado al carrito";
-                }else{
+                if(!window.servicioCarrito){
+                    alert("No se pudo conectar con el carrito. Intenta nuevamente.");
                     console.error("No se encontró el servicio del carrito");
+                    return;
+                }
+
+                if(Number(producto.stock) <= 0){
+                    alert("Este producto no tiene existencias disponibles.");
+                    return;
+                }
+
+                try{
+                    window.servicioCarrito.agregarProducto(producto,1);
+
+                    alert(
+                        producto.nombre +
+                        " se agregó al carrito correctamente."
+                    );
+                }catch(error){
+                    console.error("Error al agregar al carrito:",error);
+                    alert("No se pudo agregar el producto. Intenta nuevamente.");
                 }
             });
+
 
             contenido.append(
                 nombre,
