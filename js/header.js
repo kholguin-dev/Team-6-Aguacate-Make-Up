@@ -33,6 +33,9 @@ function actualizarContadorCarrito(cantidad) {
     }
 }
 
+// Expone la función de actualización globalmente
+window.actualizarContadorCarrito = actualizarContadorCarrito;
+
 // Configura los enlaces, imágenes y eventos interactivos del encabezado
 function ajustarRutasHeader(contenedor) {
     const rutaBase = obtenerRutaBaseHeader();
@@ -91,12 +94,14 @@ function ajustarRutasHeader(contenedor) {
         enlaceCuenta.href = rutaBase + "vistas/inicio sesion.html";
     }
 
-    // Maneja el clic en el carrito para preparar la interacción con el modal o catálogo
+    // Maneja el clic en el carrito para abrir el panel lateral del carrito (Drawer)
     const enlaceCarrito = contenedor.querySelector("#enlaceCarrito");
     if (enlaceCarrito) {
         enlaceCarrito.addEventListener("click", function (e) {
-            if (enlaceCarrito.getAttribute("href") === "#" || enlaceCarrito.getAttribute("href") === "#carrito") {
-                e.preventDefault();
+            e.preventDefault();
+            if (typeof window.openCart === "function") {
+                window.openCart();
+            } else {
                 console.log("Apertura del carrito de compras");
             }
         });
@@ -104,9 +109,16 @@ function ajustarRutasHeader(contenedor) {
 
     // Consulta el almacenamiento local para recuperar la cantidad actual de productos
     try {
-        const articulosGuardados = JSON.parse(localStorage.getItem("carrito") || "[]");
-        if (Array.isArray(articulosGuardados)) {
-            actualizarContadorCarrito(articulosGuardados.length);
+        const servicio = window.servicioCarrito || window.servicioscarrito;
+        if (servicio && typeof servicio.obtenerConteo === "function") {
+            actualizarContadorCarrito(servicio.obtenerConteo());
+        } else {
+            const datoPrimario = localStorage.getItem("aguacate_cart") || localStorage.getItem("carrito de compras") || localStorage.getItem("carrito") || "[]";
+            const articulosGuardados = JSON.parse(datoPrimario);
+            if (Array.isArray(articulosGuardados)) {
+                const total = articulosGuardados.reduce((acc, it) => acc + (Number(it.cantidad || it.quantity) || 1), 0);
+                actualizarContadorCarrito(total);
+            }
         }
     } catch (error) {
         console.warn("No se pudo leer el carrito del almacenamiento local:", error);

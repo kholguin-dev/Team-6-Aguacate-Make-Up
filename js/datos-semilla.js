@@ -15,7 +15,7 @@ const ProductosSemilla = [
     stock: 25,
     tamano: "120 ml",
     disponibilidad: "En stock",
-    imagen: "../img/img-catálogo/Prod8.jpeg",
+    imagen: "../img/img-catalogo/Prod8.jpeg",
     textoAlternativo: "Tónico facial de rosas y manzanilla",
     estado: "Publicado",
     destacado: true,
@@ -35,7 +35,7 @@ const ProductosSemilla = [
     stock: 30,
     tamano: "5 ml",
     disponibilidad: "En stock",
-    imagen: "../img/img-catálogo/Prod2.jpeg",
+    imagen: "../img/img-catalogo/Prod2.jpeg",
     textoAlternativo: "Aura Brillo Líquido para labios",
     estado: "Publicado",
     destacado: false,
@@ -55,7 +55,7 @@ const ProductosSemilla = [
     stock: 18,
     tamano: "100 ml",
     disponibilidad: "En stock",
-    imagen: "../img/img-catálogo/Prod1.jpeg",
+    imagen: "../img/img-catalogo/Prod1.jpeg",
     textoAlternativo: "Desmaquillante bifásico de Bob Esponja",
     estado: "Publicado",
     destacado: true,
@@ -75,7 +75,7 @@ const ProductosSemilla = [
     stock: 22,
     tamano: "1 unidad",
     disponibilidad: "En stock",
-    imagen: "../img/img-catálogo/Prod4.jpeg",
+    imagen: "../img/img-catalogo/Prod4.jpeg",
     textoAlternativo: "Delineador Colo Party",
     estado: "Publicado",
     destacado: false,
@@ -95,7 +95,7 @@ const ProductosSemilla = [
     stock: 15,
     tamano: "6 ml",
     disponibilidad: "En stock",
-    imagen: "../img/img-catálogo/Prod3.jpeg",
+    imagen: "../img/img-catalogo/Prod3.jpeg",
     textoAlternativo: "Magic Concealer Corrector de maquillaje",
     estado: "Publicado",
     destacado: true,
@@ -115,7 +115,7 @@ const ProductosSemilla = [
     stock: 10,
     tamano: "1 unidad",
     disponibilidad: "En stock",
-    imagen: "../img/img-catálogo/Prod5.jpeg",
+    imagen: "../img/img-catalogo/Prod5.jpeg",
     textoAlternativo: "Polvo compacto doble de El Extraño Mundo de Jack",
     estado: "Publicado",
     destacado: true,
@@ -135,7 +135,7 @@ const ProductosSemilla = [
     stock: 14,
     tamano: "1 unidad",
     disponibilidad: "En stock",
-    imagen: "../img/img-catálogo/Prod10.jpeg",
+    imagen: "../img/img-catalogo/Prod10.jpeg",
     textoAlternativo: "Polvo compacto de El Extraño Mundo de Jack",
     estado: "Publicado",
     destacado: false,
@@ -155,7 +155,7 @@ const ProductosSemilla = [
     stock: 28,
     tamano: "1 unidad",
     disponibilidad: "En stock",
-    imagen: "../img/img-catálogo/Prod9.jpeg",
+    imagen: "../img/img-catalogo/Prod9.jpeg",
     textoAlternativo: "Rubor en polvo Disney Princesas",
     estado: "Publicado",
     destacado: false,
@@ -174,7 +174,7 @@ const ProductosSemilla = [
     stock: 16,
     tamano: "1 unidad",
     disponibilidad: "En stock",
-    imagen: "../img/img-catálogo/Prod6.jpeg",
+    imagen: "../img/img-catalogo/Prod6.jpeg",
     textoAlternativo: "Mia Blush Contorno en polvo",
     estado: "Publicado",
     destacado: false,
@@ -194,7 +194,7 @@ const ProductosSemilla = [
     stock: 20,
     tamano: "1 unidad",
     disponibilidad: "En stock",
-    imagen: "../img/img-catálogo/Prod7.jpeg",
+    imagen: "../img/img-catalogo/Prod7.jpeg",
     textoAlternativo: "Delineador líquido de ojos",
     estado: "Publicado",
     destacado: false,
@@ -204,15 +204,49 @@ const ProductosSemilla = [
 
 window.ProductosSemilla = ProductosSemilla;
 
-function InicializarProductosSemilla() {
+function InicializarProductosSemilla(forzarReemplazo = false) {
+  if (typeof window.Obtenerlistadoproductos !== "function") return;
   const productosGuardados = window.Obtenerlistadoproductos();
 
-  // Si ya existen productos, no los reemplaza.
-  if (productosGuardados.length > 0) {
+  if (forzarReemplazo || !productosGuardados || productosGuardados.length === 0) {
+    window.Guardarlistadoproductos(window.ProductosSemilla);
     return;
   }
 
-  window.Guardarlistadoproductos(window.ProductosSemilla);
+  let huboCambios = false;
+
+  // 1. Corrige rutas de imágenes con tilde o codificación vieja en productos ya guardados
+  const listaActualizada = productosGuardados.map(function (prod) {
+    if (prod && prod.imagen && typeof prod.imagen === "string" && prod.imagen.includes("img-cat")) {
+      const nuevaImagen = prod.imagen.replace(/img-cat[%C3%A1|álogo]+/gi, "img-catalogo");
+      if (nuevaImagen !== prod.imagen) {
+        huboCambios = true;
+        return Object.assign({}, prod, { imagen: nuevaImagen });
+      }
+    }
+    return prod;
+  });
+
+  // 2. Si faltan productos semilla clave, agregarlos para que todos los usuarios tengan los 10 productos
+  window.ProductosSemilla.forEach(function (semilla) {
+    const existe = listaActualizada.some(function (p) {
+      if (!p) return false;
+      const pid = String(p.id || "").trim().toUpperCase();
+      const psku = String(p.sku || "").trim().toUpperCase();
+      const sid = String(semilla.id || "").trim().toUpperCase();
+      const ssku = String(semilla.sku || "").trim().toUpperCase();
+      return pid === sid || psku === ssku;
+    });
+
+    if (!existe) {
+      listaActualizada.push(semilla);
+      huboCambios = true;
+    }
+  });
+
+  if (huboCambios) {
+    window.Guardarlistadoproductos(listaActualizada);
+  }
 }
 
 window.InicializarProductosSemilla = InicializarProductosSemilla;
