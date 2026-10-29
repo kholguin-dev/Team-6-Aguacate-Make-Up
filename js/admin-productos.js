@@ -7,12 +7,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const campoBusqueda = document.querySelector(
         '.dashboard-container input[type="text"]'
     );
-    const selectorEstado = document.querySelector(
-        ".dashboard-container select"
-    );
-    const botonFiltrar = [...document.querySelectorAll("button")].find(
-        boton => boton.textContent.includes("Filtrar")
-    );
+    const selectorEstado = document.querySelector("#filtro-estado");
+
     const botonesCategoria = document.querySelectorAll(".nav-category-btn");
     const indicadores = document.querySelectorAll(
         ".dashboard-container > section .badge"
@@ -148,23 +144,21 @@ document.addEventListener("DOMContentLoaded", () => {
                     </div>
                 </td>
                 <td>
-                    ${escapar(producto.categoria || "")}${
-                        producto.subcategoria && producto.subcategoria !== "Sin subcategoría"
-                            ? " · " + escapar(producto.subcategoria)
-                            : ""
-                    }
+                    ${escapar(producto.categoria || "")}${producto.subcategoria && producto.subcategoria !== "Sin subcategoría"
+                ? " · " + escapar(producto.subcategoria)
+                : ""
+            }
                 </td>
                 <td>${formatoPrecio(producto.precio)}</td>
                 <td>${Number(producto.stock)}</td>
                 <td>
-                    <span class="badge ${
-                        producto.estado === "Publicado"
-                            ? "badge-published"
-                            : "bg-secondary"
-                    }">${escapar(producto.estado)}</span>
+                    <span class="badge ${producto.estado === "Publicado"
+                ? "badge-published"
+                : "bg-secondary"
+            }">${escapar(producto.estado)}</span>
                     ${Number(producto.stock) <= 10
-                        ? '<span class="badge badge-stock-low">Stock bajo</span>'
-                        : ""}
+                ? '<span class="badge badge-stock-low">Stock bajo</span>'
+                : ""}
                 </td>
                 <td class="text-end text-nowrap">
                     <button class="btn btn-link btn-sm text-brand"
@@ -201,11 +195,11 @@ document.addEventListener("DOMContentLoaded", () => {
             pie.innerHTML = `
                 <span class="text-muted small">
                     ${filtrados.length
-                        ? `Mostrando ${inicio + 1}–${Math.min(
-                            inicio + Productosporpagina,
-                            filtrados.length
-                        )} de ${filtrados.length} productos`
-                        : "No hay productos para mostrar"}
+                    ? `Mostrando ${inicio + 1}–${Math.min(
+                        inicio + Productosporpagina,
+                        filtrados.length
+                    )} de ${filtrados.length} productos`
+                    : "No hay productos para mostrar"}
                 </span>
                 <nav aria-label="Paginación">
                     <ul class="pagination pagination-sm m-0 gap-1">
@@ -221,9 +215,8 @@ document.addEventListener("DOMContentLoaded", () => {
                                 ${paginaActual} de ${totalPaginas}
                             </span>
                         </li>
-                        <li class="page-item ${
-                            paginaActual === totalPaginas ? "disabled" : ""
-                        }">
+                        <li class="page-item ${paginaActual === totalPaginas ? "disabled" : ""
+                }">
                             <button class="page-link rounded"
                                     data-pagina="${paginaActual + 1}"
                                     ${paginaActual === totalPaginas ? "disabled" : ""}>
@@ -265,26 +258,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
     selectorEstado.addEventListener("change", aplicarFiltroEstado);
 
-    if (botonFiltrar) {
-        botonFiltrar.addEventListener("click", aplicarFiltroEstado);
-    }
 
     // Filtramos por categoría
-botonesCategoria.forEach(boton => {
-    boton.addEventListener("click", () => {
-        const categoriaSeleccionada = boton.textContent.trim();
+    botonesCategoria.forEach(boton => {
+        boton.addEventListener("click", () => {
+            const categoriaSeleccionada = boton.textContent.trim();
 
-        categoriaActual = categoriaSeleccionada === "Todas"
-            ? "Todos"
-            : categoriaSeleccionada;
+            categoriaActual = categoriaSeleccionada === "Todas"
+                ? "Todos"
+                : categoriaSeleccionada;
 
-        botonesCategoria.forEach(b => b.classList.remove("active"));
-        boton.classList.add("active");
+            botonesCategoria.forEach(b => b.classList.remove("active"));
+            boton.classList.add("active");
 
-        paginaActual = 1;
-        renderizarProductos();
+            paginaActual = 1;
+            renderizarProductos();
+        });
     });
-});
 
     // Atendemos las acciones de cada producto
     tabla.addEventListener("click", async evento => {
@@ -297,8 +287,8 @@ botonesCategoria.forEach(boton => {
             const pid = String(p.id || "").trim();
             const psku = String(p.sku || "").trim().toUpperCase();
             return (id && (pid === id || pid.replace("PROD-", "") === id.replace("PROD-", ""))) ||
-                   (sku && psku === sku) ||
-                   (id && psku === id.toUpperCase());
+                (sku && psku === sku) ||
+                (id && psku === id.toUpperCase());
         });
 
         if (!producto) return;
@@ -311,7 +301,7 @@ botonesCategoria.forEach(boton => {
 
         // Abrimos la página del formulario con los datos a editar o continuar borrador
         if (boton.dataset.accion === "editar") {
-           window.location.href = Urlcrearproducto + "?id=" + encodeURIComponent(producto.id) + "&sku=" + encodeURIComponent(producto.sku || "");
+            window.location.href = Urlcrearproducto + "?id=" + encodeURIComponent(producto.id) + "&sku=" + encodeURIComponent(producto.sku || "");
         }
 
         // Confirmamos antes de eliminar
