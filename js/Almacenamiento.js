@@ -111,7 +111,9 @@ async function CrearOActualizarProductoInventario(producto, esEdicion) {
     if (!producto) return { exito: false, mensaje: 'Producto inválido' };
 
     // Persistencia inmediata en LocalStorage
-    GuardarProductoEnStorage(producto);
+    if (!GuardarProductoEnStorage(producto)) {
+        throw new Error('No fue posible guardar el producto. Verifica que el almacenamiento del navegador esté disponible.');
+    }
     Imprimirlistadojson();
 
     return { exito: true, producto };

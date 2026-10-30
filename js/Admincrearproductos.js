@@ -6,37 +6,37 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Referencias a los campos del formulario
     const Formularioproducto = document.getElementById('formularioProducto');
-    const Entradanombre = document.getElementById('entradaNombre');
-    const Entradamarca = document.getElementById('entradaMarca');
-    const Entradacategoria = document.getElementById('entradaCategoria');
-    const Entradasubcategoria = document.getElementById('entradaSubcategoria');
-    const Entradasku = document.getElementById('entradaSku');
+    const Entradanombre = document.getElementById('nombreProducto');
+    const Entradamarca = document.getElementById('marcaProducto');
+    const Entradacategoria = document.getElementById('categoriaProducto');
+    const Entradasubcategoria = document.getElementById('subcategoriaProducto');
+    const Entradasku = document.getElementById('skuProducto');
     const Botongenerarsku = document.getElementById('botonGenerarSku');
     const Ayudasku = document.getElementById('ayudaSku');
     const Exitosku = document.getElementById('exitoSku');
-    const Entradadescripcion = document.getElementById('entradaDescripcion');
-    const Entradapreciohabitual = document.getElementById('entradaPrecioHabitual');
-    const Entradapreciopromocional = document.getElementById('entradaPrecioPromocional');
-    const Entradastock = document.getElementById('entradaStock');
-    const Entradatamano = document.getElementById('entradaTamano');
-    const Entradadisponibilidad = document.getElementById('entradaDisponibilidad');
-    const Entradabeneficios = document.getElementById('entradaBeneficios');
-    const Entradamodouso = document.getElementById('entradaModoUso');
-    const Entradaingredientes = document.getElementById('entradaIngredientes');
-    const Entradatextoalternativo = document.getElementById('entradaTextoAlternativo');
+    const Entradadescripcion = document.getElementById('descripcionProducto');
+    const Entradapreciohabitual = document.getElementById('precioHabitual');
+    const Entradapreciopromocional = document.getElementById('precioPromocional');
+    const Entradastock = document.getElementById('stockProducto');
+    const Entradatamano = document.getElementById('tamanoProducto');
+    const Entradadisponibilidad = document.getElementById('disponibilidadProducto');
+    const Entradabeneficios = document.getElementById('beneficiosProducto');
+    const Entradamodouso = document.getElementById('modoUsoProducto');
+    const Entradaingredientes = document.getElementById('ingredientesProducto');
+    const Entradatextoalternativo = document.getElementById('textoAlternativo');
     const Casilladestacado = document.getElementById('casillaDestacado');
     const Casillanovedades = document.getElementById('casillaNovedades');
 
     // Referencias para la imagen del producto
     const Cajaprevisualizacion = document.getElementById('cajaPrevisualizacion');
     const Imagenprevia = document.getElementById('imagenPrevia');
-    const Archivocargado = document.getElementById('archivoCargado');
+    const Archivocargado = document.getElementById('archivoImagen');
     const Botonsubirimagen = document.getElementById('botonSubirImagen');
     const Textobotonsubirimagen = document.getElementById('textoBotonSubirImagen');
     const Iconobotonsubir = document.getElementById('iconoBotonSubir');
     const Botoneliminarimagen = document.getElementById('botonEliminarImagen');
     const Botoneliminarimagenflotante = document.getElementById('botonEliminarImagenFlotante');
-    const Textonombrearchivo = document.getElementById('textoNombreArchivo');
+    const Textonombrearchivo = document.getElementById('nombreArchivoMuestra');
 
     // Botones de acción y notificación
     const Botonguardar = document.getElementById('botonGuardar');
@@ -431,7 +431,7 @@ document.addEventListener('DOMContentLoaded', function () {
         } catch (error) {
             console.error('Error al guardar:', error);
             OcultarAnimacionCarga();
-            Mostrarnotificacion('Hubo un error al guardar el producto');
+            Mostrarnotificacion(error instanceof Error ? error.message : 'Hubo un error al guardar el producto');
         }
     });
 
