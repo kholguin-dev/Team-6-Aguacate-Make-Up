@@ -302,50 +302,70 @@ document.addEventListener("DOMContentLoaded", () => {
         if (boton.dataset.accion === "ver") {
             const modal = document.querySelector("#modalVerProducto");
             const detalle = document.querySelector("#detalleProducto");
+            const tituloModal = document.querySelector("#tituloModalProducto");
 
             if (!modal || !detalle) {
                 alert("No se encontró la ventana del producto.");
                 return;
             }
 
+            if (tituloModal) {
+                tituloModal.textContent = "Vista previa del catálogo";
+            }
+
+            const urlImg = typeof NormalizarUrlImagen === "function"
+                ? NormalizarUrlImagen(producto.imagen)
+                : (producto.imagen || "../img/logo.png");
+
+            const precioHabitual = Number(producto.precio) || 0;
+            const precioPromo = Number(producto.preciopromocional !== undefined ? producto.preciopromocional : producto.precioPromocional) || 0;
+            const tieneDescuento = precioPromo > 0 && precioPromo < precioHabitual;
+
+            const porcentaje = tieneDescuento ? Math.round((1 - (precioPromo / precioHabitual)) * 100) : 0;
+            const insigniaHtml = tieneDescuento
+                ? `<span class="insignia-producto oferta">-${porcentaje}%</span>`
+                : (producto.novedades ? `<span class="insignia-producto nuevo">Nuevo</span>` : '');
+
+            const categoriaTexto = (escapar(producto.categoria || "Maquillaje") + (producto.subcategoria ? ` · ${escapar(producto.subcategoria)}` : '')).toUpperCase();
+            const sinStock = Number(producto.stock) <= 0;
+
             detalle.innerHTML = `
                 <div class="text-center mb-3">
-                    <img
-                        src="${typeof NormalizarUrlImagen === "function"
-                    ? NormalizarUrlImagen(producto.imagen)
-                    : (producto.imagen || "../img/logo.png")}"
-                        alt="${escapar(producto.nombre)}"
-                        class="img-fluid rounded"
-                        style="max-height: 180px; object-fit: contain;"
-                        onerror="this.src='../img/logo.png'"
-                    >
+                    <p class="text-muted small mb-0">Así es como verán tus clientes este producto en el catálogo:</p>
                 </div>
-
-                <h5>${escapar(producto.nombre)}</h5>
-
-                <p><strong>Referencia:</strong>
-                    ${escapar(producto.sku || producto.referencia || "Sin referencia")}
-                </p>
-
-                <p><strong>Categoría:</strong>
-                    ${escapar(producto.categoria || "Sin categoría")}
-                </p>
-
-                <p><strong>Descripción:</strong>
-                    ${escapar(producto.descripcion || "Sin descripción")}
-                </p>
-
-                <p><strong>Precio:</strong>
-                    ${formatoPrecio(producto.precio)}
-                </p>
-
-                <p><strong>Stock:</strong>
-                    ${Number(producto.stock) || 0} unidades
-                </p>
-
-                <p><strong>Estado:</strong>
-                    ${escapar(producto.estado || "Sin estado")}
-                </p>
+                <div class="d-flex justify-content-center">
+                    <div style="width: 100%; max-width: 270px;">
+                        <article class="tarjeta-producto shadow-sm">
+                            <div class="contenedor-imagen-producto">
+                                ${insigniaHtml}
+                                <img
+                                    src="${urlImg}"
+                                    alt="${escapar(producto.nombre)}"
+                                    class="imagen-producto"
+                                    onerror="this.src='../img/logo.png'"
+                                >
+                            </div>
+                            <div class="cuerpo-tarjeta-producto">
+                                <span class="categoria-producto">${categoriaTexto}</span>
+                                <h3 class="titulo-producto" title="${escapar(producto.nombre)}">${escapar(producto.nombre || "Producto sin nombre")}</h3>
+                                <div class="pie-tarjeta-producto">
+                                    <div class="contenedor-precio-producto">
+                                        <span class="precio-actual">${formatoPrecio(tieneDescuento ? precioPromo : precioHabitual)}</span>
+                                        ${tieneDescuento ? `<span class="precio-anterior">${formatoPrecio(precioHabitual)}</span>` : ''}
+                                    </div>
+                                    <button class="boton-agregar-producto ${sinStock ? 'agotado' : ''}" type="button" disabled title="Vista previa del catálogo">
+                                        ${sinStock ? '<span>Agotado</span>' : '<i class="bi bi-cart-plus"></i> <span>Agregar</span>'}
+                                    </button>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                <div class="mt-3 text-center">
+                    <small class="badge bg-light text-dark border">
+                        Referencia SKU: <strong>${escapar(producto.sku || producto.referencia || 'N/A')}</strong> · Stock actual: <strong>${Number(producto.stock) || 0}</strong>
+                    </small>
+                </div>
             `;
 
             bootstrap.Modal.getOrCreateInstance(modal).show();

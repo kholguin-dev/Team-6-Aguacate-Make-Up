@@ -74,6 +74,16 @@ document.addEventListener("DOMContentLoaded",()=>{
   
     // mostrar los productos
 
+    function formatearMoneda(valor) {
+        if (window.servicioCarrito && typeof window.servicioCarrito.formatearPrecio === "function") {
+            return window.servicioCarrito.formatearPrecio(valor);
+        }
+        return "$ " + Number(valor || 0).toLocaleString("es-CO", {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        });
+    }
+
     function mostrarProductos(listaProductos){
         if(!contenedorProductos){
             return;
@@ -82,16 +92,38 @@ document.addEventListener("DOMContentLoaded",()=>{
         contenedorProductos.innerHTML = "";
 
         listaProductos.forEach((producto)=>{
-            const tarjeta = document.createElement("div");
-            tarjeta.className = "card h-100";
+            const tarjeta = document.createElement("article");
+            tarjeta.className = "tarjeta-producto";
+
+            // Contenedor y marco de imagen
+            const contenedorImagen = document.createElement("div");
+            contenedorImagen.className = "contenedor-imagen-producto";
+
+            const precioHabitual = Number(producto.precio) || 0;
+            const precioPromocional = Number(producto.preciopromocional !== undefined ? producto.preciopromocional : producto.precioPromocional) || 0;
+            const tieneDescuento = precioPromocional > 0 && precioPromocional < precioHabitual;
+
+            if (tieneDescuento) {
+                const insigniaOferta = document.createElement("span");
+                insigniaOferta.className = "insignia-producto oferta";
+                const porcentaje = Math.round((1 - (precioPromocional / precioHabitual)) * 100);
+                insigniaOferta.textContent = porcentaje > 0 ? `-${porcentaje}%` : "Oferta";
+                contenedorImagen.appendChild(insigniaOferta);
+            } else if (producto.novedades) {
+                const insigniaNuevo = document.createElement("span");
+                insigniaNuevo.className = "insignia-producto nuevo";
+                insigniaNuevo.textContent = "Nuevo";
+                contenedorImagen.appendChild(insigniaNuevo);
+            }
 
             const imagen = document.createElement("img");
             const urlImagen = (typeof window.NormalizarUrlImagen === "function")
                 ? window.NormalizarUrlImagen(producto.imagen)
                 : (producto.imagen || "../img/logo.png");
             imagen.src = urlImagen;
-            imagen.alt = producto.textoAlternativo || producto.textoalternativo || producto.nombre || "Producto";
-            imagen.className = "card-img-top";
+            imagen.alt = producto.textoAlternativo || producto.textoalternativo || producto.nombre || "Producto de maquillaje";
+            imagen.className = "imagen-producto";
+            imagen.loading = "lazy";
 
             imagen.addEventListener("error",()=>{
                 imagen.src = (typeof window.NormalizarUrlImagen === "function")
@@ -99,57 +131,56 @@ document.addEventListener("DOMContentLoaded",()=>{
                     : "../img/logo.png";
             },{once:true});
 
-            const contenido = document.createElement("div");
-            contenido.className = "card-body";
+            contenedorImagen.appendChild(imagen);
 
-            const nombre = document.createElement("h5");
-            nombre.className = "card-title";
+            // Cuerpo de información
+            const cuerpoTarjeta = document.createElement("div");
+            cuerpoTarjeta.className = "cuerpo-tarjeta-producto";
+
+            const categoriaSub = document.createElement("span");
+            categoriaSub.className = "categoria-producto";
+            const textoCat = producto.categoria || "Maquillaje";
+            const textoSub = producto.subcategoria ? ` · ${producto.subcategoria}` : "";
+            categoriaSub.textContent = (textoCat + textoSub).toUpperCase();
+
+            const nombre = document.createElement("h3");
+            nombre.className = "titulo-producto";
             nombre.textContent = producto.nombre || "Producto sin nombre";
+            nombre.title = producto.nombre || "";
 
-            const categoria = document.createElement("p");
-            categoria.textContent = producto.categoria || "Sin categoría";
+            // Pie con precio y botón de agregar
+            const pieTarjeta = document.createElement("div");
+            pieTarjeta.className = "pie-tarjeta-producto";
 
-            const descripcion = document.createElement("p");
-            descripcion.textContent = producto.descripcion || "";
+            const contenedorPrecio = document.createElement("div");
+            contenedorPrecio.className = "contenedor-precio-producto";
 
-            const precio = document.createElement("p");
-            precio.className = "fw-bold";
+            const precioPrincipal = document.createElement("span");
+            precioPrincipal.className = "precio-actual";
 
-            const precioHabitual = Number(producto.precio) || 0;
-            const precioPromocional =
-                Number(producto.preciopromocional) || 0;
-
-            if(
-                precioPromocional > 0 &&
-                precioPromocional < precioHabitual
-            ){
-                precio.textContent =
-                    precioPromocional.toLocaleString("es-CO",{
-                        style:"currency",
-                        currency:"COP",
-                        maximumFractionDigits:0
-                    });
-            }else{
-                precio.textContent =
-                    precioHabitual.toLocaleString("es-CO",{
-                        style:"currency",
-                        currency:"COP",
-                        maximumFractionDigits:0
-                    });
+            if (tieneDescuento) {
+                precioPrincipal.textContent = formatearMoneda(precioPromocional);
+                const precioAnterior = document.createElement("span");
+                precioAnterior.className = "precio-anterior";
+                precioAnterior.textContent = formatearMoneda(precioHabitual);
+                contenedorPrecio.append(precioPrincipal, precioAnterior);
+            } else {
+                precioPrincipal.textContent = formatearMoneda(precioHabitual);
+                contenedorPrecio.appendChild(precioPrincipal);
             }
 
-            // boton del carrito
-
             const botonCarrito = document.createElement("button");
-            botonCarrito.className = "btn btn-primary w-100";
+            botonCarrito.className = "boton-agregar-producto";
             botonCarrito.type = "button";
+            botonCarrito.title = "Agregar este producto al carrito";
 
-            botonCarrito.innerHTML =
-                '<i class="bi bi-cart-plus"></i> Agregar al carrito';
-
-            if(Number(producto.stock) <= 0){
+            const sinStock = Number(producto.stock) <= 0;
+            if (sinStock) {
                 botonCarrito.disabled = true;
-                botonCarrito.textContent = "Sin existencias";
+                botonCarrito.classList.add("agotado");
+                botonCarrito.innerHTML = '<span>Agotado</span>';
+            } else {
+                botonCarrito.innerHTML = '<i class="bi bi-cart-plus" aria-hidden="true"></i> <span>Agregar</span>';
             }
 
             botonCarrito.addEventListener("click",()=>{
@@ -159,7 +190,7 @@ document.addEventListener("DOMContentLoaded",()=>{
                     return;
                 }
 
-                if(Number(producto.stock) <= 0){
+                if(sinStock){
                     alert("Este producto no tiene existencias disponibles.");
                     return;
                 }
@@ -174,16 +205,9 @@ document.addEventListener("DOMContentLoaded",()=>{
                 }
             });
 
-
-            contenido.append(
-                nombre,
-                categoria,
-                descripcion,
-                precio,
-                botonCarrito
-            );
-
-            tarjeta.append(imagen,contenido);
+            pieTarjeta.append(contenedorPrecio, botonCarrito);
+            cuerpoTarjeta.append(categoriaSub, nombre, pieTarjeta);
+            tarjeta.append(contenedorImagen, cuerpoTarjeta);
             contenedorProductos.appendChild(tarjeta);
         });
 
