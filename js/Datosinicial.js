@@ -42,7 +42,7 @@ const ProductosSemilla = [
     textoAlternativo: "Aura Brillo Líquido para labios",
     estado: "Publicado",
     destacado: false,
-    novedades: true,
+    novedades: false,
   },
   {
     id: "PROD-003",
@@ -62,7 +62,7 @@ const ProductosSemilla = [
     textoAlternativo: "Desmaquillante bifásico de Bob Esponja",
     estado: "Publicado",
     destacado: true,
-    novedades: true,
+    novedades: false,
   },
   {
     id: "PROD-004",
@@ -82,7 +82,7 @@ const ProductosSemilla = [
     textoAlternativo: "Delineador Colo Party",
     estado: "Publicado",
     destacado: false,
-    novedades: true,
+    novedades: false,
   },
   {
     id: "PROD-005",
@@ -122,7 +122,7 @@ const ProductosSemilla = [
     textoAlternativo: "Polvo compacto doble de El Extraño Mundo de Jack",
     estado: "Publicado",
     destacado: true,
-    novedades: true,
+    novedades: false,
   },
   {
     id: "PROD-007",
@@ -142,7 +142,7 @@ const ProductosSemilla = [
     textoAlternativo: "Polvo compacto de El Extraño Mundo de Jack",
     estado: "Publicado",
     destacado: false,
-    novedades: true,
+    novedades: false,
   },
   {
     id: "PROD-008",
@@ -162,7 +162,7 @@ const ProductosSemilla = [
     textoAlternativo: "Rubor en polvo Disney Princesas",
     estado: "Publicado",
     destacado: false,
-    novedades: true,
+    novedades: false,
   },
   {
     id: "PROD-009",
@@ -201,7 +201,7 @@ const ProductosSemilla = [
     textoAlternativo: "Delineador líquido de ojos",
     estado: "Publicado",
     destacado: false,
-    novedades: true,
+    novedades: false,
   },
 ];
 
@@ -218,14 +218,36 @@ function InicializarProductosSemilla(forzarReemplazo = false) {
 
   let huboCambios = false;
 
-  // 1. Corrige rutas de imágenes con tilde o codificación vieja en productos ya guardados
+  // 1. Corrige rutas de imágenes con tilde y sincroniza el estado de novedades
   const listaActualizada = productosGuardados.map(function (prod) {
-    if (prod && prod.imagen && typeof prod.imagen === "string" && prod.imagen.includes("img-cat")) {
-      const nuevaImagen = prod.imagen.replace(/img-cat[%C3%A1|álogo]+/gi, "img-catalogo");
-      if (nuevaImagen !== prod.imagen) {
-        huboCambios = true;
-        return Object.assign({}, prod, { imagen: nuevaImagen });
+    if (!prod) return prod;
+    let modificado = false;
+    let copia = Object.assign({}, prod);
+
+    if (copia.imagen && typeof copia.imagen === "string" && copia.imagen.includes("img-cat")) {
+      const nuevaImagen = copia.imagen.replace(/img-cat[%C3%A1|álogo]+/gi, "img-catalogo");
+      if (nuevaImagen !== copia.imagen) {
+        copia.imagen = nuevaImagen;
+        modificado = true;
       }
+    }
+
+    const coincidente = window.ProductosSemilla.find(function (s) {
+      const pid = String(copia.id || "").trim().toUpperCase();
+      const psku = String(copia.sku || "").trim().toUpperCase();
+      const sid = String(s.id || "").trim().toUpperCase();
+      const ssku = String(s.sku || "").trim().toUpperCase();
+      return pid === sid || psku === ssku;
+    });
+
+    if (coincidente && copia.novedades !== coincidente.novedades) {
+      copia.novedades = coincidente.novedades;
+      modificado = true;
+    }
+
+    if (modificado) {
+      huboCambios = true;
+      return copia;
     }
     return prod;
   });
