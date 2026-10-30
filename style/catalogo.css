@@ -105,3 +105,8 @@ color: #170027 !important;
 .catalog-help-link:hover i {
     transform: translateX(5px);
 }
+
+.product-grid{
+    gap: 30px ;
+    margin-left: 50px;
+}
