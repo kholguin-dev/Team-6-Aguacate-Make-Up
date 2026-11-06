@@ -80,9 +80,7 @@ document.addEventListener('DOMContentLoaded', function () {
         ingredientes: Entradaingredientes,
         textoalternativo: Entradatextoalternativo,
         destacado: Casilladestacado,
-        novedades: Casillanovedades,
-        cajasubida: Cajaprevisualizacion,
-        tieneimagen: () => Boolean(Imagenenbase && !Imagenenbase.includes('logo.png'))
+        novedades: Casillanovedades
     };
 
     // Estado del formulario
@@ -200,9 +198,6 @@ document.addEventListener('DOMContentLoaded', function () {
             const archivo = e.target.files && e.target.files[0];
             Cargararchivodeimagen(archivo, Elementosimagen, (dataUrl) => {
                 Imagenenbase = dataUrl;
-                if (Cajaprevisualizacion) Cajaprevisualizacion.classList.remove('entrada-invalida');
-                const elemErrorImg = document.getElementById('errorImagen');
-                if (elemErrorImg) elemErrorImg.classList.remove('visible');
                 ActualizarEstadoBotonActualizar();
                 Mostrarnotificacion('Imagen cargada con éxito');
             }, (msg) => Mostrarnotificacion(msg));
@@ -235,9 +230,6 @@ document.addEventListener('DOMContentLoaded', function () {
             if (archivo) {
                 Cargararchivodeimagen(archivo, Elementosimagen, (dataUrl) => {
                     Imagenenbase = dataUrl;
-                    if (Cajaprevisualizacion) Cajaprevisualizacion.classList.remove('entrada-invalida');
-                    const elemErrorImg = document.getElementById('errorImagen');
-                    if (elemErrorImg) elemErrorImg.classList.remove('visible');
                     ActualizarEstadoBotonActualizar();
                     Mostrarnotificacion('Imagen cargada con éxito');
                 }, (msg) => Mostrarnotificacion(msg));
@@ -422,13 +414,7 @@ document.addEventListener('DOMContentLoaded', function () {
     Formularioproducto.addEventListener('submit', async function (e) {
         e.preventDefault();
         if (!Validardatos(Camposformulario, Idproductoeditar, SkuOriginalEditar)) {
-            const faltaFoto = !Boolean(Imagenenbase && !Imagenenbase.includes('logo.png'));
-            if (faltaFoto) {
-                Mostrarnotificacion('La foto del producto es obligatoria para guardar o actualizar');
-                if (Cajaprevisualizacion) Cajaprevisualizacion.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            } else {
-                Mostrarnotificacion('Por favor completa todos los campos requeridos correctamente');
-            }
+            Mostrarnotificacion('Por favor completa todos los campos requeridos correctamente');
             return;
         }
 
@@ -470,7 +456,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     window.location.href = 'admin-productos.html';
                 }
             } else {
-                window.location.href = 'admin-productos.html';
+                window.location.href= 'admin-productos.html';
             }
         });
     }
