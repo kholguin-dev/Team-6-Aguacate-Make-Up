@@ -146,6 +146,25 @@ function Validardatos(campos, Idproductoeditar, SkuOriginalEditar) {
     if (!campos.categoria.value) { campos.categoria.classList.add('entrada-invalida'); valido = false; }
     else campos.categoria.classList.remove('entrada-invalida');
 
+    // Validación obligatoria de la foto del producto
+    const tieneFoto = typeof campos.tieneimagen === 'function'
+        ? campos.tieneimagen()
+        : (campos.tieneimagen !== undefined ? Boolean(campos.tieneimagen) : Boolean(campos.imagen && !String(campos.imagen).includes('logo.png')));
+
+    const cajaSubida = campos.cajasubida || document.getElementById('cajaPrevisualizacion');
+    const elemErrorImagen = document.getElementById('errorImagen');
+    if (!tieneFoto) {
+        if (cajaSubida) cajaSubida.classList.add('entrada-invalida');
+        if (elemErrorImagen) {
+            elemErrorImagen.textContent = 'Debes subir una foto para el producto';
+            elemErrorImagen.classList.add('visible');
+        }
+        valido = false;
+    } else {
+        if (cajaSubida) cajaSubida.classList.remove('entrada-invalida');
+        if (elemErrorImagen) elemErrorImagen.classList.remove('visible');
+    }
+
     if (!campos.textoalternativo.value.trim()) campos.textoalternativo.value = campos.nombre.value.trim() || 'Imagen del producto';
     campos.textoalternativo.classList.remove('entrada-invalida');
 

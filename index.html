@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="./style.css">
     <link rel="icon" href="./img/faviconbien.png">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style/drawer.css">
 </head>
 <body>
@@ -16,61 +19,20 @@
     <header id="header"></header>
 
     <main>
-        <section class="seccion-principal" id="inicio">
-            <div class="container-fluid px-4">
-                <div class="row align-items-center g-4">
-
-                    <div class="col-12 col-lg-6">
-                        <div class="contenido-principal">
-                        <h1 class="titulo-principal mt-4">
-                         Tu esencia,<br>
-                          en cada detalle
-                        </h1>
-                    
-                            <p class="descripcion-principal mt-3">
-                                Maquillaje que inspira, skincare que cuida y accesorios
-                                que hacen fácil tu rutina. Descubre tus próximos favoritos.
-                            </p>
-
-                            <div class="acciones-principales d-flex flex-wrap gap-2 mt-4">
-                                <a href="vistas/catalogo.html" class="btn btn-primary boton-principal">
-                                    <i class="bi bi-arrow-right me-2" aria-hidden="true"></i>
-                                    Explorar catálogo
-                                </a>
-
-                                <a href="#novedades" class="btn btn-outline-primary boton-principal">
-                                    Ver novedades
-                                </a>
-                            </div>
+        <section class="seccion-principal seccion-hero-avoir" id="inicio">
+            <div class="container hero-avoir-contenedor">
+                <div class="row align-items-center">
+                    <div class="col-12 col-md-8 col-lg-6">
+                        <div class="hero-avoir-contenido">
+                            <span class="hero-avoir-etiqueta">NUEVA COLECCIÓN</span>
+                            <span class="hero-avoir-marca">AVOIR COSMETICS</span>
+                            <h1 class="hero-avoir-titulo">LA BELLEZA<br>DEL SATÍN</h1>
+                            <p class="hero-avoir-descripcion">Nutrición natural con acabado de lujo.</p>
+                            <a href="vistas/catalogo.html" class="hero-avoir-boton">
+                                Compra ahora
+                            </a>
                         </div>
                     </div>
-
-                    <div class="col-12 col-lg-6">
-                        <div class="contenedor-carrusel" id="carrusel-productos">
-
-                            <div class="carrusel-imagenes">
-                                <img src="./img/makeup.jpg" alt="Productos de maquillaje" class="imagen-carrusel activa">
-                                <img src="./img/ImgT1.png" alt="Productos de belleza y cuidado de la piel" class="imagen-carrusel">
-                                <img src="./img/ImgT2.png" alt="Colección de maquillaje" class="imagen-carrusel">
-                            </div>
-
-                            <button type="button" class="flecha-carrusel anterior" id="imagen-anterior" aria-label="Ver imagen anterior">
-                                <i class="bi bi-chevron-left" aria-hidden="true"></i>
-                            </button>
-
-                            <button type="button" class="flecha-carrusel siguiente" id="imagen-siguiente" aria-label="Ver imagen siguiente">
-                                <i class="bi bi-chevron-right" aria-hidden="true"></i>
-                            </button>
-
-                            <div class="indicadores-carrusel" aria-label="Seleccionar imagen">
-                                <button type="button" class="indicador activa" aria-label="Mostrar imagen 1" aria-current="true"></button>
-                                <button type="button" class="indicador" aria-label="Mostrar imagen 2"></button>
-                                <button type="button" class="indicador" aria-label="Mostrar imagen 3"></button>
-                            </div>
-
-                        </div>
-                    </div>
-
                 </div>
             </div>
         </section>
