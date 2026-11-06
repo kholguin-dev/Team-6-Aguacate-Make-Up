@@ -1,1 +1,161 @@
 
+/* registro */
+
+.registro-page {
+    background-color: #fff;
+    min-height: 80vh;
+    color: #280044;
+}
+
+.registro-panel {
+    background-color: #FCE0F0;
+    border-radius: 12px;
+    color: #280044;
+}
+
+.registro-panel .badge {
+    background-color: #D58AEF;
+    color: #280044;
+    width: fit-content;
+    padding: 8px 12px;
+    font-weight: 600;
+}
+
+.registro-panel h1 {
+    font-size: 2rem;
+    line-height: 1.3;
+}
+
+.registro-panel .card {
+    border: none;
+    border-radius: 9px;
+    background-color: #fff;
+    color: #280044;
+}
+
+.registro-panel .card strong {
+    color: #5E1797;
+    font-size: 0.9rem;
+}
+
+.registro-panel small {
+    font-size: 0.75rem;
+    color: #5f4b68;
+}
+
+.registro-formulario {
+    padding-top: 5px;
+}
+
+.registro-formulario h2 {
+    color: #5E1797;
+    font-size: 2rem;
+}
+
+.registro-formulario .form-label {
+    color: #280044;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.registro-formulario .form-control {
+    border: 1px solid #D58AEF;
+    border-radius: 7px;
+    padding: 10px 12px;
+    font-size: 0.9rem;
+}
+
+.registro-formulario .form-control:focus {
+    border-color: #5E1797;
+    box-shadow: 0 0 0 0.2rem rgba(94, 23, 151, 0.15);
+}
+
+.registro-formulario .form-check-input {
+    border-color: #D58AEF;
+    cursor: pointer;
+}
+
+.registro-formulario .form-check-input:checked {
+    background-color: #5E1797;
+    border-color: #5E1797;
+}
+
+.registro-formulario .form-check-input:focus {
+    border-color: #5E1797;
+    box-shadow: 0 0 0 0.2rem rgba(94, 23, 151, 0.15);
+}
+
+.registro-formulario .form-check-label {
+    color: #44334e;
+    font-size: 0.85rem;
+}
+
+.registro-formulario .form-text {
+    color: #806b8b;
+    font-size: 0.75rem;
+}
+
+.registro-formulario .btn-primary {
+    background-color: #5E1797;
+    border-color: #5E1797;
+    border-radius: 7px;
+    padding: 11px;
+    font-weight: 600;
+}
+
+.registro-formulario .btn-primary:hover {
+    background-color: #450c75;
+    border-color: #450c75;
+}
+
+.registro-formulario a {
+    color: #5E1797;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.registro-formulario a:hover {
+    text-decoration: underline;
+}
+
+#mensaje-registro {
+    border-radius: 8px;
+    font-size: 0.9rem;
+}
+
+/* responsive */
+
+@media (max-width: 991px) {
+    .registro-panel {
+        margin-bottom: 10px;
+    }
+
+    .registro-panel h1 {
+        font-size: 1.7rem;
+    }
+
+    .registro-formulario {
+        padding: 10px 0;
+    }
+}
+
+@media (max-width: 576px) {
+    .registro-page .container {
+        padding-top: 25px !important;
+        padding-bottom: 25px !important;
+    }
+
+    .registro-panel {
+        padding: 22px !important;
+    }
+
+    .registro-panel h1,
+    .registro-formulario h2 {
+        font-size: 1.5rem;
+    }
+
+    .registro-formulario .form-control {
+        font-size: 0.85rem;
+    }
+}
+
