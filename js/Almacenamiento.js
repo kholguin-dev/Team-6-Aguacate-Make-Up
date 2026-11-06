@@ -167,6 +167,65 @@ async function ActualizarStockInventario(sku, nuevoStock) {
     return true;
 }
 
+// ALMACENAMIENTO DE USUARIOS - REGISTRO
+
+const Claveusuarios = 'registroUsuarios';
+
+// Obtener usuarios registrados
+function Obtenerlistadousuarios() {
+    try {
+        const datos = localStorage.getItem(Claveusuarios);
+        const lista = datos ? JSON.parse(datos) : [];
+
+        return Array.isArray(lista) ? lista : [];
+    } catch (error) {
+        console.error('Error al obtener usuarios:', error);
+        return [];
+    }
+}
+
+// Guardar lista de usuarios
+function Guardarlistadousuarios(listaUsuarios) {
+    try {
+        localStorage.setItem(
+            Claveusuarios,
+            JSON.stringify(listaUsuarios || [])
+        );
+
+        return true;
+    } catch (error) {
+        console.error('Error al guardar usuarios:', error);
+        return false;
+    }
+}
+
+// Registrar un nuevo usuario
+function GuardarUsuarioEnStorage(usuario) {
+    if (!usuario || !usuario.correo) {
+        throw new Error('Los datos del usuario son inválidos.');
+    }
+
+    const usuarios = Obtenerlistadousuarios();
+
+    const correoExiste = usuarios.some(
+        u => u.correo.toLowerCase() === usuario.correo.toLowerCase()
+    );
+
+    if (correoExiste) {
+        throw new Error('Este correo electrónico ya está registrado.');
+    }
+
+    usuarios.push(usuario);
+
+    if (!Guardarlistadousuarios(usuarios)) {
+        throw new Error('No fue posible guardar el usuario.');
+    }
+
+    return true;
+}
+
+
+
 // Disponibilidad global para todos los scripts
 if (typeof window !== 'undefined') {
     Object.assign(window, {
@@ -183,6 +242,10 @@ if (typeof window !== 'undefined') {
         CrearOActualizarProductoInventario,
         EliminarProductoInventario,
         CambiarEstadoInventario,
-        ActualizarStockInventario
+        ActualizarStockInventario,
+        Claveusuarios,
+        Obtenerlistadousuarios,
+        Guardarlistadousuarios,
+        GuardarUsuarioEnStorage
     });
 }
