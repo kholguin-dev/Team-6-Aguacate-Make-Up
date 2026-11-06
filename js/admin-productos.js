@@ -3,141 +3,146 @@
 // Lo que se corrigio en este archivo fue conectar directamente la capa central de Almacenamiento.js para no duplicar funciones de lectura y guardado.
 
 document.addEventListener("DOMContentLoaded", () => {
+  // Buscamos los elementos del panel
+  const tabla = document.querySelector(".dashboard-container tbody");
+  const BotonCrearProducto = document.querySelector(".btn-brand");
+  const campoBusqueda = document.querySelector(
+    '.dashboard-container input[type="text"]',
+  );
+  const selectorEstado = document.querySelector("#filtro-estado");
 
-    // Buscamos los elementos del panel
-    const tabla = document.querySelector(".dashboard-container tbody");
-    const BotonCrearProducto = document.querySelector(".btn-brand");
-    const campoBusqueda = document.querySelector(
-        '.dashboard-container input[type="text"]'
+  const botonesCategoria = document.querySelectorAll(".nav-category-btn");
+  const indicadores = document.querySelectorAll(
+    ".dashboard-container > section .badge",
+  );
+  const pie = document.querySelector(".dashboard-container > footer");
+
+  if (!tabla || !campoBusqueda || !selectorEstado) {
+    console.error("Faltan elementos del panel de productos.");
+    return;
+  }
+
+  // Ruta de la pagina para crear o registrar un producto
+  const Urlcrearproducto = "Admincrearproductos.html";
+
+  // Clave para guardar y consultar en localstorage
+  const Claveproductos = "admincrearproductos";
+  const Productosporpagina = 8;
+
+  let categoriaActual = "Todas";
+  let estadoActual = "";
+  let paginaActual = 1;
+
+  // Acceso a almacenamiento local usando la capa centralizada
+  const cargarProductos = () =>
+    typeof window.Obtenerlistadoproductos === "function"
+      ? window.Obtenerlistadoproductos()
+      : JSON.parse(localStorage.getItem(Claveproductos) || "[]");
+  let productos = cargarProductos();
+
+  const guardarProductos = () => {
+    if (typeof window.Guardarlistadoproductos === "function")
+      return window.Guardarlistadoproductos(productos);
+    try {
+      localStorage.setItem(Claveproductos, JSON.stringify(productos));
+      return true;
+    } catch (e) {
+      console.error("No se pudieron guardar los productos:", e);
+      return false;
+    }
+  };
+
+  // Evitamos interpretar los textos como código HTML
+  function escapar(texto) {
+    return String(texto ?? "").replace(
+      /[&<>"']/g,
+      (caracter) =>
+        ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;",
+        })[caracter],
     );
-    const selectorEstado = document.querySelector("#filtro-estado");
+  }
 
-    const botonesCategoria = document.querySelectorAll(".nav-category-btn");
-    const indicadores = document.querySelectorAll(
-        ".dashboard-container > section .badge"
+  // Formato de precio en pesos colombianos sin decimales
+  function formatoPrecio(precio) {
+    return (
+      "$ " +
+      Number(precio || 0).toLocaleString("es-CO", {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      })
     );
-    const pie = document.querySelector(".dashboard-container > footer");
+  }
 
-    if (!tabla || !campoBusqueda || !selectorEstado) {
-        console.error("Faltan elementos del panel de productos.");
-        return;
-    }
+  // Actualizamos los contadores del panel
+  function actualizarIndicadores() {
+    if (indicadores.length < 4) return;
 
-    // Ruta de la pagina para crear o registrar un producto
-    const Urlcrearproducto = "Admincrearproductos.html";
+    indicadores[0].textContent = `${productos.length} productos`;
+    indicadores[1].textContent = `${productos.filter((p) => p.estado === "Publicado").length} publicados`;
+    indicadores[2].textContent = `${productos.filter((p) => p.estado === "Borrador").length} borradores`;
+    indicadores[3].textContent = `${productos.filter((p) => Number(p.stock) <= 10).length} con stock bajo`;
+  }
 
-    // Clave para guardar y consultar en localstorage
-    const Claveproductos = "admincrearproductos";
-    const Productosporpagina = 8;
+  // Aplicamos la búsqueda y los filtros
+  function renderizarProductos() {
+    const texto = campoBusqueda.value.trim().toLowerCase();
 
-    let categoriaActual = "Todas";
-    let estadoActual = "";
-    let paginaActual = 1;
+    const filtrados = productos.filter((producto) => {
+      const coincideTexto = [
+        producto.nombre,
+        producto.sku,
+        producto.referencia,
+        producto.categoria,
+        producto.subcategoria,
+        producto.descripcion,
+      ].some((valor) =>
+        String(valor ?? "")
+          .toLowerCase()
+          .includes(texto),
+      );
 
-    // Acceso a almacenamiento local usando la capa centralizada
-    const cargarProductos = () => (typeof window.Obtenerlistadoproductos === 'function' ? window.Obtenerlistadoproductos() : JSON.parse(localStorage.getItem(Claveproductos) || '[]'));
-    let productos = cargarProductos();
+      // Comparamos la categoría seleccionada sin enredos de mayúsculas o si trae subcategoría
+      const filtroCat = (categoriaActual || "").trim().toLowerCase();
+      const prodCat = (producto.categoria || "").trim().toLowerCase();
+      const prodSubcat = (producto.subcategoria || "").trim().toLowerCase();
 
-    const guardarProductos = () => {
-        if (typeof window.Guardarlistadoproductos === 'function') return window.Guardarlistadoproductos(productos);
-        try {
-            localStorage.setItem(Claveproductos, JSON.stringify(productos));
-            return true;
-        } catch (e) {
-            console.error("No se pudieron guardar los productos:", e);
-            return false;
-        }
-    };
+      const coincideCategoria =
+        filtroCat === "todas" ||
+        filtroCat === "todos" ||
+        filtroCat === "" ||
+        prodCat === filtroCat ||
+        prodCat.startsWith(filtroCat) ||
+        prodCat.includes(filtroCat) ||
+        prodSubcat.includes(filtroCat);
 
+      const coincideEstado = !estadoActual || producto.estado === estadoActual;
 
-    // Evitamos interpretar los textos como código HTML
-    function escapar(texto) {
-        return String(texto ?? "").replace(/[&<>"']/g, caracter => ({
-            "&": "&amp;",
-            "<": "&lt;",
-            ">": "&gt;",
-            '"': "&quot;",
-            "'": "&#39;"
-        })[caracter]);
-    }
+      return coincideTexto && coincideCategoria && coincideEstado;
+    });
 
-    // Formato de precio en pesos colombianos sin decimales
-    function formatoPrecio(precio) {
-        return "$ " + Number(precio || 0).toLocaleString("es-CO", {
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 0
-        });
-    }
+    const totalPaginas = Math.max(
+      1,
+      Math.ceil(filtrados.length / Productosporpagina),
+    );
 
-    // Actualizamos los contadores del panel
-    function actualizarIndicadores() {
-        if (indicadores.length < 4) return;
+    paginaActual = Math.min(paginaActual, totalPaginas);
 
-        indicadores[0].textContent = `${productos.length} productos`;
-        indicadores[1].textContent =
-            `${productos.filter(p => p.estado === "Publicado").length} publicados`;
-        indicadores[2].textContent =
-            `${productos.filter(p => p.estado === "Borrador").length} borradores`;
-        indicadores[3].textContent =
-            `${productos.filter(p => Number(p.stock) <= 10).length} con stock bajo`;
-    }
+    const inicio = (paginaActual - 1) * Productosporpagina;
+    const visibles = filtrados.slice(inicio, inicio + Productosporpagina);
 
-    // Aplicamos la búsqueda y los filtros
-    function renderizarProductos() {
-        const texto = campoBusqueda.value.trim().toLowerCase();
-
-        const filtrados = productos.filter(producto => {
-            const coincideTexto = [
-                producto.nombre,
-                producto.sku,
-                producto.referencia,
-                producto.categoria,
-                producto.subcategoria,
-                producto.descripcion
-            ].some(valor =>
-                String(valor ?? "").toLowerCase().includes(texto)
-            );
-
-            // Comparamos la categoría seleccionada sin enredos de mayúsculas o si trae subcategoría
-            const filtroCat = (categoriaActual || "").trim().toLowerCase();
-            const prodCat = (producto.categoria || "").trim().toLowerCase();
-            const prodSubcat = (producto.subcategoria || "").trim().toLowerCase();
-
-            const coincideCategoria =
-                filtroCat === "todas" ||
-                filtroCat === "todos" ||
-                filtroCat === "" ||
-                prodCat === filtroCat ||
-                prodCat.startsWith(filtroCat) ||
-                prodCat.includes(filtroCat) ||
-                prodSubcat.includes(filtroCat);
-
-            const coincideEstado =
-                !estadoActual ||
-                producto.estado === estadoActual;
-
-            return coincideTexto && coincideCategoria && coincideEstado;
-        });
-
-        const totalPaginas = Math.max(
-            1,
-            Math.ceil(filtrados.length / Productosporpagina)
-        );
-
-        paginaActual = Math.min(paginaActual, totalPaginas);
-
-        const inicio = (paginaActual - 1) * Productosporpagina;
-        const visibles = filtrados.slice(
-            inicio,
-            inicio + Productosporpagina
-        );
-
-        // Mostramos los productos en la tabla
-        tabla.innerHTML = visibles.map(producto => `
+    // Mostramos los productos en la tabla
+    tabla.innerHTML = visibles
+      .map(
+        (producto) => `
             <tr>
                 <td>
                     <div class="d-flex align-items-center gap-2">
-                        <img src="${typeof NormalizarUrlImagen === 'function' ? NormalizarUrlImagen(producto.imagen) : (producto.imagen || '../img/logo.png')}" alt="${escapar(producto.nombre)}" class="rounded" style="width: 36px; height: 36px; object-fit: cover; flex-shrink: 0; border: 1px solid #EFE4F8;" onerror="this.src='../img/logo.png'">
+                        <img src="${typeof NormalizarUrlImagen === "function" ? NormalizarUrlImagen(producto.imagen) : producto.imagen || "../img/logo.png"}" alt="${escapar(producto.nombre)}" class="rounded" style="width: 36px; height: 36px; object-fit: cover; flex-shrink: 0; border: 1px solid #EFE4F8;" onerror="this.src='../img/logo.png'">
                         <div>
                             <div class="fw-bold">${escapar(producto.nombre)}</div>
                             <div class="text-muted" style="font-size: 0.75rem;">
@@ -147,62 +152,71 @@ document.addEventListener("DOMContentLoaded", () => {
                     </div>
                 </td>
                 <td>
-                    ${escapar(producto.categoria || "")}${producto.subcategoria && producto.subcategoria !== "Sin subcategoría"
-                ? " · " + escapar(producto.subcategoria)
-                : ""
-            }
+                    ${escapar(producto.categoria || "")}${
+                      producto.subcategoria &&
+                      producto.subcategoria !== "Sin subcategoría"
+                        ? " · " + escapar(producto.subcategoria)
+                        : ""
+                    }
                 </td>
                 <td>${formatoPrecio(producto.precio)}</td>
                 <td>${Number(producto.stock)}</td>
                 <td>
-                    <span class="badge ${producto.estado === "Publicado"
-                ? "badge-published"
-                : "bg-secondary"
-            }">${escapar(producto.estado)}</span>
-                    ${Number(producto.stock) <= 10
-                ? '<span class="badge badge-stock-low">Stock bajo</span>'
-                : ""}
+                    <span class="badge ${
+                      producto.estado === "Publicado"
+                        ? "badge-published"
+                        : "bg-secondary"
+                    }">${escapar(producto.estado)}</span>
+                    ${
+                      Number(producto.stock) <= 10
+                        ? '<span class="badge badge-stock-low">Stock bajo</span>'
+                        : ""
+                    }
                 </td>
                 <td class="text-end text-nowrap">
                     <button class="btn btn-link btn-sm text-brand"
-                            data-accion="ver" data-id="${producto.id}" data-sku="${escapar(producto.sku || '')}">
+                            data-accion="ver" data-id="${producto.id}" data-sku="${escapar(producto.sku || "")}">
                         Ver
                     </button>
                     <button class="btn btn-link btn-sm text-brand"
-                            data-accion="editar" data-id="${producto.id}" data-sku="${escapar(producto.sku || '')}">
+                            data-accion="editar" data-id="${producto.id}" data-sku="${escapar(producto.sku || "")}">
                         Editar
                     </button>
                     <button class="btn btn-link btn-sm text-danger"
-                            data-accion="eliminar" data-id="${producto.id}" data-sku="${escapar(producto.sku || '')}">
+                            data-accion="eliminar" data-id="${producto.id}" data-sku="${escapar(producto.sku || "")}">
                         Eliminar
                     </button>
                 </td>
             </tr>
-        `).join("");
+        `,
+      )
+      .join("");
 
-        // Mostramos un mensaje si no hay resultados
-        if (visibles.length === 0) {
-            tabla.innerHTML = `
+    // Mostramos un mensaje si no hay resultados
+    if (visibles.length === 0) {
+      tabla.innerHTML = `
                 <tr>
                     <td colspan="6" class="text-center text-muted py-4">
                         No hay productos para mostrar.
                     </td>
                 </tr>
             `;
-        }
+    }
 
-        actualizarIndicadores();
+    actualizarIndicadores();
 
-        // Actualizamos la información y los botones de paginación
-        if (pie) {
-            pie.innerHTML = `
+    // Actualizamos la información y los botones de paginación
+    if (pie) {
+      pie.innerHTML = `
                 <span class="text-muted small">
-                    ${filtrados.length
-                    ? `Mostrando ${inicio + 1}–${Math.min(
-                        inicio + Productosporpagina,
-                        filtrados.length
-                    )} de ${filtrados.length} productos`
-                    : "No hay productos para mostrar"}
+                    ${
+                      filtrados.length
+                        ? `Mostrando ${inicio + 1}–${Math.min(
+                            inicio + Productosporpagina,
+                            filtrados.length,
+                          )} de ${filtrados.length} productos`
+                        : "No hay productos para mostrar"
+                    }
                 </span>
                 <nav aria-label="Paginación">
                     <ul class="pagination pagination-sm m-0 gap-1">
@@ -218,8 +232,9 @@ document.addEventListener("DOMContentLoaded", () => {
                                 ${paginaActual} de ${totalPaginas}
                             </span>
                         </li>
-                        <li class="page-item ${paginaActual === totalPaginas ? "disabled" : ""
-                }">
+                        <li class="page-item ${
+                          paginaActual === totalPaginas ? "disabled" : ""
+                        }">
                             <button class="page-link rounded"
                                     data-pagina="${paginaActual + 1}"
                                     ${paginaActual === totalPaginas ? "disabled" : ""}>
@@ -229,107 +244,122 @@ document.addEventListener("DOMContentLoaded", () => {
                     </ul>
                 </nav>
             `;
-        }
     }
+  }
 
-    // Redirige al formulario de crear producto
-    if (BotonCrearProducto) {
-        BotonCrearProducto.addEventListener("click", () => {
-            window.location.href = Urlcrearproducto;
-        });
-    }
+  // Redirige al formulario de crear producto
+  if (BotonCrearProducto) {
+    BotonCrearProducto.addEventListener("click", () => {
+      window.location.href = Urlcrearproducto;
+    });
+  }
 
-    // Buscamos mientras escribimos
-    campoBusqueda.addEventListener("input", () => {
-        paginaActual = 1;
-        renderizarProductos();
+  // Buscamos mientras escribimos
+  campoBusqueda.addEventListener("input", () => {
+    paginaActual = 1;
+    renderizarProductos();
+  });
+
+  // Filtramos por estado (al cambiar selección o al hacer clic en Filtrar)
+  function aplicarFiltroEstado() {
+    const valor = selectorEstado.value;
+
+    estadoActual =
+      valor === "1" ? "Publicado" : valor === "2" ? "Borrador" : "";
+
+    paginaActual = 1;
+    renderizarProductos();
+  }
+
+  selectorEstado.addEventListener("change", aplicarFiltroEstado);
+
+  // Filtramos por categoría
+  botonesCategoria.forEach((boton) => {
+    boton.addEventListener("click", () => {
+      const categoriaSeleccionada = boton.textContent.trim();
+
+      categoriaActual =
+        categoriaSeleccionada === "Todas" ? "Todos" : categoriaSeleccionada;
+
+      botonesCategoria.forEach((b) => b.classList.remove("active"));
+      boton.classList.add("active");
+
+      paginaActual = 1;
+      renderizarProductos();
+    });
+  });
+
+  // Atendemos las acciones de cada producto
+  tabla.addEventListener("click", async (evento) => {
+    const boton = evento.target.closest("button[data-accion]");
+    if (!boton) return;
+
+    const id = String(boton.dataset.id || "").trim();
+    const sku = String(boton.dataset.sku || "")
+      .trim()
+      .toUpperCase();
+    const producto = productos.find((p) => {
+      const pid = String(p.id || "").trim();
+      const psku = String(p.sku || "")
+        .trim()
+        .toUpperCase();
+      return (
+        (id &&
+          (pid === id ||
+            pid.replace("PROD-", "") === id.replace("PROD-", ""))) ||
+        (sku && psku === sku) ||
+        (id && psku === id.toUpperCase())
+      );
     });
 
-    // Filtramos por estado (al cambiar selección o al hacer clic en Filtrar)
-    function aplicarFiltroEstado() {
-        const valor = selectorEstado.value;
+    if (!producto) return;
 
-        estadoActual = valor === "1"
-            ? "Publicado"
-            : valor === "2"
-                ? "Borrador"
-                : "";
+    // mostrar la información del producto
 
-        paginaActual = 1;
-        renderizarProductos();
-    }
+    if (boton.dataset.accion === "ver") {
+      const modal = document.querySelector("#modalVerProducto");
+      const detalle = document.querySelector("#detalleProducto");
+      const tituloModal = document.querySelector("#tituloModalProducto");
 
-    selectorEstado.addEventListener("change", aplicarFiltroEstado);
+      if (!modal || !detalle) {
+        alert("No se encontró la ventana del producto.");
+        return;
+      }
 
+      if (tituloModal) {
+        tituloModal.textContent = "Vista previa del catálogo";
+      }
 
-    // Filtramos por categoría
-    botonesCategoria.forEach(boton => {
-        boton.addEventListener("click", () => {
-            const categoriaSeleccionada = boton.textContent.trim();
+      const urlImg =
+        typeof NormalizarUrlImagen === "function"
+          ? NormalizarUrlImagen(producto.imagen)
+          : producto.imagen || "../img/logo.png";
 
-            categoriaActual = categoriaSeleccionada === "Todas"
-                ? "Todos"
-                : categoriaSeleccionada;
+      const precioHabitual = Number(producto.precio) || 0;
+      const precioPromo =
+        Number(
+          producto.preciopromocional !== undefined
+            ? producto.preciopromocional
+            : producto.precioPromocional,
+        ) || 0;
+      const tieneDescuento = precioPromo > 0 && precioPromo < precioHabitual;
 
-            botonesCategoria.forEach(b => b.classList.remove("active"));
-            boton.classList.add("active");
+      const porcentaje = tieneDescuento
+        ? Math.round((1 - precioPromo / precioHabitual) * 100)
+        : 0;
+      const insigniaHtml = tieneDescuento
+        ? `<span class="insignia-producto oferta">-${porcentaje}%</span>`
+        : producto.novedades
+          ? `<span class="insignia-producto nuevo">Nuevo</span>`
+          : "";
 
-            paginaActual = 1;
-            renderizarProductos();
-        });
-    });
+      const categoriaTexto = (
+        escapar(producto.categoria || "Maquillaje") +
+        (producto.subcategoria ? ` · ${escapar(producto.subcategoria)}` : "")
+      ).toUpperCase();
+      const sinStock = Number(producto.stock) <= 0;
 
-    // Atendemos las acciones de cada producto
-    tabla.addEventListener("click", async evento => {
-        const boton = evento.target.closest("button[data-accion]");
-        if (!boton) return;
-
-        const id = String(boton.dataset.id || "").trim();
-        const sku = String(boton.dataset.sku || "").trim().toUpperCase();
-        const producto = productos.find(p => {
-            const pid = String(p.id || "").trim();
-            const psku = String(p.sku || "").trim().toUpperCase();
-            return (id && (pid === id || pid.replace("PROD-", "") === id.replace("PROD-", ""))) ||
-                (sku && psku === sku) ||
-                (id && psku === id.toUpperCase());
-        });
-
-        if (!producto) return;
-
-
-        // mostrar la información del producto
-
-        if (boton.dataset.accion === "ver") {
-            const modal = document.querySelector("#modalVerProducto");
-            const detalle = document.querySelector("#detalleProducto");
-            const tituloModal = document.querySelector("#tituloModalProducto");
-
-            if (!modal || !detalle) {
-                alert("No se encontró la ventana del producto.");
-                return;
-            }
-
-            if (tituloModal) {
-                tituloModal.textContent = "Vista previa del catálogo";
-            }
-
-            const urlImg = typeof NormalizarUrlImagen === "function"
-                ? NormalizarUrlImagen(producto.imagen)
-                : (producto.imagen || "../img/logo.png");
-
-            const precioHabitual = Number(producto.precio) || 0;
-            const precioPromo = Number(producto.preciopromocional !== undefined ? producto.preciopromocional : producto.precioPromocional) || 0;
-            const tieneDescuento = precioPromo > 0 && precioPromo < precioHabitual;
-
-            const porcentaje = tieneDescuento ? Math.round((1 - (precioPromo / precioHabitual)) * 100) : 0;
-            const insigniaHtml = tieneDescuento
-                ? `<span class="insignia-producto oferta">-${porcentaje}%</span>`
-                : (producto.novedades ? `<span class="insignia-producto nuevo">Nuevo</span>` : '');
-
-            const categoriaTexto = (escapar(producto.categoria || "Maquillaje") + (producto.subcategoria ? ` · ${escapar(producto.subcategoria)}` : '')).toUpperCase();
-            const sinStock = Number(producto.stock) <= 0;
-
-            detalle.innerHTML = `
+      detalle.innerHTML = `
                 <div class="text-center mb-3">
                     <p class="text-muted small mb-0">Así es como verán tus clientes este producto en el catálogo:</p>
                 </div>
@@ -351,10 +381,10 @@ document.addEventListener("DOMContentLoaded", () => {
                                 <div class="pie-tarjeta-producto">
                                     <div class="contenedor-precio-producto">
                                         <span class="precio-actual">${formatoPrecio(tieneDescuento ? precioPromo : precioHabitual)}</span>
-                                        ${tieneDescuento ? `<span class="precio-anterior">${formatoPrecio(precioHabitual)}</span>` : ''}
+                                        ${tieneDescuento ? `<span class="precio-anterior">${formatoPrecio(precioHabitual)}</span>` : ""}
                                     </div>
-                                    <button class="boton-agregar-producto ${sinStock ? 'agotado' : ''}" type="button" disabled title="Vista previa del catálogo">
-                                        ${sinStock ? '<span>Agotado</span>' : '<i class="bi bi-cart-plus"></i> <span>Agregar</span>'}
+                                    <button class="boton-agregar-producto ${sinStock ? "agotado" : ""}" type="button" disabled title="Vista previa del catálogo">
+                                        ${sinStock ? "<span>Agotado</span>" : '<i class="bi bi-cart-plus"></i> <span>Agregar</span>'}
                                     </button>
                                 </div>
                             </div>
@@ -363,53 +393,62 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
                 <div class="mt-3 text-center">
                     <small class="badge bg-light text-dark border">
-                        Referencia SKU: <strong>${escapar(producto.sku || producto.referencia || 'N/A')}</strong> · Stock actual: <strong>${Number(producto.stock) || 0}</strong>
+                        Referencia SKU: <strong>${escapar(producto.sku || producto.referencia || "N/A")}</strong> · Stock actual: <strong>${Number(producto.stock) || 0}</strong>
                     </small>
                 </div>
             `;
 
-            bootstrap.Modal.getOrCreateInstance(modal).show();
-            return;
-        }
-
-        // Abrimos la página del formulario con los datos a editar o continuar borrador
-        if (boton.dataset.accion === "editar") {
-            window.location.href = Urlcrearproducto + "?id=" + encodeURIComponent(producto.id) + "&sku=" + encodeURIComponent(producto.sku || "");
-        }
-
-        // Confirmamos antes de eliminar
-        if (boton.dataset.accion === "eliminar") {
-            if (!confirm(`¿Estás seguro de que deseas eliminar "${producto.nombre}"? Esta acción no se puede deshacer.`)) {
-                return;
-            }
-
-            if (typeof EliminarProductoInventario === 'function') {
-                await EliminarProductoInventario(producto.id || producto.sku);
-                productos = cargarProductos();
-                renderizarProductos();
-            } else {
-                const productosAnteriores = productos;
-                productos = productos.filter(p => String(p.id) !== id);
-                if (guardarProductos()) {
-                    renderizarProductos();
-                } else {
-                    productos = productosAnteriores;
-                }
-            }
-        }
-    });
-
-    // Cambiamos de página
-    if (pie) {
-        pie.addEventListener("click", evento => {
-            const boton = evento.target.closest("button[data-pagina]");
-            if (!boton || boton.disabled) return;
-
-            paginaActual = Number(boton.dataset.pagina);
-            renderizarProductos();
-        });
+      bootstrap.Modal.getOrCreateInstance(modal).show();
+      return;
     }
 
-    // Mostramos la tabla al entrar con los datos de LocalStorage
-    renderizarProductos();
+    // Abrimos la página del formulario con los datos a editar o continuar borrador
+    if (boton.dataset.accion === "editar") {
+      window.location.href =
+        Urlcrearproducto +
+        "?id=" +
+        encodeURIComponent(producto.id) +
+        "&sku=" +
+        encodeURIComponent(producto.sku || "");
+    }
+
+    // Confirmamos antes de eliminar
+    if (boton.dataset.accion === "eliminar") {
+      if (
+        !confirm(
+          `¿Estás seguro de que deseas eliminar "${producto.nombre}"? Esta acción no se puede deshacer.`,
+        )
+      ) {
+        return;
+      }
+
+      if (typeof EliminarProductoInventario === "function") {
+        await EliminarProductoInventario(producto.id || producto.sku);
+        productos = cargarProductos();
+        renderizarProductos();
+      } else {
+        const productosAnteriores = productos;
+        productos = productos.filter((p) => String(p.id) !== id);
+        if (guardarProductos()) {
+          renderizarProductos();
+        } else {
+          productos = productosAnteriores;
+        }
+      }
+    }
+  });
+
+  // Cambiamos de página
+  if (pie) {
+    pie.addEventListener("click", (evento) => {
+      const boton = evento.target.closest("button[data-pagina]");
+      if (!boton || boton.disabled) return;
+
+      paginaActual = Number(boton.dataset.pagina);
+      renderizarProductos();
+    });
+  }
+
+  // Mostramos la tabla al entrar con los datos de LocalStorage
+  renderizarProductos();
 });

@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         try {
-            guardarEnLocalStorage(nuevoUsuario);
+            GuardarUsuarioEnStorage(nuevoUsuario);
             
 
             mensajeRegistro.innerHTML = `
@@ -67,17 +67,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>`;
         }
     });
-
-    // Función para manejar el LocalStorage
-    function guardarEnLocalStorage(usuario) {
-        let usuariosDB = JSON.parse(localStorage.getItem("usuariosAguacate")) || [];
-
-        const usuarioExiste = usuariosDB.some(u => u.correo === usuario.correo);
-        
-        if (usuarioExiste) {
-            throw new Error("Este correo electrónico ya está registrado.");
-        }
-        usuariosDB.push(usuario);
-        localStorage.setItem("usuariosAguacate", JSON.stringify(usuariosDB));
-    }
+    
 });
+
