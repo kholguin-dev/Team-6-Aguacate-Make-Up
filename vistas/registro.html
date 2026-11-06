@@ -70,7 +70,7 @@
                             <!-- correo -->
                             <div class="mb-3">
                                 <label for="correo" class="form-label">Correo electrónico *</label>
-                                <input type="email" class="form-control" id="correo" name="correo" placeholder="nombre@correo.com" autocomplete="email" required>
+                                <input type="email" class="form-control" id="correo" name="correo" placeholder="nombre@correo.com" autocomplete="email" pattern="^[^@]+@[^@]+\.[^@]+$" maxlength="70" required>
                                 <div class="invalid-feedback">Ingresa un correo electrónico válido.</div>
                             </div>
 
