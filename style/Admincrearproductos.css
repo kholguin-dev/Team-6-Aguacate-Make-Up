@@ -291,6 +291,12 @@ input[type="number"] {
     transform: scale(1.01);
 }
 
+.caja-subida.entrada-invalida {
+    border-color: var(--error-rojo) !important;
+    background-color: #FFF2F2 !important;
+    outline: none !important;
+}
+
 .imagen-muestra,
 .imagen-previa {
     max-width: 140px;
