@@ -1,4 +1,3 @@
-
 document.addEventListener("DOMContentLoaded", () => {
     const formulario = document.getElementById("formulario-registro");
     const contrasena = document.getElementById("contrasena");
