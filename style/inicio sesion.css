@@ -1,1 +1,35 @@
+.form-control {
+  background-color: var(--superficie);
+  border: 2px solid #ced4da !important;
+  border-radius: 8px;
+  color: var(--carbon);
+}
 
+.form-control:focus{
+  border: 1px solid #5e1797 !important;
+  box-shadow: 0 0 0 0.2rem rgba(94, 23, 151, 0.15) !important;
+  outline: none;
+}
+
+.btn-danger,
+.btn-danger:focus {
+  background-color: #5e1797 !important;
+  border-color: #5e1797 !important;
+  color: #ffffff !important;
+  border-radius: 15px;
+}
+
+.btn-danger:hover {
+  background-color: #481174 !important;
+  border-color: #481174 !important;
+}
+
+.btn-danger:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.text-center a{
+    color: #5e1797 !important;
+    text-decoration: none;
+}
