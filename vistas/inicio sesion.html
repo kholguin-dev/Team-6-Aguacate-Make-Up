@@ -28,42 +28,40 @@
 
                         <form id="formulario-inicio-sesion" class="needs-validation" novalidate>
                             <div class="mb-3">
-                                <label for="usuario" class="form-label">Nombre de usuario o correo electrónico *</label>
-                                <input type="text" class="form-control" id="usuario" name="usuario"
-                                    placeholder="Ingresa tu usuario o correo electrónico" autocomplete="username"
+                                <label for="correo" class="form-label">Correo electrónico *</label>
+                                <input type="email" class="form-control" id="correo" name="correo"
+                                    placeholder="Ingresa tu correo electrónico registrado" autocomplete="email"
                                     required>
                                 <div class="invalid-feedback">
-                                    Ingresa tu nombre de usuario o correo electrónico.
+                                    Ingresa un correo electrónico válido.
                                 </div>
                             </div>
-
-                            <div class="mb-3">
-                                <label for="contrasena" class="form-label">Contraseña*</label>
-                                <input type="password" class="form-control" id="contrasena" name="contrasena"
-                                    placeholder="Ingresa tu contraseña" required>
-                                <div class="invalid-feedback">
-                                    Ingresa tu contraseña.
-                                </div>
-                            </div>
-                            <div id="mensaje-inicio-sesion" class="mb-3" role="alert" aria-live="polite"></div>
-                            <div class="text-center mt-3">
-                                <a href="#" class="text-decoration-none">¿Olvidaste tu contraseña?</a>
-                            </div>
-                            <div class="mb-3 form-check">
-                                <input type="checkbox" class="form-check-input" id="recuerdame" name="recuerdame">
-                                <label class="form-check-label small" for="recuerdame">
-                                    Recordar mi acceso
-                                </label>
-                            </div>
-
-                            <button class="btn btn-danger w-100 btn-solid theme-primary py-2"
-                                type="submit">Ingresar</button>
-                            <p class="text-center mt-3">¿No tienes cuenta? <a href="registro.html">Registrate</a></p>
-
-                        </form>
+                    <div class="mb-3">
+                        <label for="contrasena" class="form-label">Contraseña*</label>
+                        <input type="password" class="form-control" id="contrasena" name="contrasena"
+                            placeholder="Ingresa tu contraseña" required>
+                        <div class="invalid-feedback">
+                            Ingresa tu contraseña.
+                        </div>
                     </div>
+                    <div id="mensaje-inicio-sesion" class="mb-3" role="alert" aria-live="polite"></div>
+                    <div class="text-center mt-3">
+                        <a href="#" class="text-decoration-none">¿Olvidaste tu contraseña?</a>
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="recuerdame" name="recuerdame">
+                        <label class="form-check-label small" for="recuerdame">
+                            Recordar mi acceso
+                        </label>
+                    </div>
+
+                    <button class="btn btn-danger w-100 btn-solid theme-primary py-2" type="submit">Ingresar</button>
+                    <p class="text-center mt-3">¿No tienes cuenta? <a href="registro.html">Registrate</a></p>
+
+                    </form>
                 </div>
             </div>
+        </div>
         </div>
     </main>
 
