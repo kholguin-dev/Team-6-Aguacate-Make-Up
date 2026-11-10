@@ -7,7 +7,7 @@ function registrarSesionYRedirigir(usuario) {
     }));
 
     // 2. Redirige al catálogo de productos tras el inicio de sesión exitoso
-    window.location.href = "catalogo.html";
+    window.location.href = "../index.html";
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -46,18 +46,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
         formulario.classList.add("was-validated");
 
+        // Consultar los usuarios registrados desde LocalStorage.js
         let usuariosRegistrados;
+
         try {
-            const datosUsuarios = localStorage.getItem("registroUsuarios");
-            usuariosRegistrados = datosUsuarios ? JSON.parse(datosUsuarios) : [];
+            usuariosRegistrados = window.Obtenerlistadousuarios();
+
             if (!Array.isArray(usuariosRegistrados)) {
-                throw new Error("La lista guardada de usuarios no es válida.");
+                throw new Error("La lista de usuarios no es válida.");
             }
         } catch (error) {
-            console.error("No se pudieron leer los usuarios registrados:", error);
-            mostrarMensaje("danger", "No fue posible consultar las cuentas registradas. Inténtalo de nuevo.");
+            console.error("Error al consultar los usuarios:", error);
+            mostrarMensaje("danger", "No fue posible consultar las cuentas registradas.");
             return;
         }
+
 
         const identificadorIngresado = usuario.value.trim().toLocaleLowerCase();
         const usuarioEncontrado = usuariosRegistrados.find((cuenta) => {
