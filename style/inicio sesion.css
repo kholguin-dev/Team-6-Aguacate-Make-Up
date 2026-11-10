@@ -63,6 +63,12 @@ Lo que se busco con este archivo fue construir un diseno profesional y limpio qu
     transition: all 0.2s ease !important;
 }
 
+.needs-validation .form-control:valid,
+.needs-validation .form-control.is-valid {
+    background-image: none !important;
+    padding-right: 1rem !important;
+}
+
 .form-control::placeholder,
 .entrada-texto::placeholder {
     color: #A098A8 !important;
