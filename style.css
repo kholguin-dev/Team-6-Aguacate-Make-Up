@@ -58,14 +58,14 @@ body {
 
 .nav-custom-figma {
     position: relative;
-    max-width: 1440px;
+    max-width: 100%;
     min-height: 90px;
     margin: 0 auto;
-    padding: 0 48px;
+    padding: 0 5% 0 5%;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 20px;
+/*gap: 20px;*/
     box-sizing: border-box;
 }
 
@@ -79,7 +79,7 @@ body {
 .header-custom-figma a {
     color: #ffffff;
     text-decoration: none;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 500;
     transition: color 0.2s ease, transform 0.2s ease;
 }
@@ -100,12 +100,12 @@ body {
 /* Logo Central Sobresaliente (Centrado, estático, sin efecto botón ni zoom) */
 .logo-custom-figma {
     position: absolute;
-    z-index: 1005;
-    top: 8px;
+    z-index: 1000;
+    top: 5px;
     left: 50%;
     transform: translateX(-50%);
-    width: 90px;
-    height: 90px;
+    width: 110px;
+    height: 110px;
     padding: 8px; /* Ajustado de 16px a 8px para que el logo sea más grande */
     box-sizing: border-box;
     border-radius: 20px;
@@ -313,7 +313,7 @@ body {
 .seccion-hero-avoir {
     position: relative;
     width: 100%;
-    min-height: 500px;
+    min-height: 750px;
     background-color: #070f24;
     background-image: linear-gradient(to right, #070f24 0%, #070f24 25%, rgba(7, 15, 36, 0) 48%), url('img/banner-hero-limpio.jpg?v=3');
     background-repeat: no-repeat;
@@ -328,7 +328,7 @@ body {
 
 .hero-avoir-contenedor {
     width: 100%;
-    max-width: 1440px;
+    max-width: 100%;
     margin: 0 auto;
     padding-left: clamp(1.5rem, 6vw, 4.5rem);
     padding-right: clamp(1.5rem, 6vw, 4.5rem);
@@ -341,11 +341,12 @@ body {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    padding: 5% 5% 5% 5%;
 }
 
 .hero-avoir-etiqueta {
     color: #c4aee6;
-    font-size: 0.9rem;
+    font-size: 16px;
     font-weight: 600;
     letter-spacing: 0.28em;
     text-transform: uppercase;
@@ -755,16 +756,17 @@ footer#footer,
 
 #seccion-universo { 
     color: #290044;
-  padding: 24px 30px !important;
+  padding:2% 5% 2% 5% !important;
 }
 
 #seccion-universo .universo-titulo {
-  font-size: 22px;
+  font-size: 40px;
   font-weight: 700;
+  text-align: center;
 }
 
 #seccion-universo .universo-subtitulo,
-#seccion-universo .universo-descripcion { font-size: 12px; }
+#seccion-universo .universo-descripcion { font-size: 16px; }
 
 #seccion-universo .universo-carrusel { overflow: hidden; }
 
