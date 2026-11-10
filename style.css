@@ -800,15 +800,18 @@ footer#footer,
 #seccion-universo .universo-flecha {
   width: 44px;
   height: 44px;
+  padding: 0;
+  line-height: 1;
   flex-shrink: 0;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
+  text-align: center;
   border: none;
   border-radius: 50%;
   background: #8500c9;
   color: #fff;
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 300;
   cursor: pointer;
   box-shadow: 0 3px 10px rgba(133, 0, 201, .2);
