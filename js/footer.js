@@ -39,6 +39,8 @@ function ajustarRutasFooter(contenedor) {
             enlace.href = rutaBase + "vistas/contacto.html";
         } else if (destino === "novedades") {
             enlace.href = rutaBase + "index.html#novedades";
+        } else if (destino === "admin") {
+            enlace.href = rutaBase + "vistas/admin-productos.html";
         }
     });
 }
