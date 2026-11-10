@@ -18,21 +18,8 @@ Lo que se busco con este archivo fue construir un diseno profesional y limpio qu
 }
 
 /* Estructura general y contenedor de inicio de sesion */
-.login-page,
-.inicio-sesion-page,
-main.container {
-    min-height: calc(100vh - 180px);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
 
 /* Tarjeta principal del formulario */
-.tarjeta-login,
-.login-card,
-.login-formulario,
-.inicio-sesion-formulario,
-.registro-formulario,
 .card {
     background-color: #FFFFFF;
     border: 1px solid var(--color-borde-login);
@@ -42,21 +29,13 @@ main.container {
     transition: box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
-.tarjeta-login:hover,
-.login-card:hover,
 .card:hover {
     border-color: var(--color-borde-focus);
     box-shadow: 0 8px 30px rgba(49, 0, 85, 0.10);
 }
 
 /* Titulos y subtitulos */
-.titulo-login,
-.login-title,
-.tarjeta-login h1,
-.tarjeta-login h2,
-.tarjeta-login h3,
-.login-formulario h2,
-.inicio-sesion-formulario h2,
+
 .card h3 {
     color: var(--color-texto-login);
     font-weight: 700;
@@ -64,19 +43,9 @@ main.container {
     letter-spacing: -0.3px;
 }
 
-.subtitulo-login,
-.login-subtitle,
-.tarjeta-login p.text-muted,
-.login-formulario p.text-muted,
-.inicio-sesion-formulario p.text-muted {
-    color: #6C757D;
-    font-size: 0.95rem;
-    margin-bottom: 1.5rem;
-}
 
 /* Campos de entrada del formulario */
-.form-label,
-.etiqueta-campo {
+.form-label {
     color: var(--color-texto-login);
     font-weight: 600;
     font-size: 0.9rem;
@@ -128,16 +97,11 @@ main.container {
 }
 
 /* Botones y acciones principales */
-.btn-primary,
-.btn-login,
-.boton-iniciar-sesion,
 .btn-danger,
-.btn-danger:focus,
-#boton-iniciar,
-#boton-iniciar-sesion {
+.btn-danger:focus{
     background-color: #5e1797 !important;
     border: 1px solid #5e1797 !important;
-    border-radius: 12px !important;
+    border-radius: 15px !important;
     color: #FFFFFF !important;
     font-weight: 600 !important;
     padding: 0.8rem 1.5rem !important;
@@ -145,12 +109,7 @@ main.container {
     transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease !important;
 }
 
-.btn-primary:hover,
-.btn-login:hover,
-.boton-iniciar-sesion:hover,
-.btn-danger:hover,
-#boton-iniciar:hover,
-#boton-iniciar-sesion:hover {
+.btn-danger:hover {
     background-color: var(--color-primario-hover) !important;
     border-color: var(--color-primario-hover) !important;
     transform: translateY(-1px);
@@ -158,8 +117,6 @@ main.container {
 }
 
 .btn-primary:active,
-.btn-login:active,
-.boton-iniciar-sesion:active,
 .btn-danger:active {
     transform: translateY(0);
 }
@@ -171,13 +128,7 @@ main.container {
 }
 
 /* Enlaces para recuperar clave o registrarse */
-.enlace-login,
-.login-link,
-a.enlace-olvido,
-.enlace-recuperar-contrasena,
-.tarjeta-login a:not(.btn),
-.login-formulario a:not(.btn),
-.inicio-sesion-formulario a:not(.btn),
+
 .text-center a {
     color: #5e1797 !important;
     font-weight: 600;
@@ -185,54 +136,23 @@ a.enlace-olvido,
     transition: color 0.2s ease, text-decoration 0.2s ease;
 }
 
-.enlace-login:hover,
-.login-link:hover,
-a.enlace-olvido:hover,
-.enlace-recuperar-contrasena:hover,
-.tarjeta-login a:not(.btn):hover,
-.login-formulario a:not(.btn):hover,
-.inicio-sesion-formulario a:not(.btn):hover,
 .text-center a:hover {
     color: var(--color-primario-hover) !important;
     text-decoration: underline !important;
 }
 
 /* Panel lateral informativo para coincidir con la vista de registro */
-.login-panel,
-.inicio-sesion-panel,
-.registro-panel {
-    background: linear-gradient(145deg, #FAF4FF 0%, #FFF0F8 100%) !important;
-    border: 1px solid var(--color-borde-login) !important;
-    border-radius: var(--radio-tarjeta-login) !important;
-    color: var(--color-texto-login);
-}
 
-.login-panel .badge,
-.inicio-sesion-panel .badge,
-.registro-panel .badge {
-    background-color: var(--color-acento-rosa) !important;
-    color: var(--color-texto-login) !important;
-    font-weight: 700 !important;
-    letter-spacing: 0.5px;
-    font-size: 0.75rem;
-}
 
 /* Ajustes para pantallas de celular */
 @media (max-width: 768px) {
 
-    .tarjeta-login,
-    .login-card,
-    .login-formulario,
-    .inicio-sesion-formulario,
-    .registro-formulario,
     .card {
         padding: 1.5rem 1.25rem;
         border-radius: 14px;
     }
 
     .btn-primary,
-    .btn-login,
-    .boton-iniciar-sesion,
     .btn-danger {
         padding: 0.75rem 1rem !important;
     }

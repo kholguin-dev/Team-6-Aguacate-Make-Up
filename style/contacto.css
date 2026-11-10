@@ -10,8 +10,10 @@ body {
   border-radius: 15px;
   box-shadow: 0 2px 8px rgba(189, 188, 190, 0.08);
 }
+#text-title{
+  color: #481174;
+}
 
-h2,
 h3,
 h5 {
   color: var(--carbon);
