@@ -1,32 +1,37 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Sesión </title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="../style/inicio sesion.css">
     <link rel="icon" href="../img/faviconbien.png">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
 </head>
+
 <body class="d-flex flex-column min-vh-100">
 
     <header id="header"></header>
 
-    <main >
+    <main>
         <div class="container py-5">
             <div class="justify-content-center row g-4">
                 <div class="col-lg-7">
-                    
+
                     <div class="card border-0 shadow-sm p-4">
                         <h3 class="text-center mb-4 ">Iniciar sesión</h3>
-                        
+
                         <form id="formulario-inicio-sesion" class="needs-validation" novalidate>
                             <div class="mb-3">
                                 <label for="usuario" class="form-label">Nombre de usuario o correo electrónico *</label>
-                                <input type="text" class="form-control" id="usuario" name="usuario" placeholder="Ingresa tu usuario o correo electrónico" autocomplete="username" required>
+                                <input type="text" class="form-control" id="usuario" name="usuario"
+                                    placeholder="Ingresa tu usuario o correo electrónico" autocomplete="username"
+                                    required>
                                 <div class="invalid-feedback">
                                     Ingresa tu nombre de usuario o correo electrónico.
                                 </div>
@@ -34,7 +39,8 @@
 
                             <div class="mb-3">
                                 <label for="contrasena" class="form-label">Contraseña*</label>
-                                <input type="password" class="form-control" id="contrasena" name="contrasena" placeholder="Ingresa tu contraseña" required >
+                                <input type="password" class="form-control" id="contrasena" name="contrasena"
+                                    placeholder="Ingresa tu contraseña" required>
                                 <div class="invalid-feedback">
                                     Ingresa tu contraseña.
                                 </div>
@@ -50,21 +56,26 @@
                                 </label>
                             </div>
 
-                            <button class="btn btn-danger w-100 btn-solid theme-primary py-2" type="submit">Ingresar</button>
+                            <button class="btn btn-danger w-100 btn-solid theme-primary py-2"
+                                type="submit">Ingresar</button>
                             <p class="text-center mt-3">¿No tienes cuenta? <a href="registro.html">Registrate</a></p>
 
                         </form>
                     </div>
                 </div>
-            </div> 
+            </div>
         </div>
     </main>
 
     <footer class="py-4 mt-auto" id="footer"></footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+    <script src="../js/Almacenamiento.js"></script>
     <script src="../js/header.js"></script>
     <script src="../js/footer.js"></script>
     <script src="../js/inicio sesion.js"></script>
 </body>
+
 </html>
