@@ -1,26 +1,27 @@
-// Seccion necesaria para que se actualce en el Header, adjunto las lineas de validacion para implementar el Hola"Usuario"
 
+// Guardar la sesión y redirigir al usuario
 function registrarSesionYRedirigir(usuario) {
-    // 1. Guarda la sesión activa en el almacenamiento local para que el encabezado muestre el saludo con el nombre
     localStorage.setItem("usuarioActivo", JSON.stringify({
-        nombre: usuario && usuario.nombre ? usuario.nombre : "Usuario"
+        nombre: usuario.nombre || "Usuario"
     }));
 
-    // 2. Redirige al catálogo de productos tras el inicio de sesión exitoso
+    // Redirigir a la página principal
     window.location.href = "../index.html";
 }
 
 document.addEventListener("DOMContentLoaded", () => {
     const formulario = document.getElementById("formulario-inicio-sesion");
-    const usuario = document.getElementById("usuario");
+    const correo = document.getElementById("correo");
     const contrasena = document.getElementById("contrasena");
     const mensaje = document.getElementById("mensaje-inicio-sesion");
 
-    if (!formulario || !usuario || !contrasena || !mensaje) {
+    // Verificar que existan los elementos del formulario
+    if (!formulario || !correo || !contrasena || !mensaje) {
         console.error("No se encontraron los campos del formulario de inicio de sesión.");
         return;
     }
 
+    // Mostrar mensajes en el formulario
     function mostrarMensaje(tipo, texto) {
         const alerta = document.createElement("div");
         alerta.className = `alert alert-${tipo}`;
@@ -28,16 +29,12 @@ document.addEventListener("DOMContentLoaded", () => {
         mensaje.replaceChildren(alerta);
     }
 
+    // Procesar el inicio de sesión
     formulario.addEventListener("submit", (evento) => {
         evento.preventDefault();
         mensaje.replaceChildren();
-        usuario.setCustomValidity(
-            usuario.value.trim() ? "" : "Ingresa tu nombre de usuario o correo electrónico."
-        );
-        contrasena.setCustomValidity(
-            contrasena.value.trim() ? "" : "Ingresa tu contraseña."
-        );
 
+        // Validar los campos obligatorios
         if (!formulario.checkValidity()) {
             evento.stopPropagation();
             formulario.classList.add("was-validated");
@@ -46,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         formulario.classList.add("was-validated");
 
-        // Consultar los usuarios registrados desde LocalStorage.js
+        // Consultar los usuarios registrados en Almacenamiento.js
         let usuariosRegistrados;
 
         try {
@@ -57,48 +54,50 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         } catch (error) {
             console.error("Error al consultar los usuarios:", error);
-            mostrarMensaje("danger", "No fue posible consultar las cuentas registradas.");
+            mostrarMensaje(
+                "danger",
+                "No fue posible consultar las cuentas registradas. Inténtalo nuevamente."
+            );
             return;
         }
 
+        // Obtener el correo ingresado
+        const correoIngresado = correo.value.trim().toLowerCase();
 
-        const identificadorIngresado = usuario.value.trim().toLocaleLowerCase();
+        // Buscar exclusivamente por correo electrónico y contraseña
         const usuarioEncontrado = usuariosRegistrados.find((cuenta) => {
-            if (!cuenta || typeof cuenta !== "object") {
-                return false;
-            }
-
-            const identificadores = [
-                cuenta.usuario,
-                cuenta.nombreUsuario,
-                cuenta.username,
-                cuenta.nombre,
-                cuenta.correo,
-                cuenta.email
-            ];
-            const identificadorCoincide = identificadores.some((identificador) =>
-                typeof identificador === "string" &&
-                identificador.trim().toLocaleLowerCase() === identificadorIngresado
-            );
-            const contrasenaGuardada = cuenta.contrasena !== undefined
-                ? cuenta.contrasena
-                : cuenta.password;
-
-            return identificadorCoincide &&
-                typeof contrasenaGuardada === "string" &&
-                contrasenaGuardada === contrasena.value;
+            return cuenta &&
+                typeof cuenta.correo === "string" &&
+                cuenta.correo.trim().toLowerCase() === correoIngresado &&
+                typeof cuenta.contrasena === "string" &&
+                cuenta.contrasena === contrasena.value;
         });
 
+        // Rechazar el acceso si las credenciales no coinciden
         if (!usuarioEncontrado) {
-            mostrarMensaje("danger", "El nombre de usuario/correo o la contraseña no son válidos.");
+            mostrarMensaje(
+                "danger",
+                "El correo electrónico o la contraseña son incorrectos. Verifica tus datos e inténtalo nuevamente."
+            );
             return;
         }
 
-        mostrarMensaje("success", `¡Inicio de sesión exitoso, ${usuarioEncontrado.nombre || usuarioEncontrado.usuario || "Usuario"}!`);
-        window.setTimeout(() => registrarSesionYRedirigir(usuarioEncontrado), 1000);
+        // Confirmar autenticación exitosa
+        mostrarMensaje(
+            "success",
+            `¡Bienvenido/a, ${usuarioEncontrado.nombre || "Usuario"}! Inicio de sesión exitoso.`
+        );
+
+        // Guardar sesión y redirigir
+        window.setTimeout(() => {
+            registrarSesionYRedirigir(usuarioEncontrado);
+        }, 1000);
     });
 
-    [usuario, contrasena].forEach((campo) => {
-        campo.addEventListener("input", () => campo.setCustomValidity(""));
+    // Limpiar mensajes cuando se modifican los campos
+    [correo, contrasena].forEach((campo) => {
+        campo.addEventListener("input", () => {
+            campo.setCustomValidity("");
+        });
     });
 });
