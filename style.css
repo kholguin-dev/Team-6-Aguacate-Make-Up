@@ -224,6 +224,17 @@ body {
     text-decoration: none;
 }
 
+/* Estado cuando el usuario ha iniciado sesión */
+.action-btn-figma.cuenta-con-usuario {
+    width: auto;
+    padding: 0 16px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    white-space: nowrap;
+    letter-spacing: 0.2px;
+}
+
 /* Efecto al pasar el cursor sobre los accesos de usuario */
 .action-btn-figma:hover {
     background-color: rgba(255, 255, 255, 0.25);
