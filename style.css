@@ -1,9 +1,3 @@
-/*
-Este archivo conserva su nombre style.css como la hoja de estilos general del proyecto.
-Este se encarga de todo el diseno visual compartido, tipografias, carrusel principal y variables de color.
-Lo que se corrigio en este archivo fue retirar selectores obsoletos de versiones anteriores del pie de pagina que ya no estaban en uso.
-*/
-
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@400;500;600;700&display=swap');
 
 :root {
