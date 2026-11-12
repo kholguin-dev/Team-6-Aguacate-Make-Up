@@ -346,14 +346,14 @@ body {
 
 .hero-avoir-etiqueta {
     color: #c4aee6;
-    font-size: 16px;
-    font-weight: 600;
-    letter-spacing: 0.28em;
+    font-size: clamp(0.9rem, 1.5vw, 1.5rem);
+    font-weight: 700;
+    letter-spacing: 1px;
     text-transform: uppercase;
     margin-bottom: 0.35rem;
 }
 
-.hero-avoir-marca {
+/* .hero-avoir-marca {
     color: #c4aee6;
     font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
     font-size: clamp(1.55rem, 2.5vw, 2.25rem);
@@ -362,14 +362,14 @@ body {
     text-transform: uppercase;
     line-height: 1.15;
     margin-bottom: 0.75rem;
-}
+} */
 
 .hero-avoir-titulo {
     color: #f3e9fc;
     font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
-    font-size: clamp(2.9rem, 5.4vw, 4.5rem);
-    font-weight: 700;
-    line-height: 1.04;
+    font-size: clamp(2.2rem, 4.8vw, 4.5rem);
+    font-weight: 900;
+    line-height: 1;
     letter-spacing: 0.01em;
     text-transform: uppercase;
     margin: 0 0 1rem 0;
@@ -377,7 +377,8 @@ body {
 
 .hero-avoir-descripcion {
     color: #ffffff;
-    font-size: clamp(1.05rem, 1.3vw, 1.25rem);
+    font-size: clamp(0.85rem, 1.1vw, 1.125rem);
+    letter-spacing: 0.5px;;
     font-weight: 400;
     line-height: 1.45;
     margin-bottom: 1.5rem;
