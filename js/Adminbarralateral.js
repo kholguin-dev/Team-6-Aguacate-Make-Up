@@ -24,9 +24,6 @@ function ajustarEnlacesBarra(contenedor) {
         }
     });
 
-    // Ver tienda no hace nada por el momento
-
-
     // Salir del panel y volver directo a la tienda
     const enlaceSalida = contenedor.querySelector("#enlaceCerrarSesion");
     if (enlaceSalida) {
@@ -74,7 +71,7 @@ const Plantillabarralateral = `
 
     <!-- Enlaces de salida y vista previa -->
     <div class="acciones-sesion">
-        <a href="../vistas/catalogo.html" class="enlace-tienda" id="enlaceVerTienda" onclick="event.preventDefault(); return false;">↗ Ver tienda</a>
+        <a href="../vistas/catalogo.html" class="enlace-tienda" id="enlaceVerTienda">↗ Ver tienda</a>
         <a href="../index.html" class="enlace-salida" id="enlaceCerrarSesion">Cerrar sesión</a>
     </div>
 </aside>
