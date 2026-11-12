@@ -6,8 +6,8 @@
 
 /* 1. HERO PRINCIPAL */
 .nosotros-hero {
-  background-image: url("../img/about-us-hero-cel-3.jpg");
-  min-height: 250px;
+  background-image: url("../img/about-us-hero-cel.jpg");
+  min-height: 450px;
   display: flex;
   align-items: center;
   padding: 10px 0;
@@ -26,7 +26,7 @@
   align-items: center;
   gap: 10px;
   color: #b34cff;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 2px;
   margin-bottom: 20px;
@@ -36,6 +36,7 @@
   color: #211c50;
   font-size: clamp(42px, 5vw, 56px);
   font-weight: 800;
+  font-family: "Playfair Display";
   line-height: 1.05;
   letter-spacing: -2px;
   margin-bottom: 20px;
@@ -44,14 +45,14 @@
 .hero-content h1 span {
   display: block;
   color: #a04cff;
-  font-family: "Roboto", sans-serif;
+  font-family: "Playfair Display";
   font-weight: 400;
-  font-style: italic;
+  /*font-style: italic;*/
   font-size: 0.95em;
 }
 
 .hero-content p {
-  color: #777092;
+  color: #2d2b34;
   font-size: 14px;
   line-height: 1.8;
   max-width: 370px;
