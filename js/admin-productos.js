@@ -1,148 +1,184 @@
+
 // Este archivo conserva su nombre admin-productos.js y funciona como el controlador de la tabla administrativa.
-// Este se encarga de todo el funcionamiento de mostrar la lista de productos, paginar los resultados, filtrar por estado o categoria y permitir eliminar o editar.
-// Lo que se corrigio en este archivo fue conectar directamente la capa central de Almacenamiento.js para no duplicar funciones de lectura y guardado.
+// Se encarga de mostrar los productos, paginar los resultados, filtrar por estado o categoria y permitir ver, editar o eliminar.
+// Tambien conecta la persistencia con la capa central de Almacenamiento.js.
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Buscamos los elementos del panel
-  const tabla = document.querySelector(".dashboard-container tbody");
-  const BotonCrearProducto = document.querySelector(".btn-brand");
-  const campoBusqueda = document.querySelector(
-    '.dashboard-container input[type="text"]',
-  );
-  const selectorEstado = document.querySelector("#filtro-estado");
 
-  const botonesCategoria = document.querySelectorAll(".nav-category-btn");
-  const indicadores = document.querySelectorAll(
-    ".dashboard-container > section .badge",
-  );
-  const pie = document.querySelector(".dashboard-container > footer");
+    // buscar los elementos del panel
+    const tabla = document.querySelector(".dashboard-container tbody");
+    const BotonCrearProducto = document.querySelector(".btn-brand");
+    const campoBusqueda = document.querySelector(
+        '.dashboard-container input[type="text"]'
+    );
+    const selectorEstado = document.querySelector("#filtro-estado");
+    const botonesCategoria = document.querySelectorAll(".nav-category-btn");
+    const indicadores = document.querySelectorAll(
+        ".dashboard-container > section .badge"
+    );
+    const pie = document.querySelector(".dashboard-container > footer");
 
-  if (!tabla || !campoBusqueda || !selectorEstado) {
-    console.error("Faltan elementos del panel de productos.");
-    return;
-  }
-
-  // Ruta de la pagina para crear o registrar un producto
-  const Urlcrearproducto = "Admincrearproductos.html";
-
-  // Clave para guardar y consultar en localstorage
-  const Claveproductos = "admincrearproductos";
-  const Productosporpagina = 8;
-
-  let categoriaActual = "Todas";
-  let estadoActual = "";
-  let paginaActual = 1;
-
-  // Acceso a almacenamiento local usando la capa centralizada
-  const cargarProductos = () =>
-    typeof window.Obtenerlistadoproductos === "function"
-      ? window.Obtenerlistadoproductos()
-      : JSON.parse(localStorage.getItem(Claveproductos) || "[]");
-  let productos = cargarProductos();
-
-  const guardarProductos = () => {
-    if (typeof window.Guardarlistadoproductos === "function")
-      return window.Guardarlistadoproductos(productos);
-    try {
-      localStorage.setItem(Claveproductos, JSON.stringify(productos));
-      return true;
-    } catch (e) {
-      console.error("No se pudieron guardar los productos:", e);
-      return false;
+    if (!tabla || !campoBusqueda || !selectorEstado) {
+        console.error("Faltan elementos del panel de productos.");
+        return;
     }
-  };
 
-  // Evitamos interpretar los textos como código HTML
-  function escapar(texto) {
-    return String(texto ?? "").replace(
-      /[&<>"']/g,
-      (caracter) =>
-        ({
-          "&": "&amp;",
-          "<": "&lt;",
-          ">": "&gt;",
-          '"': "&quot;",
-          "'": "&#39;",
-        })[caracter],
-    );
-  }
+    // rutas y configuracion de productos
+    const Urlcrearproducto = "Admincrearproductos.html";
+    const Claveproductos = "admincrearproductos";
+    const Productosporpagina = 8;
 
-  // Formato de precio en pesos colombianos sin decimales
-  function formatoPrecio(precio) {
-    return (
-      "$ " +
-      Number(precio || 0).toLocaleString("es-CO", {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0,
-      })
-    );
-  }
+    let categoriaActual = "Todas";
+    let estadoActual = "";
+    let paginaActual = 1;
 
-  // Actualizamos los contadores del panel
-  function actualizarIndicadores() {
-    if (indicadores.length < 4) return;
+    // acceder al almacenamiento local usando la capa centralizada
+    const cargarProductos = () => {
+        try {
+            const productos = typeof window.Obtenerlistadoproductos === "function"
+                ? window.Obtenerlistadoproductos()
+                : JSON.parse(localStorage.getItem(Claveproductos) || "[]");
 
-    indicadores[0].textContent = `${productos.length} productos`;
-    indicadores[1].textContent = `${productos.filter((p) => p.estado === "Publicado").length} publicados`;
-    indicadores[2].textContent = `${productos.filter((p) => p.estado === "Borrador").length} borradores`;
-    indicadores[3].textContent = `${productos.filter((p) => Number(p.stock) <= 10).length} con stock bajo`;
-  }
+            return Array.isArray(productos) ? productos : [];
+        }
+        catch (error) {
+            console.error("No se pudieron recuperar los productos:", error);
+            return [];
+        }
+    };
 
-  // Aplicamos la búsqueda y los filtros
-  function renderizarProductos() {
-    const texto = campoBusqueda.value.trim().toLowerCase();
+    let productos = cargarProductos();
 
-    const filtrados = productos.filter((producto) => {
-      const coincideTexto = [
-        producto.nombre,
-        producto.sku,
-        producto.referencia,
-        producto.categoria,
-        producto.subcategoria,
-        producto.descripcion,
-      ].some((valor) =>
-        String(valor ?? "")
-          .toLowerCase()
-          .includes(texto),
-      );
+    const guardarProductos = () => {
+        if (typeof window.Guardarlistadoproductos === "function") {
+            return window.Guardarlistadoproductos(productos);
+        }
 
-      // Comparamos la categoría seleccionada sin enredos de mayúsculas o si trae subcategoría
-      const filtroCat = (categoriaActual || "").trim().toLowerCase();
-      const prodCat = (producto.categoria || "").trim().toLowerCase();
-      const prodSubcat = (producto.subcategoria || "").trim().toLowerCase();
+        try {
+            localStorage.setItem(Claveproductos, JSON.stringify(productos));
+            return true;
+        }
+        catch (error) {
+            console.error("No se pudieron guardar los productos:", error);
+            return false;
+        }
+    };
 
-      const coincideCategoria =
-        filtroCat === "todas" ||
-        filtroCat === "todos" ||
-        filtroCat === "" ||
-        prodCat === filtroCat ||
-        prodCat.startsWith(filtroCat) ||
-        prodCat.includes(filtroCat) ||
-        prodSubcat.includes(filtroCat);
+    // evitar interpretar los textos como codigo html
+    function escapar(texto) {
+        return String(texto ?? "").replace(
+            /[&<>"']/g,
+            (caracter) => ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#39;"
+            })[caracter]
+        );
+    }
 
-      const coincideEstado = !estadoActual || producto.estado === estadoActual;
+    // normalizar textos para comparar sin distinguir tildes o mayusculas
+    function normalizarTexto(texto) {
+        return String(texto ?? "")
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .trim();
+    }
 
-      return coincideTexto && coincideCategoria && coincideEstado;
-    });
+    // formato de precio en pesos colombianos sin decimales
+    function formatoPrecio(precio) {
+        return "$ " + Number(precio || 0).toLocaleString("es-CO", {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        });
+    }
 
-    const totalPaginas = Math.max(
-      1,
-      Math.ceil(filtrados.length / Productosporpagina),
-    );
+    // actualizar los contadores del panel
+    function actualizarIndicadores() {
+        if (indicadores.length < 4) {
+            return;
+        }
 
-    paginaActual = Math.min(paginaActual, totalPaginas);
+        indicadores[0].textContent = `${productos.length} productos`;
 
-    const inicio = (paginaActual - 1) * Productosporpagina;
-    const visibles = filtrados.slice(inicio, inicio + Productosporpagina);
+        indicadores[1].textContent =
+            `${productos.filter((p) => p.estado === "Publicado").length} publicados`;
 
-    // Mostramos los productos en la tabla
-    tabla.innerHTML = visibles
-      .map(
-        (producto) => `
+        indicadores[2].textContent =
+            `${productos.filter((p) => p.estado === "Borrador").length} borradores`;
+
+        indicadores[3].textContent =
+            `${productos.filter((p) => Number(p.stock) <= 10).length} con stock bajo`;
+    }
+
+    // aplicar la busqueda y los filtros
+    function renderizarProductos() {
+
+        const texto = normalizarTexto(campoBusqueda.value);
+
+        const filtrados = productos.filter((producto) => {
+
+            const coincideTexto = [
+                producto.nombre,
+                producto.sku,
+                producto.referencia,
+                producto.categoria,
+                producto.subcategoria,
+                producto.descripcion
+            ].some((valor) => {
+                return normalizarTexto(valor).includes(texto);
+            });
+
+            // comparar la categoria seleccionada
+            const filtroCat = normalizarTexto(categoriaActual);
+            const prodCat = normalizarTexto(producto.categoria);
+            const prodSubcat = normalizarTexto(producto.subcategoria);
+
+            const coincideCategoria =
+                filtroCat === "todas" ||
+                filtroCat === "todos" ||
+                filtroCat === "" ||
+                prodCat === filtroCat ||
+                prodCat.startsWith(filtroCat) ||
+                prodCat.includes(filtroCat) ||
+                prodSubcat.includes(filtroCat);
+
+            const coincideEstado =
+                !estadoActual || producto.estado === estadoActual;
+
+            return coincideTexto && coincideCategoria && coincideEstado;
+        });
+
+        // calcular la paginacion
+        const totalPaginas = Math.max(
+            1,
+            Math.ceil(filtrados.length / Productosporpagina)
+        );
+
+        paginaActual = Math.min(paginaActual, totalPaginas);
+
+        const inicio = (paginaActual - 1) * Productosporpagina;
+        const visibles = filtrados.slice(
+            inicio,
+            inicio + Productosporpagina
+        );
+
+        // mostrar los productos en la tabla
+        tabla.innerHTML = visibles.map((producto) => `
             <tr>
                 <td>
                     <div class="d-flex align-items-center gap-2">
-                        <img src="${typeof NormalizarUrlImagen === "function" ? NormalizarUrlImagen(producto.imagen) : producto.imagen || "../img/logo.png"}" alt="${escapar(producto.nombre)}" class="rounded" style="width: 36px; height: 36px; object-fit: cover; flex-shrink: 0; border: 1px solid #EFE4F8;" onerror="this.src='../img/logo.png'">
+                        <img
+                            src="${typeof window.NormalizarUrlImagen === "function"
+                                ? window.NormalizarUrlImagen(producto.imagen)
+                                : producto.imagen || "../img/logo.png"}"
+                            alt="${escapar(producto.nombre)}"
+                            class="rounded"
+                            style="width: 36px; height: 36px; object-fit: cover; flex-shrink: 0; border: 1px solid #EFE4F8;"
+                            onerror="this.src='../img/logo.png'"
+                        >
                         <div>
                             <div class="fw-bold">${escapar(producto.nombre)}</div>
                             <div class="text-muted" style="font-size: 0.75rem;">
@@ -153,77 +189,89 @@ document.addEventListener("DOMContentLoaded", () => {
                 </td>
                 <td>
                     ${escapar(producto.categoria || "")}${
-                      producto.subcategoria &&
-                      producto.subcategoria !== "Sin subcategoría"
-                        ? " · " + escapar(producto.subcategoria)
-                        : ""
+                        producto.subcategoria &&
+                        producto.subcategoria !== "Sin subcategoría"
+                            ? " · " + escapar(producto.subcategoria)
+                            : ""
                     }
                 </td>
                 <td>${formatoPrecio(producto.precio)}</td>
-                <td>${Number(producto.stock)}</td>
+                <td>${Number(producto.stock) || 0}</td>
                 <td>
                     <span class="badge ${
-                      producto.estado === "Publicado"
-                        ? "badge-published"
-                        : "bg-secondary"
+                        producto.estado === "Publicado"
+                            ? "badge-published"
+                            : "bg-secondary"
                     }">${escapar(producto.estado)}</span>
                     ${
-                      Number(producto.stock) <= 10
-                        ? '<span class="badge badge-stock-low">Stock bajo</span>'
-                        : ""
+                        Number(producto.stock) <= 10
+                            ? '<span class="badge badge-stock-low">Stock bajo</span>'
+                            : ""
                     }
                 </td>
                 <td class="text-end text-nowrap">
-                    <button class="btn btn-link btn-sm text-brand"
-                            data-accion="ver" data-id="${producto.id}" data-sku="${escapar(producto.sku || "")}">
+                    <button
+                        class="btn btn-link btn-sm text-brand"
+                        data-accion="ver"
+                        data-id="${escapar(producto.id)}"
+                        data-sku="${escapar(producto.sku || "")}"
+                    >
                         Ver
                     </button>
-                    <button class="btn btn-link btn-sm text-brand"
-                            data-accion="editar" data-id="${producto.id}" data-sku="${escapar(producto.sku || "")}">
+                    <button
+                        class="btn btn-link btn-sm text-brand"
+                        data-accion="editar"
+                        data-id="${escapar(producto.id)}"
+                        data-sku="${escapar(producto.sku || "")}"
+                    >
                         Editar
                     </button>
-                    <button class="btn btn-link btn-sm text-danger"
-                            data-accion="eliminar" data-id="${producto.id}" data-sku="${escapar(producto.sku || "")}">
+                    <button
+                        class="btn btn-link btn-sm text-danger"
+                        data-accion="eliminar"
+                        data-id="${escapar(producto.id)}"
+                        data-sku="${escapar(producto.sku || "")}"
+                    >
                         Eliminar
                     </button>
                 </td>
             </tr>
-        `,
-      )
-      .join("");
+        `).join("");
 
-    // Mostramos un mensaje si no hay resultados
-    if (visibles.length === 0) {
-      tabla.innerHTML = `
+        // mostrar un mensaje si no hay resultados
+        if (visibles.length === 0) {
+            tabla.innerHTML = `
                 <tr>
                     <td colspan="6" class="text-center text-muted py-4">
                         No hay productos para mostrar.
                     </td>
                 </tr>
             `;
-    }
+        }
 
-    actualizarIndicadores();
+        actualizarIndicadores();
 
-    // Actualizamos la información y los botones de paginación
-    if (pie) {
-      pie.innerHTML = `
+        // actualizar la informacion y los botones de paginacion
+        if (pie) {
+            pie.innerHTML = `
                 <span class="text-muted small">
                     ${
-                      filtrados.length
-                        ? `Mostrando ${inicio + 1}–${Math.min(
-                            inicio + Productosporpagina,
-                            filtrados.length,
-                          )} de ${filtrados.length} productos`
-                        : "No hay productos para mostrar"
+                        filtrados.length
+                            ? `Mostrando ${inicio + 1}–${Math.min(
+                                inicio + Productosporpagina,
+                                filtrados.length
+                            )} de ${filtrados.length} productos`
+                            : "No hay productos para mostrar"
                     }
                 </span>
                 <nav aria-label="Paginación">
                     <ul class="pagination pagination-sm m-0 gap-1">
                         <li class="page-item ${paginaActual === 1 ? "disabled" : ""}">
-                            <button class="page-link rounded"
-                                    data-pagina="${paginaActual - 1}"
-                                    ${paginaActual === 1 ? "disabled" : ""}>
+                            <button
+                                class="page-link rounded"
+                                data-pagina="${paginaActual - 1}"
+                                ${paginaActual === 1 ? "disabled" : ""}
+                            >
                                 <i class="bi bi-chevron-left"></i>
                             </button>
                         </li>
@@ -232,136 +280,158 @@ document.addEventListener("DOMContentLoaded", () => {
                                 ${paginaActual} de ${totalPaginas}
                             </span>
                         </li>
-                        <li class="page-item ${
-                          paginaActual === totalPaginas ? "disabled" : ""
-                        }">
-                            <button class="page-link rounded"
-                                    data-pagina="${paginaActual + 1}"
-                                    ${paginaActual === totalPaginas ? "disabled" : ""}>
+                        <li class="page-item ${paginaActual === totalPaginas ? "disabled" : ""}">
+                            <button
+                                class="page-link rounded"
+                                data-pagina="${paginaActual + 1}"
+                                ${paginaActual === totalPaginas ? "disabled" : ""}
+                            >
                                 <i class="bi bi-chevron-right"></i>
                             </button>
                         </li>
                     </ul>
                 </nav>
             `;
+        }
     }
-  }
 
-  // Redirige al formulario de crear producto
-  if (BotonCrearProducto) {
-    BotonCrearProducto.addEventListener("click", () => {
-      window.location.href = Urlcrearproducto;
-    });
-  }
+    // redirigir al formulario de crear producto
+    if (BotonCrearProducto) {
+        BotonCrearProducto.addEventListener("click", () => {
+            window.location.href = Urlcrearproducto;
+        });
+    }
 
-  // Buscamos mientras escribimos
-  campoBusqueda.addEventListener("input", () => {
-    paginaActual = 1;
-    renderizarProductos();
-  });
-
-  // Filtramos por estado (al cambiar selección o al hacer clic en Filtrar)
-  function aplicarFiltroEstado() {
-    const valor = selectorEstado.value;
-
-    estadoActual =
-      valor === "1" ? "Publicado" : valor === "2" ? "Borrador" : "";
-
-    paginaActual = 1;
-    renderizarProductos();
-  }
-
-  selectorEstado.addEventListener("change", aplicarFiltroEstado);
-
-  // Filtramos por categoría
-  botonesCategoria.forEach((boton) => {
-    boton.addEventListener("click", () => {
-      const categoriaSeleccionada = boton.textContent.trim();
-
-      categoriaActual =
-        categoriaSeleccionada === "Todas" ? "Todos" : categoriaSeleccionada;
-
-      botonesCategoria.forEach((b) => b.classList.remove("active"));
-      boton.classList.add("active");
-
-      paginaActual = 1;
-      renderizarProductos();
-    });
-  });
-
-  // Atendemos las acciones de cada producto
-  tabla.addEventListener("click", async (evento) => {
-    const boton = evento.target.closest("button[data-accion]");
-    if (!boton) return;
-
-    const id = String(boton.dataset.id || "").trim();
-    const sku = String(boton.dataset.sku || "")
-      .trim()
-      .toUpperCase();
-    const producto = productos.find((p) => {
-      const pid = String(p.id || "").trim();
-      const psku = String(p.sku || "")
-        .trim()
-        .toUpperCase();
-      return (
-        (id &&
-          (pid === id ||
-            pid.replace("PROD-", "") === id.replace("PROD-", ""))) ||
-        (sku && psku === sku) ||
-        (id && psku === id.toUpperCase())
-      );
+    // buscar mientras escribimos
+    campoBusqueda.addEventListener("input", () => {
+        paginaActual = 1;
+        renderizarProductos();
     });
 
-    if (!producto) return;
+    // filtrar por estado
+    function aplicarFiltroEstado() {
+        const valor = selectorEstado.value;
 
-    // mostrar la información del producto
+        estadoActual =
+            valor === "1" ? "Publicado" :
+            valor === "2" ? "Borrador" : "";
 
-    if (boton.dataset.accion === "ver") {
-      const modal = document.querySelector("#modalVerProducto");
-      const detalle = document.querySelector("#detalleProducto");
-      const tituloModal = document.querySelector("#tituloModalProducto");
+        paginaActual = 1;
+        renderizarProductos();
+    }
 
-      if (!modal || !detalle) {
-        alert("No se encontró la ventana del producto.");
-        return;
-      }
+    selectorEstado.addEventListener("change", aplicarFiltroEstado);
 
-      if (tituloModal) {
-        tituloModal.textContent = "Vista previa del catálogo";
-      }
+    // filtrar por categoria
+    botonesCategoria.forEach((boton) => {
+        boton.addEventListener("click", () => {
+            const categoriaSeleccionada = boton.textContent.trim();
 
-      const urlImg =
-        typeof NormalizarUrlImagen === "function"
-          ? NormalizarUrlImagen(producto.imagen)
-          : producto.imagen || "../img/logo.png";
+            categoriaActual =
+                categoriaSeleccionada === "Todas"
+                    ? "Todos"
+                    : categoriaSeleccionada;
 
-      const precioHabitual = Number(producto.precio) || 0;
-      const precioPromo =
-        Number(
-          producto.preciopromocional !== undefined
-            ? producto.preciopromocional
-            : producto.precioPromocional,
-        ) || 0;
-      const tieneDescuento = precioPromo > 0 && precioPromo < precioHabitual;
+            botonesCategoria.forEach((b) => b.classList.remove("active"));
+            boton.classList.add("active");
 
-      const porcentaje = tieneDescuento
-        ? Math.round((1 - precioPromo / precioHabitual) * 100)
-        : 0;
-      const insigniaHtml = tieneDescuento
-        ? `<span class="insignia-producto oferta">-${porcentaje}%</span>`
-        : producto.novedades
-          ? `<span class="insignia-producto nuevo">Nuevo</span>`
-          : "";
+            paginaActual = 1;
+            renderizarProductos();
+        });
+    });
 
-      const categoriaTexto = (
-        escapar(producto.categoria || "Maquillaje") +
-        (producto.subcategoria ? ` · ${escapar(producto.subcategoria)}` : "")
-      ).toUpperCase();
-      const sinStock = Number(producto.stock) <= 0;
+    // atender las acciones de cada producto
+    tabla.addEventListener("click", async (evento) => {
 
-      detalle.innerHTML = `
+        const boton = evento.target.closest("button[data-accion]");
+
+        if (!boton) {
+            return;
+        }
+
+        const id = String(boton.dataset.id || "").trim();
+
+        const sku = String(boton.dataset.sku || "")
+            .trim()
+            .toUpperCase();
+
+        const producto = productos.find((p) => {
+            const pid = String(p.id || "").trim();
+
+            const psku = String(p.sku || "")
+                .trim()
+                .toUpperCase();
+
+            return (
+                (id && (
+                    pid === id ||
+                    pid.replace("PROD-", "") === id.replace("PROD-", "")
+                )) ||
+                (sku && psku === sku) ||
+                (id && psku === id.toUpperCase())
+            );
+        });
+
+        if (!producto) {
+            return;
+        }
+
+        // mostrar la informacion del producto
+        if (boton.dataset.accion === "ver") {
+
+            const modal = document.querySelector("#modalVerProducto");
+            const detalle = document.querySelector("#detalleProducto");
+            const tituloModal = document.querySelector("#tituloModalProducto");
+
+            if (!modal || !detalle) {
+                alert("No se encontró la ventana del producto.");
+                return;
+            }
+
+            if (tituloModal) {
+                tituloModal.textContent = "Vista previa del catálogo";
+            }
+
+            const urlImg =
+                typeof window.NormalizarUrlImagen === "function"
+                    ? window.NormalizarUrlImagen(producto.imagen)
+                    : producto.imagen || "../img/logo.png";
+
+            const precioHabitual = Number(producto.precio) || 0;
+
+            const precioPromo = Number(
+                producto.preciopromocional !== undefined
+                    ? producto.preciopromocional
+                    : producto.precioPromocional
+            ) || 0;
+
+            const tieneDescuento =
+                precioPromo > 0 && precioPromo < precioHabitual;
+
+            const porcentaje = tieneDescuento
+                ? Math.round((1 - precioPromo / precioHabitual) * 100)
+                : 0;
+
+            const insigniaHtml = tieneDescuento
+                ? `<span class="insignia-producto oferta">-${porcentaje}%</span>`
+                : producto.novedades
+                    ? `<span class="insignia-producto nuevo">Nuevo</span>`
+                    : "";
+
+            const categoriaTexto = (
+                escapar(producto.categoria || "Maquillaje") +
+                (producto.subcategoria
+                    ? ` · ${escapar(producto.subcategoria)}`
+                    : "")
+            ).toUpperCase();
+
+            const sinStock = Number(producto.stock) <= 0;
+
+            detalle.innerHTML = `
                 <div class="text-center mb-3">
-                    <p class="text-muted small mb-0">Así es como verán tus clientes este producto en el catálogo:</p>
+                    <p class="text-muted small mb-0">
+                        Así es como verán tus clientes este producto en el catálogo:
+                    </p>
                 </div>
                 <div class="d-flex justify-content-center">
                     <div style="width: 100%; max-width: 270px;">
@@ -377,14 +447,27 @@ document.addEventListener("DOMContentLoaded", () => {
                             </div>
                             <div class="cuerpo-tarjeta-producto">
                                 <span class="categoria-producto">${categoriaTexto}</span>
-                                <h3 class="titulo-producto" title="${escapar(producto.nombre)}">${escapar(producto.nombre || "Producto sin nombre")}</h3>
+                                <h3 class="titulo-producto" title="${escapar(producto.nombre)}">
+                                    ${escapar(producto.nombre || "Producto sin nombre")}
+                                </h3>
                                 <div class="pie-tarjeta-producto">
                                     <div class="contenedor-precio-producto">
-                                        <span class="precio-actual">${formatoPrecio(tieneDescuento ? precioPromo : precioHabitual)}</span>
-                                        ${tieneDescuento ? `<span class="precio-anterior">${formatoPrecio(precioHabitual)}</span>` : ""}
+                                        <span class="precio-actual">
+                                            ${formatoPrecio(tieneDescuento ? precioPromo : precioHabitual)}
+                                        </span>
+                                        ${tieneDescuento
+                                            ? `<span class="precio-anterior">${formatoPrecio(precioHabitual)}</span>`
+                                            : ""}
                                     </div>
-                                    <button class="boton-agregar-producto ${sinStock ? "agotado" : ""}" type="button" disabled title="Vista previa del catálogo">
-                                        ${sinStock ? "<span>Agotado</span>" : '<i class="bi bi-cart-plus"></i> <span>Agregar</span>'}
+                                    <button
+                                        class="boton-agregar-producto ${sinStock ? "agotado" : ""}"
+                                        type="button"
+                                        disabled
+                                        title="Vista previa del catálogo"
+                                    >
+                                        ${sinStock
+                                            ? "<span>Agotado</span>"
+                                            : '<i class="bi bi-cart-plus"></i> <span>Agregar</span>'}
                                     </button>
                                 </div>
                             </div>
@@ -393,62 +476,83 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
                 <div class="mt-3 text-center">
                     <small class="badge bg-light text-dark border">
-                        Referencia SKU: <strong>${escapar(producto.sku || producto.referencia || "N/A")}</strong> · Stock actual: <strong>${Number(producto.stock) || 0}</strong>
+                        Referencia SKU:
+                        <strong>${escapar(producto.sku || producto.referencia || "N/A")}</strong>
+                        · Stock actual:
+                        <strong>${Number(producto.stock) || 0}</strong>
                     </small>
                 </div>
             `;
 
-      bootstrap.Modal.getOrCreateInstance(modal).show();
-      return;
-    }
-
-    // Abrimos la página del formulario con los datos a editar o continuar borrador
-    if (boton.dataset.accion === "editar") {
-      window.location.href =
-        Urlcrearproducto +
-        "?id=" +
-        encodeURIComponent(producto.id) +
-        "&sku=" +
-        encodeURIComponent(producto.sku || "");
-    }
-
-    // Confirmamos antes de eliminar
-    if (boton.dataset.accion === "eliminar") {
-      if (
-        !confirm(
-          `¿Estás seguro de que deseas eliminar "${producto.nombre}"? Esta acción no se puede deshacer.`,
-        )
-      ) {
-        return;
-      }
-
-      if (typeof EliminarProductoInventario === "function") {
-        await EliminarProductoInventario(producto.id || producto.sku);
-        productos = cargarProductos();
-        renderizarProductos();
-      } else {
-        const productosAnteriores = productos;
-        productos = productos.filter((p) => String(p.id) !== id);
-        if (guardarProductos()) {
-          renderizarProductos();
-        } else {
-          productos = productosAnteriores;
+            bootstrap.Modal.getOrCreateInstance(modal).show();
+            return;
         }
-      }
-    }
-  });
 
-  // Cambiamos de página
-  if (pie) {
-    pie.addEventListener("click", (evento) => {
-      const boton = evento.target.closest("button[data-pagina]");
-      if (!boton || boton.disabled) return;
+        // abrir el formulario para editar el producto
+        if (boton.dataset.accion === "editar") {
+            window.location.href =
+                Urlcrearproducto +
+                "?id=" +
+                encodeURIComponent(producto.id) +
+                "&sku=" +
+                encodeURIComponent(producto.sku || "");
+        }
 
-      paginaActual = Number(boton.dataset.pagina);
-      renderizarProductos();
+        // confirmar antes de eliminar
+        if (boton.dataset.accion === "eliminar") {
+
+            if (!confirm(
+                `¿Estás seguro de que deseas eliminar "${producto.nombre}"? Esta acción no se puede deshacer.`
+            )) {
+                return;
+            }
+
+            if (typeof window.EliminarProductoInventario === "function") {
+
+                await window.EliminarProductoInventario(
+                    producto.id || producto.sku
+                );
+
+                productos = cargarProductos();
+                paginaActual = 1;
+                renderizarProductos();
+
+            } else {
+
+                const productosAnteriores = productos;
+
+                productos = productos.filter((p) => {
+                    return String(p.id) !== id;
+                });
+
+                if (guardarProductos()) {
+                    paginaActual = 1;
+                    renderizarProductos();
+                } else {
+                    productos = productosAnteriores;
+                    alert("No se pudo eliminar el producto. Intenta nuevamente.");
+                }
+            }
+        }
     });
-  }
 
-  // Mostramos la tabla al entrar con los datos de LocalStorage
-  renderizarProductos();
+    // cambiar de pagina
+    if (pie) {
+        pie.addEventListener("click", (evento) => {
+
+            const boton = evento.target.closest("button[data-pagina]");
+
+            if (!boton || boton.disabled) {
+                return;
+            }
+
+            paginaActual = Number(boton.dataset.pagina);
+            renderizarProductos();
+
+        });
+    }
+
+    // mostrar la tabla al entrar
+    renderizarProductos();
+
 });
