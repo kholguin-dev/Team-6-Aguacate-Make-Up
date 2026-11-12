@@ -3,6 +3,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const contrasena = document.getElementById("contrasena");
     const confirmarContrasena = document.getElementById("confirmar-contrasena");
     const mensajeRegistro = document.getElementById("mensaje-registro");
+    const telefono = document.getElementById("telefono");
+
+    if (telefono) {
+        telefono.addEventListener("input", () => {
+            telefono.setCustomValidity("");
+        });
+    }
 
     confirmarContrasena.addEventListener("input", () => {
         if (contrasena.value !== confirmarContrasena.value) {
@@ -59,6 +66,11 @@ document.addEventListener("DOMContentLoaded", () => {
             }, 2000);
 
         } catch (error) {
+            if (telefono && error.message.includes("número")) {
+                telefono.setCustomValidity("Este número ya está registrado");
+                telefono.reportValidity();
+            }
+
             mensajeRegistro.innerHTML = `
                 <div class="alert alert-danger d-flex align-items-center" role="alert">
                     <i class="bi bi-exclamation-triangle-fill me-2"></i>

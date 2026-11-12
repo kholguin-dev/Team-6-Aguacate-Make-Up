@@ -88,10 +88,43 @@ function ajustarRutasHeader(contenedor) {
         });
     }
 
-    // Conecta el botón de usuario con el formulario de inicio de sesión
+    // Conecta el botón de usuario con el inicio de sesión o muestra el saludo si la sesión está activa
     const enlaceCuenta = contenedor.querySelector("#enlaceCuenta");
     if (enlaceCuenta) {
-        enlaceCuenta.href = rutaBase + "vistas/inicio sesion.html";
+        let usuarioActivo = null;
+        try {
+            const datoSesion = localStorage.getItem("usuarioActivo") ||
+                               localStorage.getItem("usuarioActual") ||
+                               localStorage.getItem("sesionActiva") ||
+                               localStorage.getItem("usuarioSesion");
+            if (datoSesion) {
+                usuarioActivo = JSON.parse(datoSesion);
+            }
+        } catch (errorSesion) {
+            console.warn("No se pudo leer la sesión activa del usuario:", errorSesion);
+        }
+
+        if (usuarioActivo && usuarioActivo.nombre) {
+            enlaceCuenta.classList.add("cuenta-con-usuario");
+            enlaceCuenta.setAttribute("aria-label", "Cuenta de " + usuarioActivo.nombre);
+            enlaceCuenta.textContent = 'Hola "' + usuarioActivo.nombre + '"';
+            enlaceCuenta.href = "#";
+            enlaceCuenta.title = "Dar clic para cerrar sesión";
+            enlaceCuenta.addEventListener("click", function (e) {
+                e.preventDefault();
+                const deseaCerrar = confirm('Hola "' + usuarioActivo.nombre + '", ¿deseas cerrar tu sesión?');
+                if (deseaCerrar) {
+                    localStorage.removeItem("usuarioActivo");
+                    localStorage.removeItem("usuarioActual");
+                    localStorage.removeItem("sesionActiva");
+                    localStorage.removeItem("usuarioSesion");
+                    window.location.reload();
+                }
+            });
+        } else {
+            enlaceCuenta.classList.remove("cuenta-con-usuario");
+            enlaceCuenta.href = rutaBase + "vistas/inicio sesion.html";
+        }
     }
 
     // Maneja el clic en el carrito para abrir el panel lateral del carrito (Drawer)

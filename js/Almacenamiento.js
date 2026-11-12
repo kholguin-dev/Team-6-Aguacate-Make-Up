@@ -210,6 +210,16 @@ function GuardarUsuarioEnStorage(usuario) {
         throw new Error('Este correo electrónico ya está registrado.');
     }
 
+    if (usuario.telefono) {
+        const telefonoExiste = usuarios.some(
+            u => u.telefono && u.telefono.trim() === usuario.telefono.trim()
+        );
+
+        if (telefonoExiste) {
+            throw new Error('Este número ya está registrado.');
+        }
+    }
+
     usuarios.push(usuario);
 
     if (!Guardarlistadousuarios(usuarios)) {
