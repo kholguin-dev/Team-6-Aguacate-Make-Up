@@ -80,7 +80,8 @@ document.addEventListener('DOMContentLoaded', function () {
         ingredientes: Entradaingredientes,
         textoalternativo: Entradatextoalternativo,
         destacado: Casilladestacado,
-        novedades: Casillanovedades
+        novedades: Casillanovedades,
+        tieneimagen: () => Boolean(Imagenenbase && !Imagenenbase.includes('logo.png'))
     };
 
     // Estado del formulario
