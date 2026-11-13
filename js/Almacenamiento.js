@@ -162,6 +162,54 @@ async function ActualizarStockInventario(sku, nuevoStock) {
     return true;
 }
 
+// ==========================================
+// CATEGORÍAS Y SUBCATEGORÍAS
+// ==========================================
+// Cada categoría tiene un prefijo de 2 letras y cada subcategoría un código de 3 letras.
+// Juntos forman las 5 letras iniciales del SKU (ejemplo: MQ + LAB = MQLAB001).
+
+const Clavecategorias = 'aguacatecategorias';
+
+const Categoriasbase = {
+    Maquillaje: {
+        prefijo: 'MQ',
+        subcategorias: { Labios: 'LAB', Ojos: 'OJO', Rostro: 'ROS' }
+    },
+    Skincare: {
+        prefijo: 'SK',
+        subcategorias: { Limpiadores: 'LIM', Hidratantes: 'HID', Tonicos: 'TON', Serums: 'SER' }
+    },
+    Accesorios: {
+        prefijo: 'AC',
+        subcategorias: { Brochas: 'BRO', Esponjas: 'ESP', Cosmetiqueras: 'COS' }
+    }
+};
+
+// Lee las categorías guardadas; si no hay, devuelve una copia de las categorías base
+function Obtenercategorias() {
+    try {
+        const datos = localStorage.getItem(Clavecategorias);
+        const categorias = datos ? JSON.parse(datos) : null;
+        if (categorias && typeof categorias === 'object' && !Array.isArray(categorias)) {
+            return categorias;
+        }
+    } catch (error) {
+        console.error('No se pudieron leer las categorías:', error);
+    }
+    return JSON.parse(JSON.stringify(Categoriasbase));
+}
+
+// Guarda el diccionario completo de categorías
+function Guardarcategorias(categorias) {
+    try {
+        localStorage.setItem(Clavecategorias, JSON.stringify(categorias || {}));
+        return true;
+    } catch (error) {
+        console.error('No se pudieron guardar las categorías:', error);
+        return false;
+    }
+}
+
 // ALMACENAMIENTO DE USUARIOS - REGISTRO
 
 const Claveusuarios = 'registroUsuarios';
@@ -248,6 +296,10 @@ if (typeof window !== 'undefined') {
         EliminarProductoInventario,
         CambiarEstadoInventario,
         ActualizarStockInventario,
+        Clavecategorias,
+        Categoriasbase,
+        Obtenercategorias,
+        Guardarcategorias,
         Claveusuarios,
         Obtenerlistadousuarios,
         Guardarlistadousuarios,

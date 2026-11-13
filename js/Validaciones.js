@@ -2,39 +2,35 @@
 // Este se encarga de todo el funcionamiento de validar los campos del formulario, las subcategorias segun la categoria elegida y generar los codigos SKU automaticamente.
 // Lo que se corrigio creando este archivo fue separar las reglas de validacion para que el formulario principal no quede tan cargado y sea facil de entender y mantener.
 
-// Diccionario de categorías y subcategorías para códigos SKU
-const Nomenclaturacategorias = {
-    Maquillaje: {
-        prefijo: 'MQ',
-        subcategorias: {
-            Labios: 'LAB',
-            Ojos: 'OJO',
-            Rostro: 'ROS'
-        }
-    },
-    Skincare: {
-        prefijo: 'SK',
-        subcategorias: {
-            Limpiadores: 'LIM',
-            Hidratantes: 'HID',
-            Tonicos: 'TON',
-            Serums: 'SER'
-        }
-    },
-    Accesorios: {
-        prefijo: 'AC',
-        subcategorias: {
-            Brochas: 'BRO',
-            Esponjas: 'ESP',
-            Cosmetiqueras: 'COS'
-        }
-    }
-};
+// Diccionario de categorías y subcategorías para códigos SKU.
+// Se lee desde Almacenamiento.js para incluir las categorías creadas por los administradores.
+function Obtenernomenclatura() {
+    return typeof Obtenercategorias === 'function' ? Obtenercategorias() : {};
+}
+
+const Nomenclaturacategorias = Obtenernomenclatura();
+
+// Llena el select de categorías con las categorías guardadas
+function Llenarselectcategorias(Entradacategoria) {
+    if (!Entradacategoria) return;
+    const valorActual = Entradacategoria.value;
+    Entradacategoria.innerHTML = '<option value="">Selecciona una categoría</option>';
+    Object.keys(Obtenernomenclatura()).forEach(cat => {
+        const opt = document.createElement('option');
+        opt.value = cat;
+        opt.textContent = cat;
+        Entradacategoria.appendChild(opt);
+    });
+    Entradacategoria.value = valorActual;
+}
+
+// Las opciones se cargan antes de que Admincrearproductos.js lea el formulario
+Llenarselectcategorias(document.getElementById('categoriaProducto'));
 
 function Actualizarsubcategorias(Entradacategoria, Entradasubcategoria) {
     if (!Entradacategoria || !Entradasubcategoria) return;
     const cat = Entradacategoria.value;
-    const datos = Nomenclaturacategorias[cat];
+    const datos = Obtenernomenclatura()[cat];
     Entradasubcategoria.innerHTML = '<option value="">Selecciona una subcategoría</option>';
     if (datos) {
         Object.keys(datos.subcategorias).forEach(sub => {
@@ -49,7 +45,7 @@ function Actualizarsubcategorias(Entradacategoria, Entradasubcategoria) {
 function Obtenerprefijobase(Entradacategoria, Entradasubcategoria) {
     const cat = Entradacategoria ? Entradacategoria.value : '';
     const sub = Entradasubcategoria ? Entradasubcategoria.value : '';
-    const datos = Nomenclaturacategorias[cat];
+    const datos = Obtenernomenclatura()[cat];
     if (!datos) return '';
     return (datos.prefijo || '') + (datos.subcategorias[sub] || '');
 }
@@ -147,9 +143,20 @@ function Validardatos(campos, Idproductoeditar, SkuOriginalEditar) {
     else campos.categoria.classList.remove('entrada-invalida');
 
     // Validación obligatoria de la foto del producto
-    const tieneFoto = typeof campos.tieneimagen === 'function'
-        ? campos.tieneimagen()
-        : (campos.tieneimagen !== undefined ? Boolean(campos.tieneimagen) : Boolean(campos.imagen && !String(campos.imagen).includes('logo.png')));
+    let tieneFoto = false;
+    if (typeof campos.tieneimagen === 'function') {
+        tieneFoto = Boolean(campos.tieneimagen());
+    } else if (campos.tieneimagen !== undefined) {
+        tieneFoto = Boolean(campos.tieneimagen);
+    } else if (campos.imagen) {
+        const valImg = typeof campos.imagen === 'function' ? campos.imagen() : campos.imagen;
+        tieneFoto = Boolean(valImg && !String(valImg).includes('logo.png'));
+    } else {
+        // Respaldo directo en el DOM si no se proveyó la propiedad en campos
+        const imgPrevia = document.getElementById('imagenPrevia');
+        const srcImg = imgPrevia ? (imgPrevia.src || imgPrevia.getAttribute('src') || '') : '';
+        tieneFoto = Boolean(srcImg && !String(srcImg).includes('logo.png'));
+    }
 
     const cajaSubida = campos.cajasubida || document.getElementById('cajaPrevisualizacion');
     const elemErrorImagen = document.getElementById('errorImagen');
@@ -174,6 +181,8 @@ function Validardatos(campos, Idproductoeditar, SkuOriginalEditar) {
 if (typeof window !== 'undefined') {
     Object.assign(window, {
         Nomenclaturacategorias,
+        Obtenernomenclatura,
+        Llenarselectcategorias,
         Actualizarsubcategorias,
         Obtenerprefijobase,
         ObtenerSiguienteSku,

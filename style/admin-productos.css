@@ -383,3 +383,86 @@ section.d-flex.flex-wrap.gap-2.mb-4 .badge {
     cursor: not-allowed;
     border: 1px solid #ddd;
 }
+
+/* ==========================================
+   Gestión de categorías y subcategorías
+   ========================================== */
+
+.boton-categorias {
+  background-color: transparent;
+  color: var(--primary-light, #5e1797);
+  border: 1px solid var(--primary-light, #5e1797);
+}
+
+.boton-categorias:hover,
+.boton-categorias:focus {
+  background-color: rgba(94, 23, 151, 0.08);
+  color: var(--primary-light, #5e1797);
+  border-color: var(--primary-light, #5e1797);
+}
+
+.caja-form-categoria {
+  border: 1px solid #efe4f8;
+  border-radius: 12px;
+  padding: 1rem;
+  background-color: #fcf9fe;
+}
+
+.boton-guardar-categoria {
+  background-color: var(--primary-light, #5e1797);
+  border-color: var(--primary-light, #5e1797);
+}
+
+.boton-guardar-categoria:hover,
+.boton-guardar-categoria:focus {
+  background-color: var(--primary, #310055);
+  border-color: var(--primary, #310055);
+  color: #ffffff;
+}
+
+.tarjeta-categoria {
+  border: 1px solid #efe4f8;
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+}
+
+.codigo-categoria {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--primary-light, #5e1797);
+  background-color: rgba(94, 23, 151, 0.1);
+  border-radius: 6px;
+  padding: 0.1rem 0.4rem;
+  margin-left: 0.25rem;
+}
+
+.chip-subcategoria {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.8rem;
+  background-color: #faf5ff;
+  border: 1px solid #e9d5ff;
+  border-radius: 999px;
+  padding: 0.2rem 0.3rem 0.2rem 0.7rem;
+}
+
+.boton-eliminar-chip {
+  border: none;
+  background: transparent;
+  color: #b02a37;
+  line-height: 1;
+  padding: 0 0.2rem;
+  border-radius: 50%;
+}
+
+.boton-eliminar-chip:hover:not(:disabled) {
+  background-color: rgba(176, 42, 55, 0.1);
+}
+
+.boton-eliminar-chip:disabled {
+  color: #c9c2d0;
+  cursor: not-allowed;
+}
