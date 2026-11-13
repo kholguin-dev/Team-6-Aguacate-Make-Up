@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
         '.dashboard-container input[type="text"]'
     );
     const selectorEstado = document.querySelector("#filtro-estado");
-    const botonesCategoria = document.querySelectorAll(".nav-category-btn");
+    const navCategorias = document.querySelector("#navCategorias");
     const indicadores = document.querySelectorAll(
         ".dashboard-container > section .badge"
     );
@@ -322,22 +322,64 @@ document.addEventListener("DOMContentLoaded", () => {
 
     selectorEstado.addEventListener("change", aplicarFiltroEstado);
 
+    // crear los botones de categoria a partir de las categorias guardadas
+    function renderizarBotonesCategoria() {
+        if (!navCategorias) {
+            return;
+        }
+
+        const categorias = typeof window.Obtenercategorias === "function"
+            ? Object.keys(window.Obtenercategorias())
+            : [];
+
+        // si la categoria filtrada fue eliminada, volver a mostrar todas
+        const existeActual = categorias.some(
+            (cat) => normalizarTexto(cat) === normalizarTexto(categoriaActual)
+        );
+        if (!existeActual) {
+            categoriaActual = "Todas";
+        }
+
+        const botones = ["Todas", ...categorias].map((cat) => {
+            const activo = normalizarTexto(cat) === normalizarTexto(categoriaActual);
+            return `
+                <button
+                    type="button"
+                    class="btn btn-sm rounded-3 px-3 nav-category-btn ${activo ? "active" : ""}"
+                    data-categoria="${escapar(cat)}"
+                >${escapar(cat)}</button>
+            `;
+        }).join("");
+
+        navCategorias.innerHTML =
+            '<span class="text-dark small fw-bold me-1">Categoría:</span>' + botones;
+    }
+
     // filtrar por categoria
-    botonesCategoria.forEach((boton) => {
-        boton.addEventListener("click", () => {
-            const categoriaSeleccionada = boton.textContent.trim();
+    if (navCategorias) {
+        navCategorias.addEventListener("click", (evento) => {
+            const boton = evento.target.closest(".nav-category-btn");
 
-            categoriaActual =
-                categoriaSeleccionada === "Todas"
-                    ? "Todos"
-                    : categoriaSeleccionada;
+            if (!boton) {
+                return;
+            }
 
-            botonesCategoria.forEach((b) => b.classList.remove("active"));
+            categoriaActual = boton.dataset.categoria || "Todas";
+
+            navCategorias
+                .querySelectorAll(".nav-category-btn")
+                .forEach((b) => b.classList.remove("active"));
             boton.classList.add("active");
 
             paginaActual = 1;
             renderizarProductos();
         });
+    }
+
+    // cuando se crean o eliminan categorias desde la ventana de gestion
+    document.addEventListener("aguacate:categorias-actualizadas", () => {
+        renderizarBotonesCategoria();
+        renderizarProductos();
     });
 
     // atender las acciones de cada producto
@@ -552,7 +594,8 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // mostrar la tabla al entrar
+    // mostrar los filtros y la tabla al entrar
+    renderizarBotonesCategoria();
     renderizarProductos();
 
 });

@@ -62,6 +62,13 @@ document.addEventListener('DOMContentLoaded', function () {
         Archivocargado
     };
 
+    // Estado del formulario
+    let Imagenenbase = '../img/logo.png';
+    let Idproductoeditar = null;
+    let SkuOriginalEditar = '';
+    let EstadoOriginalEditar = 'Publicado';
+    let InstantaneaOriginalEditar = null;
+
     const Camposformulario = {
         nombre: Entradanombre,
         marca: Entradamarca,
@@ -81,15 +88,10 @@ document.addEventListener('DOMContentLoaded', function () {
         textoalternativo: Entradatextoalternativo,
         destacado: Casilladestacado,
         novedades: Casillanovedades,
-        tieneimagen: () => Boolean(Imagenenbase && !Imagenenbase.includes('logo.png'))
+        cajasubida: Cajaprevisualizacion,
+        tieneimagen: () => Boolean(Imagenenbase && !Imagenenbase.includes('logo.png')),
+        get imagen() { return Imagenenbase; }
     };
-
-    // Estado del formulario
-    let Imagenenbase = '../img/logo.png';
-    let Idproductoeditar = null;
-    let SkuOriginalEditar = '';
-    let EstadoOriginalEditar = 'Publicado';
-    let InstantaneaOriginalEditar = null;
 
     // Notificaciones y capas de carga
     function Mostrarnotificacion(Mensaje) {
@@ -199,6 +201,9 @@ document.addEventListener('DOMContentLoaded', function () {
             const archivo = e.target.files && e.target.files[0];
             Cargararchivodeimagen(archivo, Elementosimagen, (dataUrl) => {
                 Imagenenbase = dataUrl;
+                if (Cajaprevisualizacion) Cajaprevisualizacion.classList.remove('entrada-invalida');
+                const elemErrorImagen = document.getElementById('errorImagen');
+                if (elemErrorImagen) elemErrorImagen.classList.remove('visible');
                 ActualizarEstadoBotonActualizar();
                 Mostrarnotificacion('Imagen cargada con éxito');
             }, (msg) => Mostrarnotificacion(msg));
@@ -231,6 +236,9 @@ document.addEventListener('DOMContentLoaded', function () {
             if (archivo) {
                 Cargararchivodeimagen(archivo, Elementosimagen, (dataUrl) => {
                     Imagenenbase = dataUrl;
+                    if (Cajaprevisualizacion) Cajaprevisualizacion.classList.remove('entrada-invalida');
+                    const elemErrorImagen = document.getElementById('errorImagen');
+                    if (elemErrorImagen) elemErrorImagen.classList.remove('visible');
                     ActualizarEstadoBotonActualizar();
                     Mostrarnotificacion('Imagen cargada con éxito');
                 }, (msg) => Mostrarnotificacion(msg));

@@ -53,7 +53,7 @@ const Plantillabarralateral = `
             <span class="material-symbols-outlined icono-nav">inventory_2</span>
             <span>Productos</span>
         </a>
-        <a href="#" class="enlace-lateral" data-seccion="categorias">
+        <a href="admin-productos.html#categorias" class="enlace-lateral" data-seccion="categorias">
             <span class="material-symbols-outlined icono-nav">category</span>
             <span>Categorías</span>
         </a>

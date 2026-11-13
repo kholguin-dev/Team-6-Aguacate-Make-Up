@@ -50,15 +50,26 @@
               </p>
             </div>
 
-            <button
-              class="btn btn-brand rounded-3 px-3 py-2 btn-sm fw-semibold text-white"
-              style="
-                background-color: var(--primary-light);
-                border-color: var(--primary-light);
-              "
-            >
-              <i class="bi bi-plus-lg me-1"></i> Crear producto
-            </button>
+            <div class="d-flex flex-wrap justify-content-end gap-2">
+              <button
+                type="button"
+                id="botonGestionarCategorias"
+                class="btn btn-sm rounded-3 px-3 py-2 fw-semibold boton-categorias"
+                data-bs-toggle="modal"
+                data-bs-target="#modalCategorias"
+              >
+                <i class="bi bi-tags me-1"></i> Categorías
+              </button>
+              <button
+                class="btn btn-brand rounded-3 px-3 py-2 btn-sm fw-semibold text-white"
+                style="
+                  background-color: var(--primary-light);
+                  border-color: var(--primary-light);
+                "
+              >
+                <i class="bi bi-plus-lg me-1"></i> Crear producto
+              </button>
+            </div>
           </section>
 
           <!-- 3. Tarjetas -->
@@ -115,20 +126,12 @@
           </section>
 
           <!-- Pestañas de Categoría -->
-          <nav class="d-flex align-items-center gap-2 mb-4 flex-wrap">
+          <nav
+            id="navCategorias"
+            class="d-flex align-items-center gap-2 mb-4 flex-wrap"
+          >
             <span class="text-dark small fw-bold me-1">Categoría:</span>
-            <button class="btn btn-sm rounded-3 px-3 nav-category-btn active">
-              Todas
-            </button>
-            <button class="btn btn-sm rounded-3 px-3 nav-category-btn">
-              Maquillaje
-            </button>
-            <button class="btn btn-sm rounded-3 px-3 nav-category-btn">
-              Skincare
-            </button>
-            <button class="btn btn-sm rounded-3 px-3 nav-category-btn">
-              Accesorios
-            </button>
+            <!-- Los botones de categoría se generan desde admin-productos.js -->
           </nav>
 
           <!-- 5. Tabla de Productos -->
@@ -348,6 +351,135 @@
               </div>
             </div>
           </div>
+
+          <!-- ventana para gestionar categorías y subcategorías -->
+          <div
+            class="modal fade"
+            id="modalCategorias"
+            tabindex="-1"
+            aria-labelledby="tituloModalCategorias"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <div>
+                    <h5 class="modal-title fw-bold" id="tituloModalCategorias" style="color: #310055">
+                      Categorías y subcategorías
+                    </h5>
+                    <p class="small text-muted mb-0">
+                      El código de la categoría (2 letras) y el de la subcategoría
+                      (3 letras) forman el inicio del SKU. Ejemplo: MQ + LAB = MQLAB001.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Cerrar"
+                  ></button>
+                </div>
+
+                <div class="modal-body">
+                  <div
+                    id="alertaCategorias"
+                    class="alert d-none py-2 small"
+                    role="alert"
+                  ></div>
+
+                  <div class="row g-3 mb-4">
+                    <!-- Nueva categoría -->
+                    <div class="col-12 col-md-6">
+                      <form id="formNuevaCategoria" class="caja-form-categoria h-100" novalidate>
+                        <h6 class="fw-bold mb-3" style="color: #310055">
+                          <i class="bi bi-folder-plus me-1"></i> Nueva categoría
+                        </h6>
+                        <div class="mb-2">
+                          <label for="nombreNuevaCategoria" class="form-label small fw-bold mb-1">Nombre</label>
+                          <input
+                            type="text"
+                            id="nombreNuevaCategoria"
+                            class="form-control form-control-sm"
+                            maxlength="30"
+                            placeholder="Ej: Cuidado capilar"
+                            required
+                          />
+                        </div>
+                        <div class="mb-3">
+                          <label for="prefijoNuevaCategoria" class="form-label small fw-bold mb-1">Código (2 letras)</label>
+                          <input
+                            type="text"
+                            id="prefijoNuevaCategoria"
+                            class="form-control form-control-sm text-uppercase"
+                            maxlength="2"
+                            placeholder="Ej: CC"
+                            required
+                          />
+                        </div>
+                        <button type="submit" class="btn btn-sm w-100 fw-semibold text-white boton-guardar-categoria">
+                          <i class="bi bi-plus-lg me-1"></i> Crear categoría
+                        </button>
+                      </form>
+                    </div>
+
+                    <!-- Nueva subcategoría -->
+                    <div class="col-12 col-md-6">
+                      <form id="formNuevaSubcategoria" class="caja-form-categoria h-100" novalidate>
+                        <h6 class="fw-bold mb-3" style="color: #310055">
+                          <i class="bi bi-diagram-2 me-1"></i> Nueva subcategoría
+                        </h6>
+                        <div class="mb-2">
+                          <label for="categoriaPadreSubcategoria" class="form-label small fw-bold mb-1">Categoría</label>
+                          <select id="categoriaPadreSubcategoria" class="form-select form-select-sm" required></select>
+                        </div>
+                        <div class="row g-2 mb-3">
+                          <div class="col-7">
+                            <label for="nombreNuevaSubcategoria" class="form-label small fw-bold mb-1">Nombre</label>
+                            <input
+                              type="text"
+                              id="nombreNuevaSubcategoria"
+                              class="form-control form-control-sm"
+                              maxlength="30"
+                              placeholder="Ej: Cejas"
+                              required
+                            />
+                          </div>
+                          <div class="col-5">
+                            <label for="codigoNuevaSubcategoria" class="form-label small fw-bold mb-1">Código (3)</label>
+                            <input
+                              type="text"
+                              id="codigoNuevaSubcategoria"
+                              class="form-control form-control-sm text-uppercase"
+                              maxlength="3"
+                              placeholder="Ej: CEJ"
+                              required
+                            />
+                          </div>
+                        </div>
+                        <button type="submit" class="btn btn-sm w-100 fw-semibold text-white boton-guardar-categoria">
+                          <i class="bi bi-plus-lg me-1"></i> Crear subcategoría
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+
+                  <h6 class="fw-bold mb-2" style="color: #310055">Categorías existentes</h6>
+                  <p class="small text-muted mb-2">
+                    Solo se pueden eliminar las categorías y subcategorías que no tengan productos asociados.
+                  </p>
+                  <div id="listaCategoriasAdmin" class="d-flex flex-column gap-2">
+                    <!-- Se genera desde Admincategorias.js -->
+                  </div>
+                </div>
+
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
+                    Cerrar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </main>
       </div>
     </div>
@@ -361,5 +493,6 @@
     <script src="../js/header_admin.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../js/admin-productos.js"></script>
+    <script src="../js/Admincategorias.js"></script>
   </body>
 </html>
