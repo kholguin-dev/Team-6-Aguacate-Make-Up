@@ -467,7 +467,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     : "")
             ).toUpperCase();
 
-            const sinStock = Number(producto.stock) <= 0;
+            // igual que en el catalogo: se revisa el stock y la disponibilidad elegida
+            const disponibilidad = normalizarTexto(producto.disponibilidad);
+            const esProximamente = disponibilidad === "proximamente";
+            const sinStock =
+                esProximamente ||
+                disponibilidad === "agotado" ||
+                Number(producto.stock) <= 0;
 
             detalle.innerHTML = `
                 <div class="text-center mb-3">
@@ -508,7 +514,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                         title="Vista previa del catálogo"
                                     >
                                         ${sinStock
-                                            ? "<span>Agotado</span>"
+                                            ? `<span>${esProximamente ? "Próximamente" : "Agotado"}</span>`
                                             : '<i class="bi bi-cart-plus"></i> <span>Agregar</span>'}
                                     </button>
                                 </div>
