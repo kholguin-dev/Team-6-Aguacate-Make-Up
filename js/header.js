@@ -221,14 +221,18 @@ function ajustarRutasHeader(contenedor) {
                     'Hola "' + usuarioActivo.nombre +
                     '", ¿deseas cerrar tu sesión?'
                 );
-
                 if (deseaCerrar) {
 
+                    // Elimina la info de sesion del user
                     localStorage.removeItem("usuarioActivo");
                     localStorage.removeItem("usuarioActual");
                     localStorage.removeItem("sesionActiva");
                     localStorage.removeItem("usuarioSesion");
 
+                    // Elimina el JWT token de autenticacion
+                    localStorage.removeItem("tokenJWT");
+
+                    // Recarga la pag para actualizar el header
                     window.location.reload();
                 }
 
