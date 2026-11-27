@@ -305,8 +305,8 @@ document.addEventListener('DOMContentLoaded', function () {
             const itemId = String(item.id || '').trim();
             const itemSku = String(item.sku || '').trim().toUpperCase();
             return (idBuscado && (itemId === idBuscado || itemId.replace('PROD-', '') === idBuscado.replace('PROD-', ''))) ||
-                   (skuBuscado && itemSku === skuBuscado) ||
-                   (idBuscado && itemSku === idBuscado.toUpperCase());
+                (skuBuscado && itemSku === skuBuscado) ||
+                (idBuscado && itemSku === idBuscado.toUpperCase());
         };
 
         const encontrado = listado.find(coincide);
@@ -419,28 +419,120 @@ document.addEventListener('DOMContentLoaded', function () {
         );
     }
 
-    // Evento de envío para crear o actualizar
+    // EVENTO DE ENVÍO DEL FORMULARIO
+    // CREAR PRODUCTO MEDIANTE API REST
+
     Formularioproducto.addEventListener('submit', async function (e) {
+
+        // Evitar el envío tradicional del formulario
         e.preventDefault();
+
+        // 1. VALIDAR CAMPOS DEL FORMULARIO
+
         if (!Validardatos(Camposformulario, Idproductoeditar, SkuOriginalEditar)) {
-            Mostrarnotificacion('Por favor completa todos los campos requeridos correctamente');
+
+            Mostrarnotificacion(
+                'Por favor completa todos los campos requeridos correctamente'
+            );
+
             return;
         }
 
+        // 2. CONSTRUIR PRODUCTO DESDE EL FORMULARIO
+
         const producto = ConstruirProductoFormulario(false);
-        const accionTexto = Idproductoeditar ? 'Actualizando producto...' : 'Publicando producto...';
-        MostrarAnimacionCarga(accionTexto, 'Guardando los cambios en el inventario local.');
+
+        // 3. CONSTRUIR PAYLOAD PARA SPRING BOOT
+
+        const payload = {
+
+            // Identificador y SKU del producto
+            id: producto.id,
+            sku: producto.sku,
+
+            // Información general
+            nombre: producto.nombre,
+            marca: producto.marca,
+            descripcion: producto.descripcion,
+
+            // Categoría y subcategoría
+            // Se envían como String, porque así los recibe el DTO.
+            categoria: producto.categoria,
+            subcategoria: producto.subcategoria,
+
+            // Información comercial
+            precio: producto.precio,
+            preciopromocional: producto.preciopromocional,
+            stock: producto.stock,
+            tamano: producto.tamano,
+            disponibilidad: producto.disponibilidad,
+
+            // Información descriptiva del producto
+            beneficios: producto.beneficios,
+            modouso: producto.modouso,
+            ingredientes: producto.ingredientes,
+
+            // Imagen
+            textoAlternativo: producto.textoAlternativo,
+            imagen: producto.imagen,
+
+            // Configuración de publicación
+            destacado: producto.destacado,
+            novedades: producto.novedades,
+            estado: producto.estado
+        };
+
+        // 4. MOSTRAR ANIMACIÓN DE CARGA
+
+        const accionTexto = Idproductoeditar
+            ? 'Actualizando producto...'
+            : 'Publicando producto...';
+
+        MostrarAnimacionCarga(
+            accionTexto,
+            'Guardando los cambios en la base de datos.'
+        );
 
         try {
-            await CrearOActualizarProductoInventario(producto, Boolean(Idproductoeditar));
-            MostrarConfirmacionCarga('¡Producto guardado!', 'La información se actualizó correctamente en la base de datos.');
+
+            // 5. ENVIAR PRODUCTO AL BACKEND
+
+            const productoGuardado =
+                await AdminProductosAPI.crearProducto(payload);
+
+            console.log(
+                'Producto guardado correctamente:',
+                productoGuardado
+            );
+
+            // 6. MOSTRAR CONFIRMACIÓN
+
+            MostrarConfirmacionCarga(
+                '¡Producto guardado!',
+                'La información se guardó correctamente en la base de datos.'
+            );
+
+            // 7. REDIRIGIR AL LISTADO
+
             setTimeout(() => {
+
                 window.location.href = 'admin-productos.html';
+
             }, 1400);
+
         } catch (error) {
-            console.error('Error al guardar:', error);
+
+            // 8. MANEJAR ERRORES
+
+            console.error('Error al guardar producto:', error);
+
             OcultarAnimacionCarga();
-            Mostrarnotificacion(error instanceof Error ? error.message : 'Hubo un error al guardar el producto');
+
+            Mostrarnotificacion(
+                error instanceof Error
+                    ? error.message
+                    : 'Hubo un error al guardar el producto'
+            );
         }
     });
 
@@ -465,7 +557,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     window.location.href = 'admin-productos.html';
                 }
             } else {
-                window.location.href= 'admin-productos.html';
+                window.location.href = 'admin-productos.html';
             }
         });
     }
