@@ -1,305 +1,586 @@
-<!DOCTYPE html>
+
+<!doctype html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear producto | Aguacate Make Up</title>
-    <!-- CDN de Bootstrap -->
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Administración de productos | Aguacate Make Up</title>
+
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
       rel="stylesheet"
-      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
-      crossorigin="anonymous"
     />
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
       rel="stylesheet"
     />
-    <!-- Tipografía Inter y Material Symbols -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
-    <!-- Hojas de estilo: global y modular -->
-    <link rel="stylesheet" href="../style.css">
-    <link rel="stylesheet" href="../style/Adminbarralateral.css">
-    <link rel="stylesheet" href="../style/admin-productos.css">
-    <link rel="stylesheet" href="../style/header_admin.css">
-    <link rel="stylesheet" href="../style/Admincrearproductos.css">
-    <link rel="icon" href="../img/faviconbien.png">
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="../style/Adminbarralateral.css" />
+    <link rel="stylesheet" href="../style/admin-productos.css" />
+    <link rel="stylesheet" href="../style/header_admin.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="../img/faviconbien.png" />
     <script src="../js/proteccion-admin.js"></script>
-</head>
-<body class="cuerpo-administracion bg-light">
+  </head>
+
+  <body class="cuerpo-administracion bg-light">
+
     <div class="contenedor-panel">
-        
-        <!-- Barra lateral administrativa modular -->
-        <div id="adminBarraLateral"></div>
 
-        <!-- Área de contenido principal estructurada en tarjeta dashboard idéntica a admin-productos -->
-        <div class="flex-grow-1 overflow-auto">
-            <main class="container-fluid bg-white p-4 rounded-4 shadow-sm dashboard-container area-contenido" id="areaContenido">
-                
-                <!-- 1. Header reutilizable modular -->
-                <div id="header-admin-container" class="mb-4"></div>
+      <!-- Barra lateral administrativa -->
+      <div id="adminBarraLateral"></div>
 
-                <!-- 2. Encabezado de Sección coherente con admin-productos -->
-                <section class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
-                    <div>
-                        <h2 class="fw-bold mb-1" style="color: #310055">Crear producto</h2>
-                        <p class="subtitulo-seccion m-0">Completa la ficha antes de publicar. Los campos con * son obligatorios.</p>
-                    </div>
+      <!-- Área de contenido -->
+      <div class="flex-grow-1 overflow-auto">
 
-                    <a href="admin-productos.html" class="btn btn-brand rounded-3 px-3 py-2 btn-sm fw-semibold text-white d-inline-flex align-items-center gap-1" style="background-color: var(--primary-light, #5B009E); border-color: var(--primary-light, #5B009E);">
-                        <i class="bi bi-arrow-left"></i> Volver a productos
-                    </a>
-                </section>
+        <main
+          class="container-fluid bg-white p-4 rounded-4 shadow-sm dashboard-container"
+        >
 
-                <!-- 3. Insignias / Badges de estado coherentes con admin-productos -->
-                <section class="d-flex flex-wrap gap-2 mb-4 align-items-center">
-                    <span class="badge text-white px-3 py-2 rounded-pill fw-bold" style="background-color: #ca82ed; color: #310055">CREACIÓN · NUEVO REGISTRO</span>
-                    <span class="badge text-white px-3 py-2 rounded-pill fw-bold" style="background-color: #ffcce8; color: #310055">Borrador automático activo</span>
-                    <span class="text-muted small ms-2">Los cambios no se publican en catálogo hasta guardar.</span>
-                </section>
+          <!-- Header administrativo -->
+          <div id="header-container" class="mb-4"></div>
 
-                <!-- Formulario de creación de producto -->
-                <form id="formularioProducto" class="formulario-creacion" novalidate>
-                    <div class="rejilla-formulario">
-                        
-                        <!-- Columna principal (izquierda) -->
-                        <div class="columna-principal">
-                            
-                            <!-- Tarjeta 1: Información básica -->
-                            <section class="tarjeta-formulario">
-                                <h2 class="titulo-tarjeta">Información básica</h2>
-                                
-                                <div class="campo-grupo">
-                                    <label for="nombreProducto" class="etiqueta-campo">Nombre del producto *</label>
-                                    <input type="text" id="nombreProducto" class="entrada-texto" placeholder="Ej. Sérum Calm" required>
-                                    <span class="mensaje-error" id="errorNombre">Por favor ingresa el nombre del producto.</span>
-                                </div>
+          <!-- Encabezado de sección -->
+          <section
+            class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2"
+          >
+            <div>
+              <h2 class="fw-bold mb-1" style="color: #310055">
+                Gestión de productos
+              </h2>
 
-                                <div class="fila-dos-columnas">
-                                    <div class="campo-grupo">
-                                        <label for="categoriaProducto" class="etiqueta-campo">Categoría *</label>
-                                        <select id="categoriaProducto" class="entrada-seleccion" required>
-                                            <option value="" selected>Selecciona una categoría</option>
-                                            <!-- Las categorías se cargan desde Validaciones.js -->
-                                        </select>
-                                    </div>
-                                    <div class="campo-grupo">
-                                        <label for="subcategoriaProducto" class="etiqueta-campo">Subcategoría *</label>
-                                        <select id="subcategoriaProducto" class="entrada-seleccion" required>
-                                            <option value="" selected>Selecciona una subcategoría</option>
-                                        </select>
-                                        <span class="texto-ayuda">Subcategoría vinculada a la nomenclatura de inventario.</span>
-                                    </div>
-                                </div>
-
-                                <div class="fila-dos-columnas">
-                                    <div class="campo-grupo">
-                                        <label for="skuProducto" class="etiqueta-campo">Referencia / SKU *</label>
-                                        <div class="grupo-entrada-boton">
-                                            <input type="text" id="skuProducto" class="entrada-texto text-uppercase" placeholder="Ej. SKSER001 o MQCAR001" maxlength="12" required autocomplete="off">
-                                            <button type="button" id="botonGenerarSku" class="boton-accion-sku" title="Regenerar SKU automáticamente según categoría">
-                                                <span class="material-symbols-outlined fs-6">sync</span>
-                                                <span>Auto</span>
-                                            </button>
-                                        </div>
-                                        <span class="texto-ayuda" id="ayudaSku">Estructura requerida: exactamente 5 letras mayúsculas seguidas de 3 a 7 números (8 a 12 caracteres).</span>
-                                        <span class="mensaje-error" id="errorSku">El código SKU es obligatorio y no puede estar repetido.</span>
-                                        <span class="mensaje-exito" id="exitoSku" style="display:none; color:#1F7A37; font-size:12px; font-weight:600; margin-top:4px;">Código disponible para usar.</span>
-                                    </div>
-                                    <div class="campo-grupo">
-                                        <label for="marcaProducto" class="etiqueta-campo">Marca *</label>
-                                        <input type="text" id="marcaProducto" class="entrada-texto" value="Aguacate Make Up" required>
-                                    </div>
-                                </div>
-
-                                <div class="campo-grupo">
-                                    <label for="descripcionProducto" class="etiqueta-campo">Descripción *</label>
-                                    <textarea id="descripcionProducto" class="entrada-area" rows="3" placeholder="Sérum calmante de textura ligera para una rutina de cuidado diario." required></textarea>
-                                    <span class="mensaje-error" id="errorDescripcion">Por favor describe brevemente el producto.</span>
-                                </div>
-                            </section>
-
-                            <!-- Tarjeta 2: Precio y disponibilidad -->
-                            <section class="tarjeta-formulario">
-                                <h2 class="titulo-tarjeta">Precio y disponibilidad</h2>
-                                
-                                <div class="fila-dos-columnas">
-                                    <div class="campo-grupo">
-                                        <label for="precioHabitual" class="etiqueta-campo">Precio ($ COP) *</label>
-                                        <input type="text" inputmode="numeric" id="precioHabitual" class="entrada-texto" placeholder="Ej. 26900" required autocomplete="off">
-                                        <span class="texto-ayuda">En pesos colombianos, IVA incluido. Mayor a 0.</span>
-                                        <span class="mensaje-error" id="errorPrecio">Ingresa un precio válido en pesos mayor a 0.</span>
-                                    </div>
-                                    <div class="campo-grupo">
-                                        <label for="precioPromocional" class="etiqueta-campo">Precio promocional ($ COP)</label>
-                                        <input type="text" inputmode="numeric" id="precioPromocional" class="entrada-texto" placeholder="Opcional" autocomplete="off">
-                                        <span class="texto-ayuda">Debe ser menor al precio habitual.</span>
-                                    </div>
-                                </div>
-
-                                <div class="fila-dos-columnas">
-                                    <div class="campo-grupo">
-                                        <label for="stockProducto" class="etiqueta-campo">Stock disponible *</label>
-                                        <input type="text" inputmode="numeric" id="stockProducto" class="entrada-texto" placeholder="Ej. 10" required autocomplete="off">
-                                        <span class="mensaje-error" id="errorStock">El stock debe ser un número entero igual o mayor que 0.</span>
-                                    </div>
-                                    <div class="campo-grupo">
-                                        <label for="tamanoProducto" class="etiqueta-campo">Contenido / tamaño *</label>
-                                        <input type="text" id="tamanoProducto" class="entrada-texto" placeholder="Ej. 30 ml" required>
-                                    </div>
-                                </div>
-
-                                <div class="campo-grupo">
-                                    <label for="disponibilidadProducto" class="etiqueta-campo">Disponibilidad *</label>
-                                    <select id="disponibilidadProducto" class="entrada-seleccion" required>
-                                        <option value="En stock" selected>En stock</option>
-                                        <option value="Agotado">Agotado</option>
-                                        <option value="Próximamente">Próximamente</option>
-                                    </select>
-                                </div>
-                            </section>
-
-                            <!-- Tarjeta 3: Información complementaria -->
-                            <section class="tarjeta-formulario">
-                                <h2 class="titulo-tarjeta">Información complementaria</h2>
-                                
-                                <div class="campo-grupo">
-                                    <label for="beneficiosProducto" class="etiqueta-campo">Beneficios</label>
-                                    <input type="text" id="beneficiosProducto" class="entrada-texto" placeholder="Calma e hidrata la piel">
-                                </div>
-
-                                <div class="campo-grupo">
-                                    <label for="modoUsoProducto" class="etiqueta-campo">Modo de uso</label>
-                                    <textarea id="modoUsoProducto" class="entrada-area" rows="2" placeholder="Aplica 2 a 3 gotas sobre la piel limpia, antes de la crema hidratante."></textarea>
-                                </div>
-
-                                <div class="campo-grupo">
-                                    <label for="ingredientesProducto" class="etiqueta-campo">Ingredientes clave</label>
-                                    <input type="text" id="ingredientesProducto" class="entrada-texto" placeholder="Pantenol, glicerina, extracto de aguacate">
-                                </div>
-
-                                <div class="campo-grupo">
-                                    <label for="precaucionesProducto" class="etiqueta-campo">Precauciones</label>
-                                    <textarea id="precaucionesProducto" class="entrada-area" rows="2" placeholder="Uso externo. Evitar el contacto directo con los ojos."></textarea>
-                                </div>
-                            </section>
-                        </div>
-
-                        <!-- Columna lateral (derecha) -->
-                        <div class="columna-lateral">
-                            
-                            <!-- Tarjeta 4: Carga de imagen -->
-                            <section class="tarjeta-formulario">
-                                <h2 class="titulo-tarjeta">Imagen *</h2>
-                                
-                                <div class="caja-subida" id="cajaPrevisualizacion" title="Haz clic o arrastra una imagen aquí">
-                                    <img id="imagenPrevia" src="../img/logo.png" alt="Previsualización de producto" class="imagen-previa">
-                                    <span class="nombre-archivo" id="nombreArchivoMuestra">Haz clic o arrastra para seleccionar una imagen</span>
-                                    <button type="button" id="botonEliminarImagenFlotante" class="boton-eliminar-flotante d-none" title="Eliminar imagen seleccionada">&times;</button>
-                                </div>
-                                <span class="mensaje-error mt-1" id="errorImagen">Debes agregar una foto para el producto.</span>
-
-                                <input type="file" id="archivoImagen" class="d-none" accept="image/png, image/jpeg, image/webp">
-                                
-                                <div class="d-flex gap-2 mt-2">
-                                    <button type="button" class="btn btn-outline-secondary flex-grow-1 d-inline-flex align-items-center justify-content-center gap-1" id="botonSubirImagen">
-                                        <span class="material-symbols-outlined fs-5" id="iconoBotonSubir">upload</span>
-                                        <span id="textoBotonSubirImagen">Subir imagen</span>
-                                    </button>
-                                    <button type="button" class="btn btn-outline-danger d-none align-items-center justify-content-center gap-1" id="botonEliminarImagen" title="Eliminar imagen seleccionada">
-                                        <span class="material-symbols-outlined fs-5">delete</span>
-                                        <span>Eliminar imagen</span>
-                                    </button>
-                                </div>
-
-                                <div class="campo-grupo mt-3">
-                                    <label for="textoAlternativo" class="etiqueta-campo">Texto alternativo *</label>
-                                    <input type="text" id="textoAlternativo" class="entrada-texto" placeholder="Envase de Sérum Calm, 30 ml" required>
-                                    <span class="texto-ayuda">JPG o PNG · Máximo 5 MB · Imagen cuadrada recomendada.</span>
-                                </div>
-                            </section>
-
-                            <!-- Tarjeta 5: Publicación -->
-                            <section class="tarjeta-formulario">
-                                <h2 class="titulo-tarjeta">Publicación</h2>
-                                
-                                <div class="campo-grupo">
-                                    <label for="estadoPublicacion" class="etiqueta-campo">Estado *</label>
-                                    <select id="estadoPublicacion" class="entrada-seleccion" required>
-                                        <option value="Publicado" selected>Publicado</option>
-                                        <option value="Borrador">Borrador</option>
-                                    </select>
-                                </div>
-
-                                <div class="opcion-casilla">
-                                    <input type="checkbox" id="casillaDestacado" class="control-casilla">
-                                    <label for="casillaDestacado" class="etiqueta-casilla">Producto destacado</label>
-                                </div>
-
-                                <div class="opcion-casilla">
-                                    <input type="checkbox" id="casillaNovedades" class="control-casilla" checked>
-                                    <label for="casillaNovedades" class="etiqueta-casilla">Mostrar en novedades</label>
-                                </div>
-
-                                <span class="texto-ayuda mt-2">Un borrador no aparece en el catálogo público de la tienda.</span>
-                            </section>
-
-                            <!-- Tarjeta 6: Reglas de validación -->
-                            <section class="tarjeta-aviso">
-                                <span class="aviso-titulo">Reglas de validación</span>
-                                <p class="aviso-cuerpo">
-                                    Nombre, SKU, categoría, imagen y precio son obligatorios. El SKU debe ser único. Precio en pesos positivo. Stock entero no negativo. Los datos se conservan si hay errores.
-                                </p>
-                            </section>
-                        </div>
-                    </div>
-
-                    <!-- Barra de botones de acción coherente -->
-                    <div class="barra-acciones d-flex justify-content-end align-items-center pt-3 border-top mt-4 flex-wrap gap-2">
-                        <button type="button" class="btn btn-outline-secondary rounded-3 px-3 py-2 fw-semibold" id="botonCancelar">Cancelar</button>
-                        <button type="button" class="btn rounded-3 px-3 py-2 fw-semibold text-dark d-inline-flex align-items-center gap-1" id="botonGuardarBorrador" style="background-color: #ffcce8; border-color: #ffcce8;">
-                            <i class="bi bi-pencil-square"></i> Guardar borrador
-                        </button>
-                        <button type="submit" class="btn rounded-3 px-4 py-2 fw-semibold text-white d-inline-flex align-items-center gap-1" id="botonGuardar" style="background-color: #5B009E; border-color: #5B009E;">
-                            <span class="material-symbols-outlined fs-5">save</span>
-                            <span>Crear registro</span>
-                        </button>
-                    </div>
-                </form>
-
-                <!-- Pie de página administrativo coherente con admin-productos -->
-                <footer class="d-flex justify-content-between align-items-center pt-3 border-top mt-4 text-muted small">
-                    <span>Aguacate Make Up · Gestión interna · 2026</span>
-                    <span>Acceso restringido a administradores</span>
-                </footer>
-            </main>
-        </div>
-    </div>
-
-    <!-- Mensaje flotante de notificación -->
-    <div id="alertaNotificacion" class="notificacion-flotante" role="alert" aria-live="assertive"></div>
-
-    <!-- Capa de bloqueo y animación de carga al guardar -->
-    <div id="capaCargando" class="capa-cargando d-none" aria-live="polite" role="status">
-        <div class="tarjeta-cargando">
-            <div id="contenedorIndicadorCarga">
-                <div class="spinner-aguacate" id="iconoAnimacionCarga"></div>
+              <p class="subtitulo-seccion m-0">
+                Consulta, crea, actualiza o elimina productos del catálogo.
+              </p>
             </div>
-            <h3 class="titulo-cargando" id="tituloCargando">Guardando información...</h3>
-            <p class="descripcion-cargando" id="descripcionCargando">Guardando el producto en el almacenamiento local.</p>
-        </div>
-    </div>
 
+            <!-- Botones de acción -->
+            <div class="d-flex flex-wrap justify-content-end gap-2">
+
+              <!-- Gestionar categorías -->
+              <button
+                type="button"
+                id="botonGestionarCategorias"
+                class="btn btn-sm rounded-3 px-3 py-2 fw-semibold boton-categorias"
+                data-bs-toggle="modal"
+                data-bs-target="#modalCategorias"
+              >
+                <i class="bi bi-tags me-1"></i>
+                Categorías
+              </button>
+
+              <!-- Crear producto -->
+              <button
+                type="button"
+                id="botonCrearProducto"
+                class="btn btn-brand rounded-3 px-3 py-2 btn-sm fw-semibold text-white"
+                style="
+                  background-color: var(--primary-light);
+                  border-color: var(--primary-light);
+                "
+              >
+                <i class="bi bi-plus-lg me-1"></i>
+                Crear producto
+              </button>
+
+            </div>
+          </section>
+
+          <!-- Indicadores dinámicos -->
+          <section class="d-flex flex-wrap gap-2 mb-4">
+
+            <span
+              id="indicadorTotal"
+              class="badge text-white px-3 py-2 rounded-pill fw-bold"
+              style="background-color: #ca82ed; color: #310055"
+            >
+              0 productos
+            </span>
+
+            <span
+              id="indicadorPublicados"
+              class="badge text-white px-3 py-2 rounded-pill fw-bold"
+              style="background-color: #ca82ed"
+            >
+              0 publicados
+            </span>
+
+            <span
+              id="indicadorBorradores"
+              class="badge text-white px-3 py-2 rounded-pill fw-bold"
+              style="background-color: #ffcce8"
+            >
+              0 borradores
+            </span>
+
+            <span
+              id="indicadorStockBajo"
+              class="badge badge-stock-low px-3 py-2 rounded-pill fw-bold"
+              style="background-color: #fffbcd"
+            >
+              0 con stock bajo
+            </span>
+
+          </section>
+
+          <!-- Filtros y búsqueda -->
+          <section class="row g-2 mb-3 align-items-end">
+
+            <!-- Buscar producto -->
+            <div class="col-12 col-md-6 col-lg-7">
+              <label
+                class="form-label text-dark small fw-bold mb-1"
+                for="campoBusqueda"
+              >
+                Buscar
+              </label>
+
+              <input
+                type="text"
+                id="campoBusqueda"
+                class="form-control form-control-sm"
+                placeholder="Nombre, referencia o descripción..."
+              />
+            </div>
+
+            <!-- Filtrar estado -->
+            <div class="col-7 col-md-3 col-lg-3">
+              <label
+                class="form-label text-dark small fw-bold mb-1"
+                for="filtro-estado"
+              >
+                Estado
+              </label>
+
+              <select
+                class="form-select form-select-sm"
+                id="filtro-estado"
+              >
+                <option value="" selected>Todos los estados</option>
+                <option value="Publicado">Publicado</option>
+                <option value="Borrador">Borrador</option>
+              </select>
+            </div>
+
+            <div class="col-5 col-md-3 col-lg-2">
+              <label class="form-label d-block mb-1 filtro-espaciador">
+                &nbsp;
+              </label>
+            </div>
+
+          </section>
+
+          <!-- Filtros de categoría -->
+          <nav
+            id="navCategorias"
+            class="d-flex align-items-center gap-2 mb-4 flex-wrap"
+          >
+            <span class="text-dark small fw-bold me-1">
+              Categoría:
+            </span>
+
+            <!-- Los botones se generan dinámicamente desde JavaScript -->
+          </nav>
+
+          <!-- Tabla de productos -->
+          <div class="table-responsive">
+
+            <table class="table table-hover align-middle">
+
+              <thead class="table-light small">
+                <tr>
+                  <th>Producto</th>
+                  <th>Categoría</th>
+                  <th>Precio</th>
+                  <th>Stock</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+
+              <!-- Los productos se cargarán desde Spring Boot -->
+              <tbody id="tablaProductos" class="small">
+
+                <tr>
+                  <td colspan="6" class="text-center py-4">
+                    Cargando productos...
+                  </td>
+                </tr>
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+          <!-- Paginación dinámica -->
+          <footer
+            class="d-flex justify-content-between align-items-center pt-3 border-top"
+          >
+
+            <span
+              id="textoPaginacion"
+              class="text-muted small"
+            >
+              Cargando productos...
+            </span>
+
+            <div class="d-flex align-items-center gap-2">
+
+              <nav aria-label="Paginación">
+                <ul
+                  id="contenedorPaginacion"
+                  class="pagination pagination-sm m-0 gap-1"
+                >
+                  <!-- Los botones se generan desde JavaScript -->
+                </ul>
+              </nav>
+
+              <span
+                id="indicadorPagina"
+                class="small ms-1 paginacion-indicador"
+              >
+                1 de 1
+              </span>
+
+            </div>
+
+          </footer>
+
+          <!-- Descripción de acciones -->
+          <p
+            class="text-muted mt-3 mb-0"
+            style="font-size: 0.75rem"
+          >
+            Ver abre la ficha administrativa. Editar permite modificar
+            los campos del producto. Eliminar solicita confirmación
+            antes de retirar el producto.
+          </p>
+
+          <!-- Modal: Vista del producto -->
+          <div
+            class="modal fade"
+            id="modalVerProducto"
+            tabindex="-1"
+            aria-labelledby="tituloModalProducto"
+            aria-hidden="true"
+          >
+
+            <div class="modal-dialog modal-dialog-centered">
+
+              <div class="modal-content">
+
+                <div class="modal-header">
+
+                  <h5
+                    class="modal-title"
+                    id="tituloModalProducto"
+                  >
+                    Vista previa en catálogo
+                  </h5>
+
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Cerrar"
+                  ></button>
+
+                </div>
+
+                <div
+                  class="modal-body"
+                  id="detalleProducto"
+                >
+                  <!-- La información se carga desde JavaScript -->
+                </div>
+
+                <div class="modal-footer">
+
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                  >
+                    Cerrar
+                  </button>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- Modal: Gestión de categorías -->
+          <div
+            class="modal fade"
+            id="modalCategorias"
+            tabindex="-1"
+            aria-labelledby="tituloModalCategorias"
+            aria-hidden="true"
+          >
+
+            <div
+              class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg"
+            >
+
+              <div class="modal-content">
+
+                <!-- Encabezado del modal -->
+                <div class="modal-header">
+
+                  <div>
+
+                    <h5
+                      class="modal-title fw-bold"
+                      id="tituloModalCategorias"
+                      style="color: #310055"
+                    >
+                      Categorías y subcategorías
+                    </h5>
+
+                    <p class="small text-muted mb-0">
+                      El código de la categoría (2 letras) y el de la
+                      subcategoría (3 letras) forman el inicio del SKU.
+                      Ejemplo: MQ + LAB = MQLAB001.
+                    </p>
+
+                  </div>
+
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Cerrar"
+                  ></button>
+
+                </div>
+
+                <!-- Cuerpo del modal -->
+                <div class="modal-body">
+
+                  <!-- Mensajes -->
+                  <div
+                    id="alertaCategorias"
+                    class="alert d-none py-2 small"
+                    role="alert"
+                  ></div>
+
+                  <div class="row g-3 mb-4">
+
+                    <!-- Crear categoría -->
+                    <div class="col-12 col-md-6">
+
+                      <form
+                        id="formNuevaCategoria"
+                        class="caja-form-categoria h-100"
+                        novalidate
+                      >
+
+                        <h6
+                          class="fw-bold mb-3"
+                          style="color: #310055"
+                        >
+                          <i class="bi bi-folder-plus me-1"></i>
+                          Nueva categoría
+                        </h6>
+
+                        <div class="mb-2">
+
+                          <label
+                            for="nombreNuevaCategoria"
+                            class="form-label small fw-bold mb-1"
+                          >
+                            Nombre
+                          </label>
+
+                          <input
+                            type="text"
+                            id="nombreNuevaCategoria"
+                            class="form-control form-control-sm"
+                            maxlength="30"
+                            placeholder="Ej: Cuidado capilar"
+                            required
+                          />
+
+                        </div>
+
+                        <div class="mb-3">
+
+                          <label
+                            for="prefijoNuevaCategoria"
+                            class="form-label small fw-bold mb-1"
+                          >
+                            Código (2 letras)
+                          </label>
+
+                          <input
+                            type="text"
+                            id="prefijoNuevaCategoria"
+                            class="form-control form-control-sm text-uppercase"
+                            maxlength="2"
+                            placeholder="Ej: CC"
+                            required
+                          />
+
+                        </div>
+
+                        <button
+                          type="submit"
+                          class="btn btn-sm w-100 fw-semibold text-white boton-guardar-categoria"
+                        >
+                          <i class="bi bi-plus-lg me-1"></i>
+                          Crear categoría
+                        </button>
+
+                      </form>
+
+                    </div>
+
+                    <!-- Crear subcategoría -->
+                    <div class="col-12 col-md-6">
+
+                      <form
+                        id="formNuevaSubcategoria"
+                        class="caja-form-categoria h-100"
+                        novalidate
+                      >
+
+                        <h6
+                          class="fw-bold mb-3"
+                          style="color: #310055"
+                        >
+                          <i class="bi bi-diagram-2 me-1"></i>
+                          Nueva subcategoría
+                        </h6>
+
+                        <div class="mb-2">
+
+                          <label
+                            for="categoriaPadreSubcategoria"
+                            class="form-label small fw-bold mb-1"
+                          >
+                            Categoría
+                          </label>
+
+                          <select
+                            id="categoriaPadreSubcategoria"
+                            class="form-select form-select-sm"
+                            required
+                          ></select>
+
+                        </div>
+
+                        <div class="row g-2 mb-3">
+
+                          <div class="col-7">
+
+                            <label
+                              for="nombreNuevaSubcategoria"
+                              class="form-label small fw-bold mb-1"
+                            >
+                              Nombre
+                            </label>
+
+                            <input
+                              type="text"
+                              id="nombreNuevaSubcategoria"
+                              class="form-control form-control-sm"
+                              maxlength="30"
+                              placeholder="Ej: Cejas"
+                              required
+                            />
+
+                          </div>
+
+                          <div class="col-5">
+
+                            <label
+                              for="codigoNuevaSubcategoria"
+                              class="form-label small fw-bold mb-1"
+                            >
+                              Código (3)
+                            </label>
+
+                            <input
+                              type="text"
+                              id="codigoNuevaSubcategoria"
+                              class="form-control form-control-sm text-uppercase"
+                              maxlength="3"
+                              placeholder="Ej: CEJ"
+                              required
+                            />
+
+                          </div>
+
+                        </div>
+
+                        <button
+                          type="submit"
+                          class="btn btn-sm w-100 fw-semibold text-white boton-guardar-categoria"
+                        >
+                          <i class="bi bi-plus-lg me-1"></i>
+                          Crear subcategoría
+                        </button>
+
+                      </form>
+
+                    </div>
+
+                  </div>
+
+                  <!-- Categorías existentes -->
+                  <h6
+                    class="fw-bold mb-2"
+                    style="color: #310055"
+                  >
+                    Categorías existentes
+                  </h6>
+
+                  <p class="small text-muted mb-2">
+                    Solo se pueden eliminar las categorías y
+                    subcategorías que no tengan productos asociados.
+                  </p>
+
+                  <div
+                    id="listaCategoriasAdmin"
+                    class="d-flex flex-column gap-2"
+                  >
+                    <!-- Se genera desde Admincategorias.js -->
+                  </div>
+
+                </div>
+
+                <!-- Footer modal -->
+                <div class="modal-footer">
+
+                  <button
+                    type="button"
+                    class="btn btn-secondary btn-sm"
+                    data-bs-dismiss="modal"
+                  >
+                    Cerrar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
     <script src="../js/Almacenamiento.js"></script>
-    <script src="../js/Validaciones.js"></script>
-    <script src="../js/Gestorimagen.js"></script>
     <script src="../js/AdminProductosAPI.js"></script>
     <script src="../js/Adminbarralateral.js"></script>
     <script src="../js/header_admin.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../js/Admincrearproductos.js"></script>
-</body>
+    <script src="../js/admin-productos.js"></script>
+    <script src="../js/Admincategorias.js"></script>
+
+  </body>
 </html>

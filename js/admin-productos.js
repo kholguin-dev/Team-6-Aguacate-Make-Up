@@ -1,7 +1,8 @@
-
-// Este archivo conserva su nombre admin-productos.js y funciona como el controlador de la tabla administrativa.
-// Se encarga de mostrar los productos, paginar los resultados, filtrar por estado o categoria y permitir ver, editar o eliminar.
-// Tambien conecta la persistencia con la capa central de Almacenamiento.js.
+/*
+Este archivo conserva su nombre admin-productos.js y funciona como el controlador de la tabla administrativa.
+Se encarga de mostrar los productos, paginar los resultados, filtrar por estado o categoria y permitir ver, editar o eliminar.
+Tambien conecta la persistencia con la capa central de Almacenamiento.js.
+*/
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -25,44 +26,148 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // rutas y configuracion de productos
     const Urlcrearproducto = "Admincrearproductos.html";
-    const Claveproductos = "admincrearproductos";
     const Productosporpagina = 8;
 
     let categoriaActual = "Todas";
     let estadoActual = "";
     let paginaActual = 1;
 
-    // acceder al almacenamiento local usando la capa centralizada
-    const cargarProductos = () => {
+    // CONSULTAR PRODUCTOS DESDE EL BACKEND
+    const cargarProductos = async () => {
         try {
-            const productos = typeof window.Obtenerlistadoproductos === "function"
-                ? window.Obtenerlistadoproductos()
-                : JSON.parse(localStorage.getItem(Claveproductos) || "[]");
 
-            return Array.isArray(productos) ? productos : [];
-        }
-        catch (error) {
+            // Verificar que la API este disponible
+            if (!window.AdminProductosAPI ||
+                typeof window.AdminProductosAPI.obtenerProductos !== "function") {
+
+                throw new Error(
+                    "AdminProductosAPI no está disponible. Verifica que el archivo se cargue correctamente."
+                );
+            }
+
+            // Consultamos los productos mediante nuestra API
+            const respuesta = await window.AdminProductosAPI.obtenerProductos();
+
+            // Validamos diferentes posibles estructuras de respuesta
+            const listaProductos =
+                Array.isArray(respuesta) ? respuesta :
+                Array.isArray(respuesta?.productos) ? respuesta.productos :
+                Array.isArray(respuesta?.data) ? respuesta.data :
+                Array.isArray(respuesta?.content) ? respuesta.content :
+                [];
+
+            // Normalizamos los productos recibidos desde Java
+            return listaProductos.map((producto) => {
+
+                // Extraer categoria y subcategoria si vienen como objetos
+                const subcategoriaObjeto = producto.subcategoria;
+
+                const categoriaObjeto =
+                    producto.categoria
+                    ?? subcategoriaObjeto?.categoria;
+
+                const categoria =
+                    typeof categoriaObjeto === "object"
+                        ? categoriaObjeto?.nombre
+                            ?? categoriaObjeto?.nombreCategoria
+                            ?? categoriaObjeto?.nombre_categoria
+                        : categoriaObjeto;
+
+                const subcategoria =
+                    typeof subcategoriaObjeto === "object"
+                        ? subcategoriaObjeto?.nombre
+                            ?? subcategoriaObjeto?.nombreSubcategoria
+                            ?? subcategoriaObjeto?.nombre_subcategoria
+                        : subcategoriaObjeto;
+
+                // Adaptar los nombres del backend al formato del frontend
+                return {
+                    ...producto,
+
+                    // Identificador
+                    id: producto.id
+                        ?? producto.idProducto
+                        ?? producto.id_producto,
+
+                    // Nombre del producto
+                    nombre: producto.nombre
+                        ?? producto.nombreProducto
+                        ?? producto.nombre_producto
+                        ?? "",
+
+                    // SKU o referencia
+                    sku: producto.sku
+                        ?? producto.codigoProducto
+                        ?? producto.codigo_producto
+                        ?? producto.referencia
+                        ?? "",
+
+                    referencia: producto.referencia
+                        ?? producto.sku
+                        ?? producto.codigoProducto
+                        ?? "",
+
+                    // Categoria y subcategoria
+                    categoria: categoria
+                        ?? producto.nombreCategoria
+                        ?? "",
+
+                    subcategoria: subcategoria
+                        ?? producto.nombreSubcategoria
+                        ?? "",
+
+                    // Precio
+                    precio: producto.precio
+                        ?? producto.precioBase
+                        ?? producto.precio_base
+                        ?? 0,
+
+                    // Precio promocional
+                    preciopromocional: producto.preciopromocional
+                        ?? producto.precioPromocional
+                        ?? producto.precio_promocional
+                        ?? 0,
+
+                    // Stock
+                    stock: producto.stock
+                        ?? producto.cantidadStock
+                        ?? producto.cantidad
+                        ?? 0,
+
+                    // Imagen
+                    imagen: producto.imagen
+                        ?? producto.urlImagen
+                        ?? producto.imagenPrincipal
+                        ?? producto.imagenesProducto?.[0]?.url
+                        ?? producto.imagenesProducto?.[0]?.urlImagen
+                        ?? producto.imagenesProducto?.[0]?.url_imagen
+                        ?? producto.imagenesProducto?.[0]?.ruta
+                        ?? producto.imagenesProducto?.[0]?.rutaImagen
+                        ?? producto.imagenesProducto?.[0]?.nombreArchivo
+                        ?? producto.imagenesProducto?.[0]?.archivo
+                        ?? "",
+
+                    // Estado
+                    estado: producto.estado
+                        ?? (producto.activo === true ? "Publicado" : "Borrador"),
+
+                    // Novedad
+                    novedades: producto.novedades
+                        ?? producto.esNuevo
+                        ?? false
+                };
+            });
+
+        } catch (error) {
+
             console.error("No se pudieron recuperar los productos:", error);
-            return [];
+
+            throw error;
         }
     };
 
-    let productos = cargarProductos();
-
-    const guardarProductos = () => {
-        if (typeof window.Guardarlistadoproductos === "function") {
-            return window.Guardarlistadoproductos(productos);
-        }
-
-        try {
-            localStorage.setItem(Claveproductos, JSON.stringify(productos));
-            return true;
-        }
-        catch (error) {
-            console.error("No se pudieron guardar los productos:", error);
-            return false;
-        }
-    };
+    // Inicializamos el listado vacío
+    let productos = [];
 
     // evitar interpretar los textos como codigo html
     function escapar(texto) {
@@ -112,8 +217,7 @@ document.addEventListener("DOMContentLoaded", () => {
         indicadores[3].textContent =
             `${productos.filter((p) => Number(p.stock) <= 10).length} con stock bajo`;
     }
-
-    // aplicar la busqueda y los filtros
+        // aplicar la busqueda y los filtros
     function renderizarProductos() {
 
         const texto = normalizarTexto(campoBusqueda.value);
@@ -146,7 +250,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 prodSubcat.includes(filtroCat);
 
             const coincideEstado =
-                !estadoActual || producto.estado === estadoActual;
+                !estadoActual ||
+                normalizarTexto(producto.estado) === normalizarTexto(estadoActual);
 
             return coincideTexto && coincideCategoria && coincideEstado;
         });
@@ -172,8 +277,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     <div class="d-flex align-items-center gap-2">
                         <img
                             src="${typeof window.NormalizarUrlImagen === "function"
-                                ? window.NormalizarUrlImagen(producto.imagen)
-                                : producto.imagen || "../img/logo.png"}"
+                ? window.NormalizarUrlImagen(producto.imagen)
+                : producto.imagen || "../img/logo.png"}"
                             alt="${escapar(producto.nombre)}"
                             class="rounded"
                             style="width: 36px; height: 36px; object-fit: cover; flex-shrink: 0; border: 1px solid #EFE4F8;"
@@ -188,26 +293,23 @@ document.addEventListener("DOMContentLoaded", () => {
                     </div>
                 </td>
                 <td>
-                    ${escapar(producto.categoria || "")}${
-                        producto.subcategoria &&
-                        producto.subcategoria !== "Sin subcategoría"
-                            ? " · " + escapar(producto.subcategoria)
-                            : ""
-                    }
+                    ${escapar(producto.categoria || "")}${producto.subcategoria &&
+                producto.subcategoria !== "Sin subcategoría"
+                ? " · " + escapar(producto.subcategoria)
+                : ""
+            }
                 </td>
                 <td>${formatoPrecio(producto.precio)}</td>
                 <td>${Number(producto.stock) || 0}</td>
                 <td>
-                    <span class="badge ${
-                        producto.estado === "Publicado"
-                            ? "badge-published"
-                            : "bg-secondary"
-                    }">${escapar(producto.estado)}</span>
-                    ${
-                        Number(producto.stock) <= 10
-                            ? '<span class="badge badge-stock-low">Stock bajo</span>'
-                            : ""
-                    }
+                    <span class="badge ${producto.estado === "Publicado"
+                ? "badge-published"
+                : "bg-secondary"
+            }">${escapar(producto.estado)}</span>
+                    ${Number(producto.stock) <= 10
+                ? '<span class="badge badge-stock-low">Stock bajo</span>'
+                : ""
+            }
                 </td>
                 <td class="text-end text-nowrap">
                     <button
@@ -255,14 +357,13 @@ document.addEventListener("DOMContentLoaded", () => {
         if (pie) {
             pie.innerHTML = `
                 <span class="text-muted small">
-                    ${
+                    ${filtrados.length
+                    ? `Mostrando ${inicio + 1}–${Math.min(
+                        inicio + Productosporpagina,
                         filtrados.length
-                            ? `Mostrando ${inicio + 1}–${Math.min(
-                                inicio + Productosporpagina,
-                                filtrados.length
-                            )} de ${filtrados.length} productos`
-                            : "No hay productos para mostrar"
-                    }
+                    )} de ${filtrados.length} productos`
+                    : "No hay productos para mostrar"
+                }
                 </span>
                 <nav aria-label="Paginación">
                     <ul class="pagination pagination-sm m-0 gap-1">
@@ -314,7 +415,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         estadoActual =
             valor === "1" ? "Publicado" :
-            valor === "2" ? "Borrador" : "";
+                valor === "2" ? "Borrador" : "";
 
         paginaActual = 1;
         renderizarProductos();
@@ -328,20 +429,31 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        const categorias = typeof window.Obtenercategorias === "function"
+        // Obtener categorías guardadas y categorías presentes en los productos del backend
+        const categoriasGuardadas = typeof window.Obtenercategorias === "function"
             ? Object.keys(window.Obtenercategorias())
             : [];
+
+        const categoriasProductos = productos
+            .map((producto) => producto.categoria)
+            .filter(Boolean);
+
+        const categorias = [
+            ...new Set([...categoriasGuardadas, ...categoriasProductos])
+        ].sort((a, b) => a.localeCompare(b, "es"));
 
         // si la categoria filtrada fue eliminada, volver a mostrar todas
         const existeActual = categorias.some(
             (cat) => normalizarTexto(cat) === normalizarTexto(categoriaActual)
         );
+
         if (!existeActual) {
             categoriaActual = "Todas";
         }
 
         const botones = ["Todas", ...categorias].map((cat) => {
             const activo = normalizarTexto(cat) === normalizarTexto(categoriaActual);
+
             return `
                 <button
                     type="button"
@@ -369,6 +481,7 @@ document.addEventListener("DOMContentLoaded", () => {
             navCategorias
                 .querySelectorAll(".nav-category-btn")
                 .forEach((b) => b.classList.remove("active"));
+
             boton.classList.add("active");
 
             paginaActual = 1;
@@ -381,8 +494,7 @@ document.addEventListener("DOMContentLoaded", () => {
         renderizarBotonesCategoria();
         renderizarProductos();
     });
-
-    // atender las acciones de cada producto
+        // atender las acciones de cada producto
     tabla.addEventListener("click", async (evento) => {
 
         const boton = evento.target.closest("button[data-accion]");
@@ -498,8 +610,8 @@ document.addEventListener("DOMContentLoaded", () => {
                                             ${formatoPrecio(tieneDescuento ? precioPromo : precioHabitual)}
                                         </span>
                                         ${tieneDescuento
-                                            ? `<span class="precio-anterior">${formatoPrecio(precioHabitual)}</span>`
-                                            : ""}
+                    ? `<span class="precio-anterior">${formatoPrecio(precioHabitual)}</span>`
+                    : ""}
                                     </div>
                                     <button
                                         class="boton-agregar-producto ${sinStock ? "agotado" : ""}"
@@ -508,8 +620,8 @@ document.addEventListener("DOMContentLoaded", () => {
                                         title="Vista previa del catálogo"
                                     >
                                         ${sinStock
-                                            ? "<span>Agotado</span>"
-                                            : '<i class="bi bi-cart-plus"></i> <span>Agregar</span>'}
+                    ? "<span>Agotado</span>"
+                    : '<i class="bi bi-cart-plus"></i> <span>Agregar</span>'}
                                     </button>
                                 </div>
                             </div>
@@ -549,31 +661,44 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            if (typeof window.EliminarProductoInventario === "function") {
+            /*
+            IMPORTANTE:
+            La eliminación debe realizarse en el backend.
+            No debemos eliminar solamente de la variable local,
+            porque el producto continuaría existiendo en MySQL.
+            */
 
-                await window.EliminarProductoInventario(
-                    producto.id || producto.sku
+            if (typeof window.AdminProductosAPI?.eliminarProducto !== "function") {
+
+                alert(
+                    "La eliminación todavía no está conectada al backend. " +
+                    "El producto no fue eliminado."
                 );
 
-                productos = cargarProductos();
+                return;
+            }
+
+            try {
+
+                // Eliminar el producto desde la API
+                await window.AdminProductosAPI.eliminarProducto(producto.id);
+
+                // Consultar nuevamente los productos desde MySQL
+                productos = await cargarProductos();
+
                 paginaActual = 1;
                 renderizarProductos();
 
-            } else {
+                alert("Producto eliminado correctamente.");
 
-                const productosAnteriores = productos;
+            } catch (error) {
 
-                productos = productos.filter((p) => {
-                    return String(p.id) !== id;
-                });
+                console.error("Error al eliminar el producto:", error);
 
-                if (guardarProductos()) {
-                    paginaActual = 1;
-                    renderizarProductos();
-                } else {
-                    productos = productosAnteriores;
-                    alert("No se pudo eliminar el producto. Intenta nuevamente.");
-                }
+                alert(
+                    error.message ||
+                    "No se pudo eliminar el producto. Intenta nuevamente."
+                );
             }
         }
     });
@@ -596,6 +721,38 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // mostrar los filtros y la tabla al entrar
     renderizarBotonesCategoria();
-    renderizarProductos();
+
+    // CARGAR PRODUCTOS Y RENDERIZAR CUANDO TERMINE LA CONSULTA
+    (async () => {
+
+        try {
+
+            // Consultar productos al backend
+            productos = await cargarProductos();
+
+            paginaActual = 1;
+
+            // Generar los botones de categoría después de recibir los productos
+            renderizarBotonesCategoria();
+
+            // Mostrar los productos recibidos
+            renderizarProductos();
+
+        } catch (error) {
+
+            // Mostrar un error en la tabla si falla la consulta
+            tabla.innerHTML = `
+                <tr>
+                    <td colspan="6" class="text-center text-danger py-4">
+                        No fue posible cargar los productos.
+                        Verifica la conexión con el servidor.
+                    </td>
+                </tr>
+            `;
+
+            actualizarIndicadores();
+        }
+
+    })();
 
 });
