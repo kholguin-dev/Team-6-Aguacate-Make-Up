@@ -32,40 +32,18 @@ document.addEventListener("DOMContentLoaded", () => {
     let terminoBusqueda =
         new URLSearchParams(window.location.search).get("buscar") || "";
 
-    // inicializar los productos de ejemplo
-    if (typeof window.InicializarProductosSemilla === "function") {
-        window.InicializarProductosSemilla();
-    }
+    // Pedir productos desde la API 
+    //  La lista inicialmente está vacía. Después se llenará con la respuesta de Spring Boot.
+    let productosPublicados = [];
 
-    // recuperar los productos guardados
-    function obtenerProductosGuardados() {
-        try {
-            const datos = localStorage.getItem(Claveproductos);
-            const productos = datos ? JSON.parse(datos) : [];
+    console.log("Inicializando catálogo conectado al backend...");
 
-            return Array.isArray(productos) ? productos : [];
-        }
-        catch (error) {
-            console.error("Error al recuperar los productos:", error);
-            return [];
-        }
-    }
 
-    const productosGuardados = obtenerProductosGuardados();
 
-    console.log("productos recuperados:", productosGuardados);
-    console.log("cantidad de productos:", productosGuardados.length);
 
-    // filtrar los productos publicados
-    function obtenerProductosPublicados(listaProductos) {
-        return listaProductos.filter((producto) => {
-            return !producto.estado ||
-                String(producto.estado).toLowerCase() === "publicado";
-        });
-    }
 
-    const productosPublicados =
-        obtenerProductosPublicados(productosGuardados);
+
+
 
     // formatear los precios
     function formatearMoneda(valor) {
@@ -351,6 +329,96 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // CARGA DE PRODUCTOS DESDE SPRING BOOT
+
+    async function cargarCatalogo() {
+
+        // Indicamos al usuario que estamos cargando
+        if (contenedorProductos) {
+            contenedorProductos.innerHTML = `
+            <div class="text-center py-5">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Cargando...</span>
+                </div>
+                <p class="mt-3">
+                    Cargando productos...
+                </p>
+            </div>
+        `;
+        }
+
+        try {
+
+            // Consultamos la API
+            const productosAPI =
+                await window.ProductosAPI.obtenerProductosPublicados();
+
+            // Validamos nuevamente el estado de los productos
+            productosPublicados = productosAPI.filter(producto => {
+                const publicado =
+                    String(producto.estado).toLowerCase() === "publicado";
+                const activo = producto.activo !== false;
+                return publicado && activo;
+            });
+
+            console.log(
+                "Productos recibidos desde Spring Boot:",
+                productosPublicados
+            );
+
+            console.log(
+                "Cantidad de productos cargados:",
+                productosPublicados.length
+            );
+
+            // Renderizar categorías dinámicas
+            mostrarCategorias();
+            // Aplicar filtros iniciales
+            aplicarFiltros();
+        } catch (error) {
+
+            console.error(
+                "Error al cargar los productos del backend:",
+                error
+            );
+
+            if (contenedorProductos) {
+                contenedorProductos.innerHTML = `
+                <div class="alert alert-danger text-center" role="alert">
+                    <h5>No fue posible cargar el catálogo</h5>
+
+                    <p>
+                        Verifica que el servidor backend esté funcionando.
+                    </p>
+
+                    <button
+                        class="btn btn-outline-danger"
+                        type="button"
+                        id="btn-reintentar-catalogo"
+                    >
+                        Reintentar
+                    </button>
+                </div>
+            `;
+            }
+            // No mostrar el mensaje de catálogo vacío
+            if (mensajeVacio) {
+                mensajeVacio.classList.add("d-none");
+            }
+            // Permitir volver a intentar la petición
+            const botonReintentar =
+                document.querySelector("#btn-reintentar-catalogo");
+            if (botonReintentar) {
+                botonReintentar.addEventListener(
+                    "click",
+                    cargarCatalogo
+                );
+            }
+        }
+    }
+
+
+
     // aplicar los filtros del catalogo
     function aplicarFiltros() {
         let productosFiltrados = [...productosPublicados];
@@ -548,7 +616,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // iniciar el catalogo
-    mostrarCategorias();
-    aplicarFiltros();
+    cargarCatalogo();
 
 });
