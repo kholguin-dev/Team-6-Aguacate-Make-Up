@@ -86,6 +86,22 @@ document.addEventListener("DOMContentLoaded", () => {
             .trim();
     }
 
+    // saber si el producto se puede comprar: revisa el stock y la disponibilidad
+    // que el administrador elige en el formulario (En stock / Agotado / Próximamente)
+    function obtenerEstadoVenta(producto) {
+        const disponibilidad = normalizarTexto(producto.disponibilidad);
+
+        if (disponibilidad === "proximamente") {
+            return "proximamente";
+        }
+
+        if (disponibilidad === "agotado" || Number(producto.stock) <= 0) {
+            return "agotado";
+        }
+
+        return "disponible";
+    }
+
     // mostrar los productos
     function mostrarProductos(listaProductos) {
         if (!contenedorProductos) {
@@ -214,12 +230,18 @@ document.addEventListener("DOMContentLoaded", () => {
             botonCarrito.type = "button";
             botonCarrito.title = "Agregar este producto al carrito";
 
-            const sinStock = Number(producto.stock) <= 0;
+            const estadoVenta = obtenerEstadoVenta(producto);
+            const sinStock = estadoVenta !== "disponible";
 
             if (sinStock) {
                 botonCarrito.disabled = true;
                 botonCarrito.classList.add("agotado");
-                botonCarrito.innerHTML = "<span>Agotado</span>";
+                botonCarrito.title = estadoVenta === "proximamente"
+                    ? "Este producto llegará pronto"
+                    : "Este producto está agotado";
+                botonCarrito.innerHTML = estadoVenta === "proximamente"
+                    ? "<span>Próximamente</span>"
+                    : "<span>Agotado</span>";
             } else {
                 botonCarrito.innerHTML =
                     '<i class="bi bi-cart-plus" aria-hidden="true"></i> <span>Agregar</span>';
@@ -468,7 +490,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // filtrar por disponibilidad
         if (filtroStock && filtroStock.checked) {
             productosFiltrados = productosFiltrados.filter((producto) => {
-                return Number(producto.stock) > 0;
+                return obtenerEstadoVenta(producto) === "disponible";
             });
         }
 
